@@ -22,18 +22,27 @@ class PropertyKey {
     public static $jdbc_view_menu;
     public static $jdbc_view_privilegio;
     public static $jdbc_procedure_privilegios;
+    public static $jdbc_procedure_cliente;
     public static $jdbc_view_colonia;
     public static $jdbc_view_colonia_id;
     public static $jdbc_view_dispositivo;
     public static $jdbc_view_dispositivo_id;
+    public static $jdbc_view_cliente;
+    public static $jdbc_view_cliente_id;
+    public static $jdbc_view_giro;
+    public static $jdbc_view_giro_id;
     public static $session_access;
     public static $session_usuario;
+    public static $session_clientes;
+    public static $session_exists;
+    public static $session_giro;
     public static $view_user;
     public static $view_password;
     public static $view_method;
     public static $php_index;
     public static $php_main_admin;
     public static $php_main_user;
+    public static $php_main_cliente;
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Constructores Privados">
@@ -52,14 +61,23 @@ class PropertyKey {
         self::$jdbc_view_colonia_id = $this->getPropertyBd('jdbc.view.colonia.id');
         self::$jdbc_view_dispositivo = $this->getPropertyBd('jdbc.view.dispositivo');
         self::$jdbc_view_dispositivo_id = $this->getPropertyBd('jdbc.view.dispositivo.id');
+        self::$jdbc_view_cliente = $this->getPropertyBd('jdbc.view.cliente');
+        self::$jdbc_view_cliente_id = $this->getPropertyBd('jdbc.view.cliente.id');
+        self::$jdbc_view_giro = $this->getPropertyBd('jdbc.view.giro');
+        self::$jdbc_view_giro_id = $this->getPropertyBd('jdbc.view.giro.id');
         self::$jdbc_procedure_privilegios = $this->getPropertyBd('jdbc.procedure.menu.privilegio');
+        self::$jdbc_procedure_cliente = $this->getPropertyBd('jdbc.procedure.cliente');
 
         self::$session_access = $this->getPropertySystem('session.acces');
         self::$session_usuario = $this->getPropertySystem('session.usuario');
+        self::$session_clientes = $this->getPropertySystem('session.clientes');
+        self::$session_exists = $this->getPropertySystem('session.exists');
+        self::$session_giro = $this->getPropertySystem('session.giro');
 
         self::$php_index = $this->getPropertySystem('php.index');
         self::$php_main_admin = $this->getPropertySystem('php.main.admin');
         self::$php_main_user = $this->getPropertySystem('php.main.user');
+        self::$php_main_cliente = $this->getPropertySystem('php.main.cliente');
 
         self::$view_user = $this->getPropertySystem('view.user');
         self::$view_password = $this->getPropertySystem('view.password');

@@ -16,12 +16,16 @@ class SqlUtils {
             return self::getLogin($obj, $row);
         } else if ($obj instanceof BeanMenu) {
             return self::getMenu($obj, $row);
-       /* } else if ($obj instanceof BeanColonia) {
-            return self::getColonia($obj, $row);
-        } else if ($obj instanceof BeanDispositivo) {
-            return self::getDispositivo($obj, $row);
-        }else if($obj instanceof BeanZona){
-            return self::getZona($obj, $row);*/
+            /* } else if ($obj instanceof BeanColonia) {
+              return self::getColonia($obj, $row);
+              } else if ($obj instanceof BeanDispositivo) {
+              return self::getDispositivo($obj, $row);
+              }else if($obj instanceof BeanZona){
+              return self::getZona($obj, $row); */
+        } else if ($obj instanceof DtoCliente) {
+            return self::getCliente($obj, $row);
+        } else if ($obj instanceof BeanGiro) {
+            return self::getGiro($obj, $row);
         }
     }
 
@@ -50,29 +54,55 @@ class SqlUtils {
         return $bean;
     }
 
-   /* private static final function getColonia(BeanColonia $bean, $row) {
-        $bean->setIdCp($row[0]);
-        $bean->setCp($row[1]);
-        $bean->setCol(utf8_encode($row[2]));
-        $bean->setDelegacion(utf8_encode($row[3]));
-        $bean->setMunicipio(utf8_encode($row[4]));
-        $bean->setEstado(utf8_encode($row[5]));
-        $bean->setCiudad(utf8_encode($row[6]));
+    /* private static final function getColonia(BeanColonia $bean, $row) {
+      $bean->setIdCp($row[0]);
+      $bean->setCp($row[1]);
+      $bean->setCol(utf8_encode($row[2]));
+      $bean->setDelegacion(utf8_encode($row[3]));
+      $bean->setMunicipio(utf8_encode($row[4]));
+      $bean->setEstado(utf8_encode($row[5]));
+      $bean->setCiudad(utf8_encode($row[6]));
+      return $bean;
+      }
+
+      private static final function getDispositivo(BeanDispositivo $bean, $row) {
+      $bean->setId($row[0]);
+      $bean->setDispositivo($row[1]);
+      return $bean;
+      }
+
+      private static final function getZona(BeanDispositivo $bean, $row) {
+      $bean->setId($row[0]);
+      $bean->setNombre($row[1]);
+      $bean->setJson($row[2]);
+      return $bean;
+      } */
+
+    private static final function getCliente(DtoCliente $dto, $row) {
+        $dto->setIdCliente($row[0]);
+        $dto->setNombre($row[1]);
+        $dto->setPaterno($row[2]);
+        $dto->setMaterno($row[3]);
+        $dto->setCalle($row[4]);
+        //$colonia->setIdCp($row[5]);
+        $dto->setNoExterior($row[6]);
+        $dto->setNoInterior($row[7]);
+        $dto->setTelefono($row[8]);
+        $dto->setOtroTelefono($row[9]);
+        $dto->setMail($row[10]);
+        //$dto->setBeanGiro($row[11]);
+        $dto->setActivo($row[12]);
+        $dto->setRefresh($row[13]);
+        //$dto->setBeanCp($colonia);
+        return $dto;
+    }
+
+    private static final function getGiro(BeanGiro $bean, $row) {
+        $bean->setIdGiro($row[0]);
+        $bean->setGiro($row[1]);
         return $bean;
     }
 
-    private static final function getDispositivo(BeanDispositivo $bean, $row) {
-        $bean->setId($row[0]);
-        $bean->setDispositivo($row[1]);
-        return $bean;
-    }
-    
-    private static final function getZona(BeanDispositivo $bean, $row) {
-        $bean->setId($row[0]);
-        $bean->setNombre($row[1]);
-        $bean->setJson($row[2]);
-        return $bean;
-    }*/
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Metodos P&uacute;blicos">
     public static final function execute(Jdbc $connection, $query) {

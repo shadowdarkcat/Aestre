@@ -32,7 +32,7 @@ if (!isset($login)) {
                     </a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
-                    <img  src="/Aestre/web/image/logoAestre.ico" width="60px;" height="60px"  class="required"/>
+                    <img  src="/Aestre/web/images/logoAestre.ico" width="60px;" height="60px"  class="required"/>
                     <ul class="nav navbar-nav">                        
                         <?php echo($login->getMenu()); ?>
                     </ul>

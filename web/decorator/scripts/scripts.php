@@ -47,13 +47,12 @@
 <script type="text/javascript" src="/Aestre/web/jquery/jquery/jquery.validate.js"></script>
 <script type="text/javascript" src="/Aestre/web/jquery/jquery/dataTables.responsive.min.js"></script>
 <script type="text/javascript" src="/Aestre/web/jquery/jquery/dataTables.responsive.nightly.js"></script>
-<script type="text/javascript" src="/Aestre/web/jquery/boostrap/bootstrap.min.js"></script>
-<script type="text/javascript" src="/Aestre/web/jquery/boostrap/bootstrap-submenu.js"></script>
-<script type="text/javascript" src="/Aestre/web/jquery/boostrap/bootstrap-submenu.min.js"></script>
-<script type="text/javascript" src="/Aestre/web/jquery/boostrap/ie-emulation-modes-warning.js"></script>
-<script type="text/javascript" src="/Aestre/web/jquery/boostrap/dataTables.bootstrap.min.js"></script>
-<script type="text/javascript" src="/Aestre/web/resource/es-MX.js"></script>
-<script type="text/javascript" src="/Aestre/web/resource/es_ES.json"></script>
+<script type="text/javascript" src="/Aestre/web/jquery/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="/Aestre/web/jquery/bootstrap/bootstrap-submenu.js"></script>
+<script type="text/javascript" src="/Aestre/web/jquery/bootstrap/bootstrap-submenu.min.js"></script>
+<script type="text/javascript" src="/Aestre/web/jquery/bootstrap/ie-emulation-modes-warning.js"></script>
+<script type="text/javascript" src="/Aestre/web/jquery/bootstrap/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="/Aestre/web/resources/es-MX.js"></script>
 <script type="text/javascript" src="/Aestre/web/js/generales.js"></script>
 
 <script>

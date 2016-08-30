@@ -10,6 +10,10 @@ body {
     color: red;
 }
 
+.font-size{    
+    font-size: 12px;
+}
+
 .modal .modal-body {
     max-height: 420px;
     overflow-y: auto;
