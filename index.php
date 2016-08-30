@@ -1,33 +1,26 @@
-<!DOCTYPE html>
 <?php
 session_start();
 ?>
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
 <html>
     <head>
-        <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">        
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <link href="web/css/bootstrap.min.css" rel="stylesheet">
-        <link href="web/css/signin.css" rel="stylesheet">
-        <link href="web/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-        <script src="web/jquery/boostrap/ie-emulation-modes-warning.js"></script>
-         <style>
-            body{
-                background-image: url('/Aestre/web/image/fondo.jpeg');
-                background-position: center center;
-                background-repeat: no-repeat;
-                background-attachment: fixed;
-                background-size: cover;
-            }
-
-        </style>
+        <link type="text/css" href="web/css/bootstrap.min.css" rel="stylesheet">
+        <link type="text/css" href="web/css/signin.css" rel="stylesheet">
+        <link type="text/css" href="web/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+        <link type="text/css" href="web/css/style.css" rel="stylesheet">
+        <script type="text/javascript" src="web/jquery/boostrap/ie-emulation-modes-warning.js"></script>
         <title>Acceso Sistema</title>        
     </head>
-    <body>
+    <div class="container">
         <div class="container">
-            <form id="frmLogin" name="frmLogin" class="form-signin" method="post" action="mx.com.aestre/system/login/controller/loginController.php?method=0" >
+            <form id="frmLogin" name="frmLogin" class="form-signin" method="post" action="com/aestre/system/controller/loginController.php?method=0" >
                 <center><h2 class="form-signin-heading">Acceso Sistema</h2></center>
                 <label for="txtUser" class="sr-only">Nombre Usuario :</label>
                 <input type="text" id="txtUser" name="txtUser" class="form-control" placeholder="Nombre Usuario " required = "required" autofocus="autofocus"/>
@@ -45,6 +38,6 @@ session_start();
                 <?php } ?>
             </form>
         </div>
-        <script src="web/jquery/boostrap/ie10-viewport-bug-workaround.js"></script>
-    </body>
+    </div>    
+    <script src="web/jquery/boostrap/ie10-viewport-bug-workaround.js"></script>
 </html>
