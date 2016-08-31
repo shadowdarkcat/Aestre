@@ -5,7 +5,7 @@ spl_autoload_register('aestre_autoload', FALSE);
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-$exist='';
+$exist = '';
 $controller = new giroController();
 $controller->giros();
 
@@ -155,7 +155,7 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                             <th class="dt-responsive alert-info" style="text-align: center">
                                                 <label class="font-size"><span class="req">*</span> Cp</label>
                                             </th>
-
+                                            <th id="thTitleMuni" class="dt-responsive alert-info" style="text-align: center"></th>
                                             <th class="dt-responsive alert-info" style="text-align: center">
                                                 <label class="font-size"><span class="req">*</span> Estado</label>
                                             </th>
@@ -170,6 +170,7 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                                 <input type="text" id="txtCp" name="txtCp" class="required form-control"  
                                                        onkeypress="mayuscula(this);" placeholder="C&oacute;digo Postal" disabled="disabled"/>
                                             </td>
+                                            <td id="tdMuni" class="dt-responsive"></td>
                                             <td class="dt-responsive">
                                                 <input type="text" id="txtEstado" name="txtEstado" class="required form-control" 
                                                        onkeypress="minuscula(this);" placeholder="Estado" disabled="disabled"/>
@@ -260,20 +261,30 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                     </thead>
                     <tbody>
                         <?php
-                             foreach ($clientes as $item) {
-                                echo ('<tr>'
-                                . '<td class="dt-responsive" style="text-align: center">'
-                                . '<label class="font-size" id="lblId">' . $item->getIdCliente()
-                                . '</label></td>'
-                                . '<td class="dt-responsive" style="text-align: center">'
-                                . '<label id="lblNombre" class="font-size">'
-                                . $item->getNombre() . ' ' . $item->getPaterno() . ' ' . $item->getMaterno()
-                                . '</label></td>'
-                                . '<td class="dt-responsive" style="text-align: center">'
-                                . '<label id="lblActivo" class="font-size">'
-                                . (($item->getActivo() == TRUE) ? 'Sí' : 'NO')
-                                . '</label></td></tr>');
-                            }
+                        foreach ($clientes as $item) {
+                            echo ('<tr>'
+                            . '<td class="dt-responsive" style="text-align: center">'
+                            . '<label class="font-size" id="lblId">' . $item->getIdCliente()
+                            . '</label></td>'
+                            . '<td class="dt-responsive" style="text-align: center">'
+                            . '<label id="lblNombre" class="font-size">'
+                            . $item->getNombre() . '</label> <label id="lblPaterno" class="font-size">'
+                            . $item->getPaterno() . '</label> <label id="lblMaterno" class="font-size">'
+                            . $item->getMaterno() . '</label></td>'
+                            . '<td class="dt-responsive" style="text-align: center">'
+                            . '<label id="lblActivo" class="font-size">'
+                            . (($item->getActivo() == TRUE) ? 'Sí' : 'NO')
+                            . '</label>'
+                            . '<label id="lblCalle" class="font-size" style="display:none;">' . $item->getCalle() . '</label>'
+                            . '<label id="lblNoExt" class="font-size" style="display:none;">' . $item->getNoExterior() . '</label>'
+                            . '<label id="lblNoInt" class="font-size" style="display:none;">' . $item->getNoInterior() . '</label>'
+                            . '<label id="lblIdCp" class="font-size" style="display:none;">' . $item->getBeanCp()->getIdCp() . '</label>'
+                            . '<label id="lblTelefono" class="font-size" style="display:none;">' . $item->getTelefono() . '</label>'
+                            . '<label id="lblOtroTelefono" class="font-size" style="display:none;">' . $item->getOtroTelefono() . '</label>'
+                            . '<label id="lblMail" class="font-size" style="display:none;">' . $item->getMail() . '</label>'
+                            . '<label id="lblIdGiro" class="font-size" style="display:none;">' . $item->getBeanGiro()->getIdGiro() . '</label>'
+                            . '</td></tr>');
+                        }
                         ?>
                     </tbody>                    
                 </table>

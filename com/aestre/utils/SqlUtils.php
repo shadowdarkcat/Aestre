@@ -57,7 +57,7 @@ class SqlUtils {
      private static final function getColonia(BeanCp $bean, $row) {
       $bean->setIdCp($row[0]);
       $bean->setCp($row[1]);
-      $bean->setCol(utf8_encode($row[2]));
+      $bean->setCol($row[2]);
       $bean->setDelegacion($row[3]);
       $bean->setMunicipio($row[4]);
       $bean->setEstado($row[5]);
@@ -84,16 +84,15 @@ class SqlUtils {
         $dto->setPaterno($row[2]);
         $dto->setMaterno($row[3]);
         $dto->setCalle($row[4]);
-        //$colonia->setIdCp($row[5]);
+        $dto->setBeanCp(FactoryColonia::newInstance($row[5]));
         $dto->setNoExterior($row[6]);
         $dto->setNoInterior($row[7]);
         $dto->setTelefono($row[8]);
         $dto->setOtroTelefono($row[9]);
         $dto->setMail($row[10]);
-        //$dto->setBeanGiro($row[11]);
+        $dto->setBeanGiro(FactoryGiro::newInstance($row[11]));
         $dto->setActivo($row[12]);
         $dto->setRefresh($row[13]);
-        //$dto->setBeanCp($colonia);
         return $dto;
     }
 

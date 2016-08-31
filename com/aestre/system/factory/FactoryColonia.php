@@ -15,7 +15,7 @@ class FactoryColonia {
             return new BeanCp();
         } else {
             $bean = new BeanCp();
-            $bean->setId($id);
+            $bean->setIdCp($id);
             return $bean;
         }
     }

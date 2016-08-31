@@ -12,18 +12,27 @@ class ClienteBoImpl implements ClienteBo {
 
     //<editor-fold defaultstate="collapsed" desc="Campos de Clase">
     private $dao;
+    private $cpBo;
+    private $giroBo;
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Constructores">
     public function __construct() {
         $this->dao = new ClienteDaoImpl();
+        $this->cpBo = new ColoniaBoImpl();
+        $this->giroBo = new GiroBoImpl();
     }
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Funciones P&uacute;blicas">
     public function findAll($user) {
         if (Utils::isSessionValid($user)) {
-            return $this->dao->findAll();
+            $collection = $this->dao->findAll();
+            foreach ($collection as $item) {
+                $item->setBeanCp($this->getCp($user, $item->getBeanCp()));
+                $item->setBeanGiro($this->getGiro($user, $item->getBeanGiro()));
+            }
+            return $collection;
         }
     }
 
@@ -38,6 +47,7 @@ class ClienteBoImpl implements ClienteBo {
             return $this->dao->exist($obj);
         }
     }
+
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Metodos P&uacute;blicos">
     public function insert($user, $obj) {
@@ -56,6 +66,16 @@ class ClienteBoImpl implements ClienteBo {
         if (Utils::isSessionValid($user)) {
             $this->dao->delete($obj);
         }
+    }
+
+    //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="Metodos Privados">
+    private final function getCp($user, $bean) {
+        return $this->cpBo->findById($user, $bean);
+    }
+
+    private final function getGiro($user, $bean) {
+        return $this->giroBo->findById($user, $bean);
     }
 
     //</editor-fold>

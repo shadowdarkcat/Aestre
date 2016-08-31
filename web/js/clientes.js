@@ -14,32 +14,38 @@ $(document).ready(function () {
         } else {
             table.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
+            showData();
         }
     });
     $(function () {
         $('#txtColonia').autocomplete({
             source: availableTags
             , select: function (event, data) {
-                $('#delegacionMunicipio').empty('');
+                $('#thTitleMuni').empty('');
+                $('#tdMuni').empty('');
                 var split = [];
                 var td;
                 if (data.item) {
                     split = data.item.value.split(',');
                 }
+                var th;
+                var td;
                 if (split[2] != '') {
-                    td = '<td class="dt-responsive form-control"><label class="text-muted"><span class="req">*</span>Delegaci&oacute;n:</span></td>'
-                            + '<td><input type="text" id="txtDelegacion" name="txtDelegacion" class="required form-control" value="'
+                    th = '<label class="font-size"><span class="req">*</span> Delegaci&oacute;n</label> ';
+                    td = '<td><input type="text" id="txtDelegacion" name="txtDelegacion" class="required form-control" value="'
                             + split[2] + '" readOnly="readOnly" /></td>';
                 } else if (split[3] != '') {
-                    td = '<td class="dt-responsive form-control"><label class="text-muted"><span class="req">*</span>Municipio:</span></td>'
-                            + '<td><input type="text" id="txtMunicipio" name="txtMunicipio" class="required form-control" value="'
+                    th = '<label class="font-size"><span class="req">*</span> Munic&iacute;pio</label> ';
+                    td = '<td><input type="text" id="txtMunicipio" name="txtMunicipio" class="required form-control" value="'
                             + split[3] + '" readOnly="readOnly" /></td>';
                 }
+                $('#thTitleMuni').append(th);
+                $('#tdMuni').append(td);
+                $('#txtCp').val(split[4]);
                 $('#txtCp').val(split[4]);
                 $('#txtEstado').val(split[5]);
                 $('#txtCiudad').val(split[6]);
-                $('#delegacionMunicipio').append(td);
-                $('#txtIdCp').val(split[0]);
+                $('#txtColonia').val(split[1]);
                 $(this).val(split[1]);
                 return false;
             }
@@ -50,26 +56,30 @@ $(document).ready(function () {
                 if (data.item) {
                     split = data.item.value.split(',');
                 }
+                var th;
+                var td;
                 if (split[2] != '') {
-                    td = '<td><span class="text-muted" >*Delegaci&oacute;n :</span></td>'
-                            + '<td><input type="text" id="txtDelegacion" name="txtDelegacion" class="required form-control" value="'
+                    th = '<label class="font-size"><span class="req">*</span> Delegaci&oacute;n</label> ';
+                    td = '<td><input type="text" id="txtDelegacion" name="txtDelegacion" class="required form-control" value="'
                             + split[2] + '" readOnly="readOnly" /></td>';
                 } else if (split[3] != '') {
-                    td = '<td><span class="text-muted" >*Municipio :</span></td>'
-                            + '<td><input type="text" id="txtMunicipio" name="txtMunicipio" class="required form-control" value="'
+                    th = '<label class="font-size"><span class="req">*</span> Munic&iacute;pio</label> ';
+                    td = '<td><input type="text" id="txtMunicipio" name="txtMunicipio" class="required form-control" value="'
                             + split[3] + '" readOnly="readOnly" /></td>';
                 }
+                $('#thTitleMuni').append(th);
+                $('#tdMuni').append(td);
+                $('#txtCp').val(split[4]);
                 $('#txtCp').val(split[4]);
                 $('#txtEstado').val(split[5]);
                 $('#txtCiudad').val(split[6]);
-                $('#delegacionMunicipio').append(td);
                 $('#txtIdCp').val(split[0]);
                 $(this).val(split[1]);
                 return false;
             }
         });
     });
-    
+
     $('#btnRegistrar').on('click', function () {
         $('#frmCliente').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/clienteController.php?&method=1');
         if ($('#frmCliente').validate().form()) {
@@ -77,4 +87,52 @@ $(document).ready(function () {
         }
     });
 });
-
+function showData() {
+    $('#txtIdCliente').val($('.selected').find('#lblId').text());
+    $('#txtNombre').val($('.selected').find('#lblNombre').text());
+    $('#txtPaterno').val($('.selected').find('#lblPaterno').text());
+    $('#txtMaterno').val($('.selected').find('#lblMaterno').text());
+    if ($('.selected').find('#lblActivo').text() == 'Sí') {
+        $('#chkActivo').prop('checked', true);
+    } else {
+        $('#chkActivo').prop('checked', false);
+    }
+    $('#txtCalle').val($('.selected').find('#lblCalle').text());
+    $('#txtNoExterior').val($('.selected').find('#lblNoExt').text());
+    $('#txtNoInterior').val(($('.selected').find('#lblNoInt').text() == 'NULL') ? 'S/N' : $('.selected').find('#lblNoInt').text());
+    for (var index = 0; index < availableTags.length; index++) {
+        var split = [];
+        split = availableTags[index].split(',');
+        if (split[0] == $('.selected').find('#lblIdCp').text()) {
+            $('#thTitleMuni').empty('');
+            $('#tdMuni').empty('');
+            var th;
+            var td;
+            if (split[2] != '') {
+                th = '<label class="font-size"><span class="req">*</span> Delegaci&oacute;n</label> ';
+                td = '<td><input type="text" id="txtDelegacion" name="txtDelegacion" class="required form-control" value="'
+                        + split[2] + '" readOnly="readOnly" /></td>';
+            } else if (split[3] != '') {
+                th = '<label class="font-size"><span class="req">*</span> Munic&iacute;pio</label> ';
+                td = '<td><input type="text" id="txtMunicipio" name="txtMunicipio" class="required form-control" value="'
+                        + split[3] + '" readOnly="readOnly" /></td>';
+            }
+            $('#thTitleMuni').append(th);
+            $('#tdMuni').append(td);
+            $('#txtCp').val(split[4]);
+            $('#txtCp').val(split[4]);
+            $('#txtEstado').val(split[5]);
+            $('#txtCiudad').val(split[6]);
+            $('#txtIdCp').val(split[0]);
+            $('#txtColonia').val(split[1]);
+            break;
+        }
+        $('#txtTelefono').val($('.selected').find('#lblTelefono').text());
+        $('#txtOtroTelefono').val(($('.selected').find('#lblOtroTelefono').text() == 'NULL') ? 'S/N' : $('.selected').find('#lblOtroTelefono').text());
+        $('#txtMail').val($('.selected').find('#lblMail').text());
+        $('#cboGiro').val($('.selected').find('#lblIdGiro').val());
+        $('#btnRegistrar').prop('disabled', true);
+        $('#btnActualizar').prop('disabled', false);
+        $('#btnEliminar').prop('disabled', false);
+    }
+}

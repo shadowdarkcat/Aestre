@@ -28,7 +28,7 @@ class ColoniaDaoImpl implements ColoniaDao {
     }
 
     public function findById($obj) {
-        $args = array($obj->getIdCliente());
+        $args = array($obj->getIdCp());
         return $this->getResultSet(Utils::replaceQuery(PropertyKey::$jdbc_view_cp_id, $args))[0];
     }
 
