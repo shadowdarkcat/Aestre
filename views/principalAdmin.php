@@ -88,18 +88,43 @@ if (!isset($login)) {
             </div>
         </div>
     </div>
-    <div id="divExiste" class="modal fade" role="dialog">
+    <div id="divActivar" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title alert-warning">Cliente Existente</h4>
+                    <h4 class="modal-title label-warning">Habilitar <label id="lblTittleActivar"></label></h4>
                 </div>
                 <div class="modal-body">
                     <table>
                         <tr>
                             <td class="dt-responsive form-control">
-                                <p><span class="text-muted text-info">El cliente ya existe</span></p>
+                                <p><label class="text-muted text-center text-info">¿ Desea habilitar el registro ?</label></p>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="modal-footer">
+                        <div class="modal-footer">
+                            <button type="button" class="btn  btn-primary " id="btnAceptarActivar" name="btnAceptarActivar">Aceptar</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCancelarActivar" name="btnCancelarActivar">Cancelar</button>                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="divExiste" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title label-warning"><label id="lblTittleExists"></label> Existente</h4>
+                </div>
+                <div class="modal-body">
+                    <table>
+                        <tr>
+                            <td class="dt-responsive form-control">
+                                <p><label class="text-muted text-center text-info">El registro ya existe</label></p>
                             </td>
                         </tr>
                     </table>

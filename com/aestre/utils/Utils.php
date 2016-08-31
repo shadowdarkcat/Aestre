@@ -44,7 +44,11 @@ class Utils {
      * @return Boolean
      */
     public static function isChecked($str) {
-        return settype($str, 'boolean');
+        if (self::isReallyEmptyOrNull($str)) {
+            return FALSE;
+        } else {
+            return settype($str, 'boolean');
+        }
     }
 
     /**
@@ -53,6 +57,26 @@ class Utils {
      * @param Array $obj
      * @return SqlSentence
      */
+    public static final function replaceQueryMenu($strQuery, $obj) {
+        //$indexObj = count($obj);
+        $indx = 0;
+        $query = '';
+        for ($index = 0; $index < strlen($strQuery); $index++) {
+            if (strcmp($strQuery{$index}, '?') == 0) {
+                $val = $obj[$indx];
+                if (empty($val) && $val != 0) {
+                    $query.='NULL';
+                } else {
+                    $query.=$val;
+                }
+                $indx++;
+            } else {
+                $query.=$strQuery{$index};
+            }
+        }
+        return $query;
+    }
+
     public static final function replaceQuery($strQuery, $obj) {
         //$indexObj = count($obj);
         $indx = 0;
@@ -60,7 +84,7 @@ class Utils {
         for ($index = 0; $index < strlen($strQuery); $index++) {
             if (strcmp($strQuery{$index}, '?') == 0) {
                 $val = $obj[$indx];
-                if (empty($val) && $val!=0) {
+                if (empty($val)) {
                     $query.='NULL';
                 } else {
                     $query.=$val;

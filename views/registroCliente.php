@@ -93,7 +93,7 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                                        onkeypress="mayuscula(this);" placeholder="Ingrese el n&uacute;mero tel&eacute;fono"/>
                                             </td>
                                             <td class="dt-responsive">
-                                                <input type="text" id="txtOtroTelefono" name="txtOtroTelefono" class="required form-control" 
+                                                <input type="text" id="txtOtroTelefono" name="txtOtroTelefono" class="form-control" 
                                                        onkeypress="minuscula(this);" placeholder="Ingrese el n&uacute;mero celular"/>
                                             </td>
                                             <td class="dt-responsive">
@@ -137,11 +137,11 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                             </td>
                                             <td class="dt-responsive">
                                                 <input type="text" id="txtNoExterior" name="txtNoExterior" class="required form-control" 
-                                                       onkeypress="minuscula(this);" placeholder="Ingrese el n&uacute;mero exterior"/>
+                                                       onkeypress="mayuscula(this);" placeholder="Ingrese el n&uacute;mero exterior"/>
                                             </td>
                                             <td class="dt-responsive">
                                                 <input type="text" id="txtNoInterior" name="txtNoInterior" class="form-control" 
-                                                       onkeypress="minuscula(this);" placeholder="Ingrese el n&uacute;mero interior"/>
+                                                       onkeypress="mayuscula(this);" placeholder="Ingrese el n&uacute;mero interior"/>
                                             </td>
                                             <td class="dt-responsive">
                                                 <input type="text" id="txtColonia" name="txtColonia" class="required form-control" 
@@ -243,8 +243,10 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                     <img src="../web/images/actualizar.png">Actualizar</button>
                             </td>
                             <td class="dt-responsive" style="text-align: center">
-                                <button type="button" class="btn" id="btnEliminar" name="btnEliminar">
-                                    <img src="../web/images/eliminar.png">Eliminar</button>
+                                <button type="button" class="btn" id="btnEliminar" name="btnEliminar" style="display: display;">
+                                    <img src="../web/images/eliminar.png">Inhabilitar</button>
+                                <button type="button" class="btn" id="btnActivate" name="btnActivate" style="display: none;">
+                                    <img src="../web/images/habilitar.png">Habilitar</button>
                             </td>                                
                         </tr>
                     </tbody>                    

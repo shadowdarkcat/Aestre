@@ -39,22 +39,23 @@ class clienteController {
                 $this->insert($dto, $colonia);
                 break;
             case 2:
-                // $this->update($cliente, $colonia);
+                $this->update($dto, $colonia);
                 break;
             case 3:
-                //$this->delete($cliente, $colonia);
+                $this->delete($dto, $colonia);
                 break;
             case 4:
-                // $this->activate($cliente, $colonia);
-                break;
-            case 5:
-                // echo (json_encode($this->findById($cliente, $colonia)));
+                echo (json_encode($this->findById($dto, $colonia)));
                 break;
         }
     }
 
     public function findAll($exist) {
         $this->redirect($this->clienteBo->findAll($this->session), $exist);
+    }
+
+    private function findById(DtoCliente $cliente, BeanCp $colonia) {
+        return $this->clienteBo->findById($this->session, $this->getParametersFromRequest($cliente, $colonia));
     }
 
     private function redirect($clientes, $exist) {
@@ -74,6 +75,16 @@ class clienteController {
         } else {
             $this->findAll(TRUE);
         }
+    }
+
+    private function update(DtoCliente $cliente, BeanCp $colonia) {
+        $this->clienteBo->update($this->session, $this->getParametersFromRequest($cliente, $colonia));
+        $this->findAll(FALSE);
+    }
+
+    private function delete(DtoCliente $cliente, BeanCp $colonia) {
+        $this->clienteBo->delete($this->session, $this->getParametersFromRequest($cliente, $colonia));
+        $this->findAll(FALSE);
     }
 
     private function getParametersFromRequest(DtoCliente $cliente, BeanCp $colonia) {

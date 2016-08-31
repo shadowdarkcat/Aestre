@@ -40,32 +40,15 @@ class ClienteDaoImpl implements ClienteDao {
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Metodos P&uacute;blicos">
     public function insert($obj) {
-        $args = array(1, $obj->getIdCliente()
-            , $obj->getNombre()
-            , $obj->getPaterno()
-            , $obj->getMaterno()
-            , $obj->getCalle()
-            , $obj->getNoExterior()
-            , $obj->getNoInterior()
-            , $obj->getBeanCp()->getIdCp()
-            , $obj->getTelefono()
-            , $obj->getOtroTelefono()
-            , $obj->getMail()
-            , $obj->getBeanGiro()->getIdGiro()
-            , $obj->getActivo()
-            , $obj->getRefresh()
-        );
-        SqlUtils::execute($this->jdbc, Utils::replaceQuery(PropertyKey::$jdbc_procedure_cliente, $args));
+        SqlUtils::execute($this->jdbc, Utils::replaceQuery(PropertyKey::$jdbc_procedure_cliente, $this->getParameters(1, $obj)));
     }
 
     public function update($obj) {
-        $args = array(2, $obj->getIdCliente());
-        SqlUtils::execute($this->jdbc, Utils::replaceQuery(PropertyKey::$jdbc_procedure_cliente, $args));
+        SqlUtils::execute($this->jdbc, Utils::replaceQuery(PropertyKey::$jdbc_procedure_cliente, $this->getParameters(2, $obj)));
     }
 
     public function delete($obj) {
-        $args = array(3, $obj->getIdCliente());
-        SqlUtils::execute($this->jdbc, Utils::replaceQuery(PropertyKey::$jdbc_procedure_cliente, $args));
+        SqlUtils::execute($this->jdbc, Utils::replaceQuery(PropertyKey::$jdbc_procedure_cliente, $this->getParameters(3, $obj)));
     }
 
     //</editor-fold>
@@ -90,6 +73,24 @@ class ClienteDaoImpl implements ClienteDao {
         }
         SqlUtils::close($this->jdbc, $rs);
         return $object;
+    }
+
+    private function getParameters($opcion, $obj) {
+        return array($opcion, $obj->getIdCliente()
+            , $obj->getNombre()
+            , $obj->getPaterno()
+            , $obj->getMaterno()
+            , $obj->getCalle()
+            , $obj->getBeanCp()->getIdCp()
+            , $obj->getNoExterior()
+            , $obj->getNoInterior()
+            , $obj->getTelefono()
+            , $obj->getOtroTelefono()
+            , $obj->getMail()
+            , $obj->getBeanGiro()->getIdGiro()
+            , $obj->getActivo()
+            , $obj->getRefresh()
+        );
     }
 
     //</editor-fold>

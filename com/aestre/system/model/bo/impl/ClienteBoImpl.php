@@ -38,7 +38,12 @@ class ClienteBoImpl implements ClienteBo {
 
     public function findById($user, $obj) {
         if (Utils::isSessionValid($user)) {
-            return $this->dao->findById($obj);
+            $object = $this->clienteDao->findById($object);
+            foreach ($object as $item) {
+                $item->setBeanCp($this->getCp($user, $item->getBeanCp()));
+                $item->setBeanGiro($this->getGiro($user, $item->getBeanGiro()));
+            }
+            return $this->createJson($object);
         }
     }
 
@@ -66,6 +71,30 @@ class ClienteBoImpl implements ClienteBo {
         if (Utils::isSessionValid($user)) {
             $this->dao->delete($obj);
         }
+    }
+
+    //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="Funciones Privadas">
+    private function createJson($object) {
+        $json = array();
+        foreach ($object as $val) {
+            $json[] = array(
+                'id' => $val->getIdCliente(), 'nombre' => $val->getNombre()
+                , 'paterno' => $val->getPaterno(), 'materno' => $val->getMaterno()
+                , 'calle' => $val->getCalle(), 'exterior' => $val->getNoExterior()
+                , 'interior' => ($val->getNoInterior() == 'NULL' ? 'S/N' : $val->getNoInterior())
+                , 'idCp' => $val->getBeanCp()->getIdCp(), 'cp' => $val->getBeanCp()->getCp()
+                , 'col' => $val->getBeanCp()->getCol()
+                , 'dele' => (empty($val->getBeanCp()->getDelegacion()) ? 'NULL' : $val->getBeanCp()->getDelegacion())
+                , 'muni' => (empty($val->getBeanCp()->getMunicipio()) ? 'NULL' : $val->getBeanCp()->getMunicipio())
+                , 'estado' => $val->getBeanCp()->getEstado()
+                , 'ciudad' => (empty($val->getBeanCp()->getCiudad()) ? 'NA' : $val->getBeanCp()->getCiudad())
+                , 'casa' => $val->getTelefono()
+                , 'otro' => (empty($val->getOtroTelefono()) ? 'NA' : $val->getOtroTelefono())
+                , 'mail' => $val->getMail(), 'giro' => (empty($val->getBeanGiro()->getGiro()) ? 'NA' : $val->getBeanGiro()->getGiro())
+            );
+        }
+        return $json;
     }
 
     //</editor-fold>

@@ -1,5 +1,14 @@
 $(document).ready(function () {
     changeErrorMessage('frmCliente');
+    $('#divMessageUpdate').find('#lblTittleUpdate').empty();
+    $('#divMessageDelete').find('#lblTittleDelete').empty();
+    $('#divActivar').find('#lblTittleActivar').empty();
+    $('#divExiste').find('#lblTittleExists').empty();
+    $('#divMessageUpdate').find('#lblTittleUpdate').text('Cliente');
+    $('#divMessageDelete').find('#lblTittleDelete').text('Cliente');
+    $('#divActivar').find('#lblTittleActivar').text('Cliente');
+    $('#divExiste').find('#lblTittleExists').text('Cliente');
+
     $('#btnActualizar').prop('disabled', true);
     $('#btnEliminar').prop('disabled', true);
     var table = $('#tblClientes').DataTable({
@@ -42,10 +51,10 @@ $(document).ready(function () {
                 $('#thTitleMuni').append(th);
                 $('#tdMuni').append(td);
                 $('#txtCp').val(split[4]);
-                $('#txtCp').val(split[4]);
                 $('#txtEstado').val(split[5]);
                 $('#txtCiudad').val(split[6]);
                 $('#txtColonia').val(split[1]);
+                $('#txtIdCp').val(split[0]);
                 $(this).val(split[1]);
                 return false;
             }
@@ -86,6 +95,41 @@ $(document).ready(function () {
             $('#frmCliente').submit();
         }
     });
+
+    $('#btnActualizar').on('click', function () {
+        if ($('#frmCliente').validate().form()) {
+            $('#frmCliente').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/clienteController.php?method=2');
+            $('#divMessageUpdate').modal('show');
+        }
+    });
+
+    $('#btnUpdate').on('click', function () {
+        $('#frmCliente').submit();
+    });
+
+    $('#btnEliminar').on('click', function () {
+        $('#chkActivo').prop('checked', false);
+        if ($('#frmCliente').validate().form()) {            
+            $('#frmCliente').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/clienteController.php?method=3');
+            $('#divMessageDelete').modal('show');
+        }
+    });
+    $('#btnDelete').on('click', function () {
+        $('#frmCliente').submit();
+    });
+
+    $('#btnActivate').on('click', function () {
+        $('#chkActivo').prop('checked', true);
+        if ($('#frmCliente').validate().form()) {
+            $('#frmCliente').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/clienteController.php?method=3');
+            $('#divActivar').modal('show');
+        }
+    });
+    $('#btnAceptarActivar').on('click', function () {
+        $('#frmCliente').submit();
+    });
+
+
 });
 function showData() {
     $('#txtIdCliente').val($('.selected').find('#lblId').text());
@@ -94,8 +138,12 @@ function showData() {
     $('#txtMaterno').val($('.selected').find('#lblMaterno').text());
     if ($('.selected').find('#lblActivo').text() == 'Sí') {
         $('#chkActivo').prop('checked', true);
+        $('#btnActivate').hide();
+        $('#btnEliminar').show();        
     } else {
         $('#chkActivo').prop('checked', false);
+        $('#btnActivate').show();
+        $('#btnEliminar').hide();
     }
     $('#txtCalle').val($('.selected').find('#lblCalle').text());
     $('#txtNoExterior').val($('.selected').find('#lblNoExt').text());
@@ -130,7 +178,7 @@ function showData() {
         $('#txtTelefono').val($('.selected').find('#lblTelefono').text());
         $('#txtOtroTelefono').val(($('.selected').find('#lblOtroTelefono').text() == 'NULL') ? 'S/N' : $('.selected').find('#lblOtroTelefono').text());
         $('#txtMail').val($('.selected').find('#lblMail').text());
-        $('#cboGiro').val($('.selected').find('#lblIdGiro').val());
+        $('#cboGiro').val($('.selected').find('#lblIdGiro').text());
         $('#btnRegistrar').prop('disabled', true);
         $('#btnActualizar').prop('disabled', false);
         $('#btnEliminar').prop('disabled', false);

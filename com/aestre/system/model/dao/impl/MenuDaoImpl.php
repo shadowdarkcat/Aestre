@@ -24,7 +24,7 @@ class MenuDaoImpl implements MenuDao {
     //<editor-fold defaultstate="collapsed" desc="Funciones P&uacute;blicas">
     public function getMenu() {
         $menu = array();
-        $query = Utils::replaceQuery(PropertyKey::$jdbc_view_menu, array(0));
+        $query = Utils::replaceQueryMenu(PropertyKey::$jdbc_view_menu, array(0));
         $rs = $this->jdbc->query($query);
         while ($row = mysqli_fetch_array($rs)) {
             $menu[] = SqlUtils::getFields(FactoryMenu::newInstance(NULL), $row);
@@ -79,7 +79,7 @@ class MenuDaoImpl implements MenuDao {
     private final function getChildItems($item) {
         if ($item->getId() !== NULL) {
             $menu = array();
-            $rs = $this->jdbc->query(Utils::replaceQuery(PropertyKey::$jdbc_view_menu, array($item->getId())));
+            $rs = $this->jdbc->query(Utils::replaceQueryMenu(PropertyKey::$jdbc_view_menu, array($item->getId())));
             while ($row = mysqli_fetch_array($rs)) {
                 $menu[] = SqlUtils::getFields(FactoryMenu::newInstance(NULL), $row);
             }
