@@ -33,7 +33,7 @@ class clienteController {
         $colonia = new BeanCp();
         switch ($this->method) {
             case 0:
-                $this->findAll(0);
+                $this->findAll(FALSE);
                 break;
             case 1:
                 $this->insert($dto, $colonia);
@@ -61,7 +61,7 @@ class clienteController {
         if (!empty($clientes)) {
             $_SESSION[PropertyKey::$session_clientes] = serialize($clientes);
         }
-        $_SESSION[PropertyKey::$session_exists] = $exist;
+        $_SESSION[PropertyKey::$session_exists] = serialize($exist);
         echo(PropertyKey::$php_main_cliente);
     }
 
@@ -70,8 +70,10 @@ class clienteController {
         $exist = $this->clienteBo->exist($this->session, $dto);
         if (!$exist) {
             $this->clienteBo->insert($this->session, $dto);
+            $this->findAll(FALSE);
+        } else {
+            $this->findAll(TRUE);
         }
-        $this->findAll($exist);
     }
 
     private function getParametersFromRequest(DtoCliente $cliente, BeanCp $colonia) {

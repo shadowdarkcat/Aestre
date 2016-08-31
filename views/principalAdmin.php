@@ -42,4 +42,73 @@ if (!isset($login)) {
         <div class="container">
         </div> 
     </body>
+    <div id="divMessageUpdate" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title label-warning"><label id="lblTittleUpdate"></label></h4>
+                </div>
+                <div class="modal-body">
+                    <table>
+                        <tr>
+                            <td style="text-align: center;">
+                                <p><label class="text-muted text-center text-info">El registro ser&aacute; actualizado, ¿Desea Continuar?</label></p>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnUpdate" name="btnUpdate">Aceptar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCancelarUpdate" name="btnCancelarUpdate">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="divMessageDelete" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title label-danger"><label id="lblTittleDelete"></label></h4>
+                </div>
+                <div class="modal-body">
+                    <table>
+                        <tr>
+                            <td style="text-align: center;">
+                                <p><label class="text-muted text-center text-info">El registro ser&aacute; eliminado, ¿Desea Continuar?</label></p>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnDelete" name="btnDelete">Aceptar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCancelarDelete" name="btnCancelarDelete">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="divExiste" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title alert-warning">Cliente Existente</h4>
+                </div>
+                <div class="modal-body">
+                    <table>
+                        <tr>
+                            <td class="dt-responsive form-control">
+                                <p><span class="text-muted text-info">El cliente ya existe</span></p>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnAceptar" name="btnAceptar">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </html>

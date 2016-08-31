@@ -5,13 +5,12 @@ spl_autoload_register('aestre_autoload', FALSE);
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
+$exist='';
 $controller = new giroController();
 $controller->giros();
 
 if (isset($_SESSION[PropertyKey::$session_clientes])) {
     $clientes = unserialize($_SESSION[PropertyKey::$session_clientes]);
-    unset($_SESSION[PropertyKey::$session_clientes]);   
 }
 if (isset($_SESSION[PropertyKey::$session_giro])) {
     $giro = unserialize($_SESSION[PropertyKey::$session_giro]);
@@ -38,14 +37,12 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                 <input type="hidden" id="txtIdCliente" name="txtIdCliente" />
                 <table id="tblRegistroCliente" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="200%">
                     <tr>
-                        <td>
-                            <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                                <fieldset>
-                                    <legend class="text-muted alert-info">
-                                        <img src="../web/images/nuevoRegistro.png">
-                                        <label class="font-size">Datos Cliente / Forma Contacto</label>
-                                    </legend>
-
+                        <td><fieldset>
+                                <legend class="text-muted alert-info">
+                                    <img src="../web/images/nuevoRegistro.png">
+                                    <label class="font-size">Datos Cliente / Forma Contacto</label>
+                                </legend>
+                                <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                     <thead>
                                         <tr>
                                             <th class="dt-responsive alert-info" style="text-align: center">                                                
@@ -105,15 +102,17 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                             </td>
                                         </tr>
                                     </tbody>  
-                            </table>
+                                </table>
+                            </fieldset>
                         </td>
                         <td>
-                            <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                                <fieldset>
-                                    <legend class="text-muted alert-info">
-                                        <img src="../web/images/nuevaAgenda.png"> 
-                                        <label class="font-size">Direcci&oacute;n</label>
-                                    </legend>
+                            <fieldset>
+                                <legend class="text-muted alert-info">
+                                    <img src="../web/images/nuevaAgenda.png"> 
+                                    <label class="font-size">Direcci&oacute;n</label>
+                                </legend>
+                                <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+
                                     <thead>
                                         <tr>
                                             <th class="dt-responsive alert-info" style="text-align: center">
@@ -180,19 +179,19 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                                        onkeypress="minuscula(this);" placeholder="Ciudad" disabled="disabled"/>
                                             </td>
                                         </tr>
-                                    </tbody>
-                                </fieldset>
-                            </table>
+                                    </tbody>                                
+                                </table>
+                            </fieldset>
                         </td>
                     </tr>
                     <tr>                        
-                        <td>
-                            <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                                <fieldset>
-                                    <legend class="text-muted alert-info">
-                                        <img src="../web/images/giro.png">
-                                        <label class="font-size">Giro</label>
-                                    </legend>
+                        <td>  
+                            <fieldset>
+                                <legend class="text-muted alert-info">
+                                    <img src="../web/images/giro.png">
+                                    <label class="font-size">Giro</label>
+                                </legend>
+                                <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                     <tbody>
                                         <tr>
                                             <td class="dt-responsive">
@@ -208,17 +207,18 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                                 </div>
                                             </td>
                                         </tr>
-                                    </tbody>                    
-                                </fieldset>
-                            </table>
+                                    </tbody> 
+                                </table>
+                            </fieldset>
                         </td>
                         <td>
-                            <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                                <fieldset>
-                                    <legend class="text-muted alert-info">
-                                        <img src="../web/images/activoInactivo.png">
-                                        <label class="font-size">Registro Activo / Inactivo</label>
-                                    </legend>                                    
+                            <fieldset>
+                                <legend class="text-muted alert-info">
+                                    <img src="../web/images/activoInactivo.png">
+                                    <label class="font-size">Registro Activo / Inactivo</label>
+                                </legend>   
+                                <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+
                                     <tbody>
                                         <tr>
                                             <td class="dt-responsive">
@@ -226,9 +226,9 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                                        class="checkbox-inline text-muted" checked="checked" onclick="return false">S&iacute;
                                             </td>
                                         </tr>
-                                    </tbody>                    
-                                </fieldset>
-                            </table>
+                                    </tbody>                                                    
+                                </table>
+                            </fieldset>
                         </td>
                     </tr>
                     <tbody>
@@ -246,7 +246,7 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                     <img src="../web/images/eliminar.png">Eliminar</button>
                             </td>                                
                         </tr>
-                    </tbody>
+                    </tbody>                    
                 </table>
             </form>
             <div style="background: white;">
@@ -259,22 +259,29 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                         </tr>
                     </thead>
                     <tbody>
-                       <!-- <tr>
-                            <td class="dt-responsive" style="text-align: center">
-                                <label class="font-size" id="lblId">1</label>
-                            </td>
-                            <td class="dt-responsive" style="text-align: center"><label id="lblMail" class="font-size">gtrxrver2007@gmail.com</label></td>
-                            <td class="dt-responsive" style="text-align: center"><label id="lblNom1" class="font-size">gabriel</label>
-                                <input type="hidden" id="idColeg" name="idColeg" value="1"/>
-                            </td>
-                        </tr>!-->
+                        <?php
+                             foreach ($clientes as $item) {
+                                echo ('<tr>'
+                                . '<td class="dt-responsive" style="text-align: center">'
+                                . '<label class="font-size" id="lblId">' . $item->getIdCliente()
+                                . '</label></td>'
+                                . '<td class="dt-responsive" style="text-align: center">'
+                                . '<label id="lblNombre" class="font-size">'
+                                . $item->getNombre() . ' ' . $item->getPaterno() . ' ' . $item->getMaterno()
+                                . '</label></td>'
+                                . '<td class="dt-responsive" style="text-align: center">'
+                                . '<label id="lblActivo" class="font-size">'
+                                . (($item->getActivo() == TRUE) ? 'Sí' : 'NO')
+                                . '</label></td></tr>');
+                            }
+                        ?>
                     </tbody>                    
                 </table>
             </div>
         </div>
         <?php
         if ($exist) {
-            echo('<script>$("#divExisteCliente").modal("show");</script>');
+            echo('<script>$("#divExiste").modal("show");</script>');
         }
         ?>
     </body>
