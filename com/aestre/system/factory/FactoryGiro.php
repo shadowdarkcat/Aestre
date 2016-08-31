@@ -11,7 +11,7 @@ class FactoryGiro {
             return new BeanGiro();
         } else {
             $dto = new BeanGiro();
-            $dto->setId($id);
+            $dto->setIdGiro($id);
             return $dto;
         }
     }

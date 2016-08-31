@@ -32,10 +32,29 @@ class ClienteDaoImpl implements ClienteDao {
         return $this->getResultSet(Utils::replaceQuery(PropertyKey::$jdbc_view_cliente_id, $args))[0];
     }
 
+    public function exist($obj) {
+        $args = array($obj->getNombre(), $obj->getPaterno(), $obj->getMaterno());
+        return $this->getResultSetFunction(Utils::replaceQuery(PropertyKey::$jdbc_function_exist_cliente, $args)) != 0;
+    }
+
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Metodos P&uacute;blicos">
     public function insert($obj) {
-        $args = array(1, $obj->getIdCliente());
+        $args = array(1, $obj->getIdCliente()
+            , $obj->getNombre()
+            , $obj->getPaterno()
+            , $obj->getMaterno()
+            , $obj->getCalle()
+            , $obj->getNoExterior()
+            , $obj->getNoInterior()
+            , $obj->getBeanCp()->getIdCp()
+            , $obj->getTelefono()
+            , $obj->getOtroTelefono()
+            , $obj->getMail()
+            , $obj->getBeanGiro()->getIdGiro()
+            , $obj->getActivo()
+            , $obj->getRefresh()
+        );
         SqlUtils::execute($this->jdbc, Utils::replaceQuery(PropertyKey::$jdbc_procedure_cliente, $args));
     }
 
@@ -48,6 +67,7 @@ class ClienteDaoImpl implements ClienteDao {
         $args = array(3, $obj->getIdCliente());
         SqlUtils::execute($this->jdbc, Utils::replaceQuery(PropertyKey::$jdbc_procedure_cliente, $args));
     }
+
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Funciones Privadas">
     private function getResultSet($query) {
@@ -57,6 +77,16 @@ class ClienteDaoImpl implements ClienteDao {
         while (@$row = mysqli_fetch_array($rs)) {
             $object[$index] = SqlUtils::getFields(FactoryCliente::newInstance(NULL), $row);
             $index++;
+        }
+        SqlUtils::close($this->jdbc, $rs);
+        return $object;
+    }
+
+    private function getResultSetFunction($query) {
+        $object = NULL;
+        $rs = $this->jdbc->query($query);
+        while ($row = @mysqli_fetch_array($rs)) {
+            $object = $row[0];
         }
         SqlUtils::close($this->jdbc, $rs);
         return $object;

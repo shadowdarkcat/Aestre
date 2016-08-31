@@ -16,9 +16,9 @@ class SqlUtils {
             return self::getLogin($obj, $row);
         } else if ($obj instanceof BeanMenu) {
             return self::getMenu($obj, $row);
-            /* } else if ($obj instanceof BeanColonia) {
+            } else if ($obj instanceof BeanCp) {
               return self::getColonia($obj, $row);
-              } else if ($obj instanceof BeanDispositivo) {
+            /*  } else if ($obj instanceof BeanDispositivo) {
               return self::getDispositivo($obj, $row);
               }else if($obj instanceof BeanZona){
               return self::getZona($obj, $row); */
@@ -54,18 +54,18 @@ class SqlUtils {
         return $bean;
     }
 
-    /* private static final function getColonia(BeanColonia $bean, $row) {
+     private static final function getColonia(BeanCp $bean, $row) {
       $bean->setIdCp($row[0]);
       $bean->setCp($row[1]);
       $bean->setCol(utf8_encode($row[2]));
-      $bean->setDelegacion(utf8_encode($row[3]));
-      $bean->setMunicipio(utf8_encode($row[4]));
-      $bean->setEstado(utf8_encode($row[5]));
-      $bean->setCiudad(utf8_encode($row[6]));
+      $bean->setDelegacion($row[3]);
+      $bean->setMunicipio($row[4]);
+      $bean->setEstado($row[5]);
+      $bean->setCiudad($row[6]);
       return $bean;
       }
 
-      private static final function getDispositivo(BeanDispositivo $bean, $row) {
+     /* private static final function getDispositivo(BeanDispositivo $bean, $row) {
       $bean->setId($row[0]);
       $bean->setDispositivo($row[1]);
       return $bean;

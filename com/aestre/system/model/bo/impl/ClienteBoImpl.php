@@ -33,6 +33,11 @@ class ClienteBoImpl implements ClienteBo {
         }
     }
 
+    public function exist($user, $obj) {
+        if (Utils::isSessionValid($user)) {
+            return $this->dao->exist($obj);
+        }
+    }
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Metodos P&uacute;blicos">
     public function insert($user, $obj) {

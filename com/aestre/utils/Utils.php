@@ -17,7 +17,7 @@ class Utils {
      * @return Boolean
      */
     public static final function isReallyEmptyOrNull($str) {
-        return isset($str) || empty($str) || is_null($str);
+        return empty($str) || is_null($str);
     }
 
     public static final function isIsset($obj) {
@@ -37,24 +37,35 @@ class Utils {
     }
 
     /**
+     * Funci&oacute;n para verificar si se encuentra activo o inactivo un
+     * registro
+     *
+     * @param $str Text
+     * @return Boolean
+     */
+    public static function isChecked($str) {
+        return settype($str, 'boolean');
+    }
+
+    /**
      * Funci&oacute;n que crea el query acorde a los parametros indicados en el array
      * @param String $strQuery
      * @param Array $obj
      * @return SqlSentence
      */
     public static final function replaceQuery($strQuery, $obj) {
-        $indexObj = count($obj);
-        $lastIndex = -1;
+        //$indexObj = count($obj);
+        $indx = 0;
         $query = '';
         for ($index = 0; $index < strlen($strQuery); $index++) {
             if (strcmp($strQuery{$index}, '?') == 0) {
-                for ($indx = 0; $indx < $indexObj; $indx++) {
-                    if ($lastIndex != $indx) {
-                        $query.=$obj[$indx];
-                        $lastIndex = $indx;
-                        break;
-                    }
+                $val = $obj[$indx];
+                if (empty($val) && $val!=0) {
+                    $query.='NULL';
+                } else {
+                    $query.=$val;
                 }
+                $indx++;
             } else {
                 $query.=$strQuery{$index};
             }

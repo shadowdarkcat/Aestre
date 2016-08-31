@@ -30,13 +30,13 @@ class clienteController {
 
     public function clientes() {
         $dto = new DtoCliente();
-        //$colonia = new BeanColonia();
+        $colonia = new BeanCp();
         switch ($this->method) {
             case 0:
                 $this->findAll(0);
                 break;
             case 1:
-                //$this->insert($cliente, $colonia);
+                $this->insert($dto, $colonia);
                 break;
             case 2:
                 // $this->update($cliente, $colonia);
@@ -50,10 +50,10 @@ class clienteController {
             case 5:
                 // echo (json_encode($this->findById($cliente, $colonia)));
                 break;
-        }        
+        }
     }
 
-    private function findAll($exist) {
+    public function findAll($exist) {
         $this->redirect($this->clienteBo->findAll($this->session), $exist);
     }
 
@@ -62,8 +62,34 @@ class clienteController {
             $_SESSION[PropertyKey::$session_clientes] = serialize($clientes);
         }
         $_SESSION[PropertyKey::$session_exists] = $exist;
-        header(PropertyKey::$php_main_cliente);
-        die();
+        echo(PropertyKey::$php_main_cliente);
+    }
+
+    private function insert(DtoCliente $cliente, BeanCp $colonia) {
+        $dto = $this->getParametersFromRequest($cliente, $colonia);
+        $exist = $this->clienteBo->exist($this->session, $dto);
+        if (!$exist) {
+            $this->clienteBo->insert($this->session, $dto);
+        }
+        $this->findAll($exist);
+    }
+
+    private function getParametersFromRequest(DtoCliente $cliente, BeanCp $colonia) {
+        $cliente->setIdCliente(isset($_REQUEST[PropertyKey::$view_cliente_id]) ? strtoupper($_REQUEST[PropertyKey::$view_cliente_id]) : NULL );
+        $cliente->setNombre(strtoupper($_REQUEST[PropertyKey::$view_nombre]));
+        $cliente->setPaterno(strtoupper($_REQUEST[PropertyKey::$view_paterno]));
+        $cliente->setMaterno(strtoupper($_REQUEST[PropertyKey::$view_materno]));
+        $cliente->setCalle(strtoupper($_REQUEST[PropertyKey::$view_calle]));
+        $cliente->setNoExterior(strtoupper($_REQUEST[PropertyKey::$view_noExt]));
+        $cliente->setNoInterior(isset($_REQUEST[PropertyKey::$view_noInt]) ? strtoupper($_REQUEST[PropertyKey::$view_noInt]) : NULL);
+        $cliente->setBeanCp(FactoryCp::newInstance($_REQUEST[PropertyKey::$view_idCp]));
+        $cliente->setTelefono($_REQUEST[PropertyKey::$view_telefono]);
+        $cliente->setOtroTelefono(isset($_REQUEST[PropertyKey::$view_otro_telefono]) ? $_REQUEST[PropertyKey::$view_otro_telefono] : NULL);
+        $cliente->setMail(strtolower($_REQUEST[PropertyKey::$view_mail]));
+        $cliente->setBeanGiro(FactoryGiro::newInstance($_REQUEST[PropertyKey::$view_cboGiro]));
+        $cliente->setActivo(Utils::isChecked($_REQUEST[PropertyKey::$view_chkActivo]));
+        $cliente->setRefresh(NULL);
+        return $cliente;
     }
 
 }

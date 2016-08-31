@@ -7,6 +7,5 @@ spl_autoload_register('aestre_autoload', FALSE);
  *
  * @author ShadowDarkCat
  */
-interface ClienteDao extends GenericDao{
-    function exist($obj);
+interface ColoniaDao extends GenericDao{
 }

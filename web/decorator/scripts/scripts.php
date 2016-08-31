@@ -1,3 +1,16 @@
+<?php
+require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/com/aestre/AutoLoad.php');
+spl_autoload_register('aestre_autoload', FALSE);
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$controller = new coloniaController();
+$controller->colonias();
+if (isset($_SESSION[PropertyKey::$session_colonias])) {
+    $colonias = json_decode($_SESSION[PropertyKey::$session_colonias]);
+    unset($_SESSION[PropertyKey::$session_colonias]);
+}
+?>
 <!DOCTYPE html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Pragma" content="no-cache">
@@ -57,6 +70,17 @@
 
 <script>
     var contextoGlobal = '/Aestre';
+    var availableTags = [];
+<?php foreach ($colonias as $item) { ?>
+        availableTags.push(
+    <?php
+    echo('\'' . $item->idCp . ',' . strtoupper($item->col) . ',' . strtoupper($item->dele)
+    . ',' . strtoupper($item->muni) . ',' . $item->cp . ',' . strtoupper($item->estado)
+    . ',' . strtoupper($item->ciudad) . '\'');
+    ?>);
+    <?php
+}
+?>
 </script>
 
 <div id="divMessageUpdate" class="modal fade" role="dialog">
@@ -100,6 +124,28 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="btnDelete" name="btnDelete">Aceptar</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCancelarDelete" name="btnCancelarDelete">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divExisteCliente" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title alert-warning">Cliente Existente</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr>
+                        <td class="dt-responsive form-control">
+                            <p><span class="text-muted text-info">El cliente ya existe</span></p>
+                        </td>
+                    </tr>
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnAceptar" name="btnAceptar">Aceptar</button>
                 </div>
             </div>
         </div>

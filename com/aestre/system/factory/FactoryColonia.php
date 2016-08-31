@@ -12,9 +12,9 @@ class FactoryColonia {
     //<editor-fold defaultstate="collapsed" desc="Funciones P&uacute;blicas">
     public static final function newInstance($id) {
         if (Utils::isReallyEmptyOrNull($id)) {
-            return new BeanColonia();
+            return new BeanCp();
         } else {
-            $bean = new BeanColonia();
+            $bean = new BeanCp();
             $bean->setId($id);
             return $bean;
         }

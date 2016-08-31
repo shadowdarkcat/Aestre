@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/com/aestre/AutoLoad.php');
 require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/views/principalAdmin.php');
 spl_autoload_register('aestre_autoload', FALSE);
@@ -8,9 +8,18 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $controller = new giroController();
 $controller->giros();
+
+if (isset($_SESSION[PropertyKey::$session_clientes])) {
+    $clientes = unserialize($_SESSION[PropertyKey::$session_clientes]);
+    unset($_SESSION[PropertyKey::$session_clientes]);   
+}
 if (isset($_SESSION[PropertyKey::$session_giro])) {
     $giro = unserialize($_SESSION[PropertyKey::$session_giro]);
     unset($_SESSION[PropertyKey::$session_giro]);
+}
+if (isset($_SESSION[PropertyKey::$session_exists])) {
+    $exist = unserialize($_SESSION[PropertyKey::$session_exists]);
+    unset($_SESSION[PropertyKey::$session_exists]);
 }
 ?>
 <!DOCTYPE html>
@@ -25,9 +34,9 @@ if (isset($_SESSION[PropertyKey::$session_giro])) {
     <body>
         <br/><br/><br/><br/>
         <div class="container">
-            <form id="frmCliente" name="frmCliente" 
-                  method="post" action="/Aestre/com/aestre/system/controller//clienteController.php?id=0&method=1">
-                <table id="tblRegistroCliente" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+            <form id="frmCliente" name="frmCliente" method="post">
+                <input type="hidden" id="txtIdCliente" name="txtIdCliente" />
+                <table id="tblRegistroCliente" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="200%">
                     <tr>
                         <td>
                             <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
@@ -58,7 +67,7 @@ if (isset($_SESSION[PropertyKey::$session_giro])) {
                                             </td>
                                             <td class="dt-responsive">
                                                 <input type="text" id="txtPaterno" name="txtPaterno" class="required form-control" 
-                                                       onkeypress="minuscula(this);" placeholder="Ingrese el apellido paterno"/>
+                                                       onkeypress="mayuscula(this);" placeholder="Ingrese el apellido paterno"/>
                                             </td>
                                             <td class="dt-responsive">
                                                 <input type="text" id="txtMaterno" name="txtMaterno" class="required form-control" 
@@ -92,7 +101,7 @@ if (isset($_SESSION[PropertyKey::$session_giro])) {
                                             </td>
                                             <td class="dt-responsive">
                                                 <input type="text" id="txtMail" name="txtMail" class="required form-control" 
-                                                       onkeypress="mayuscula(this);" placeholder="Ingrese el correo electr&oacute;nico"/>
+                                                       onkeypress="minuscula()(this);" placeholder="Ingrese el correo electr&oacute;nico"/>
                                             </td>
                                         </tr>
                                     </tbody>  
@@ -132,12 +141,13 @@ if (isset($_SESSION[PropertyKey::$session_giro])) {
                                                        onkeypress="minuscula(this);" placeholder="Ingrese el n&uacute;mero exterior"/>
                                             </td>
                                             <td class="dt-responsive">
-                                                <input type="text" id="txtNoInterior" name="txtNoInterior" class="required form-control" 
+                                                <input type="text" id="txtNoInterior" name="txtNoInterior" class="form-control" 
                                                        onkeypress="minuscula(this);" placeholder="Ingrese el n&uacute;mero interior"/>
                                             </td>
                                             <td class="dt-responsive">
                                                 <input type="text" id="txtColonia" name="txtColonia" class="required form-control" 
                                                        onkeypress="mayuscula(this);" placeholder="Ingrese la colonia"/>
+                                                <input type="hidden" id="txtIdCp" name="txtIdCp" class="digits required form-control" />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -187,11 +197,11 @@ if (isset($_SESSION[PropertyKey::$session_giro])) {
                                         <tr>
                                             <td class="dt-responsive">
                                                 <div class="form-group">
-                                                    <select id="cboGiro" name="cboGiro" class="form-control required">
-                                                        <option value=" "></option>
+                                                    <select id="cboGiro" name="cboGiro" class="required form-control">
+                                                        <option value=""></option>
                                                         <?php
-                                                        foreach ($giro as $item){
-                                                            echo ('<option value='.$item->getIdGiro().'>'.$item->getGiro().'</option>');
+                                                        foreach ($giro as $item) {
+                                                            echo ('<option value=' . $item->getIdGiro() . '>' . $item->getGiro() . '</option>');
                                                         }
                                                         ?>
                                                     </select>
@@ -222,21 +232,21 @@ if (isset($_SESSION[PropertyKey::$session_giro])) {
                         </td>
                     </tr>
                     <tbody>
-                            <tr>
-                                <td class="dt-responsive" style="text-align: center">
-                                    <button type="button" class="btn" id="btnRegistrar" name="btnRegistrar">
-                                        <img src="../web/images/guardar.png">Guardar</button>
-                                </td>
-                                <td class="dt-responsive" style="text-align: center">
-                                    <button type="button" class="btn" id="btnActualizar" name="btnActualizar">
-                                        <img src="../web/images/actualizar.png">Actualizar</button>
-                                </td>
-                                <td class="dt-responsive" style="text-align: center">
-                                    <button type="button" class="btn" id="btnEliminar" name="btnEliminar">
-                                        <img src="../web/images/eliminar.png">Eliminar</button>
-                                </td>                                
-                            </tr>
-                        </tbody>
+                        <tr>
+                            <td class="dt-responsive" style="text-align: center">
+                                <button type="button" class="btn" id="btnRegistrar" name="btnRegistrar">
+                                    <img src="../web/images/guardar.png">Guardar</button>
+                            </td>
+                            <td class="dt-responsive" style="text-align: center">
+                                <button type="button" class="btn" id="btnActualizar" name="btnActualizar">
+                                    <img src="../web/images/actualizar.png">Actualizar</button>
+                            </td>
+                            <td class="dt-responsive" style="text-align: center">
+                                <button type="button" class="btn" id="btnEliminar" name="btnEliminar">
+                                    <img src="../web/images/eliminar.png">Eliminar</button>
+                            </td>                                
+                        </tr>
+                    </tbody>
                 </table>
             </form>
             <div style="background: white;">
@@ -262,5 +272,10 @@ if (isset($_SESSION[PropertyKey::$session_giro])) {
                 </table>
             </div>
         </div>
+        <?php
+        if ($exist) {
+            echo('<script>$("#divExisteCliente").modal("show");</script>');
+        }
+        ?>
     </body>
 </html>

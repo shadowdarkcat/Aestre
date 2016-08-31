@@ -2,7 +2,7 @@
 
 require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/com/aestre/AutoLoad.php');
 spl_autoload_register('aestre_autoload', FALSE);
-if (isset($_REQUEST['method'])) {
+if (isset($_REQUEST[PropertyKey::$view_method])) {
     $controller = new giroController();
     $controller->giros();
 }

@@ -21,6 +21,7 @@ class PropertyKey {
     public static $jdbc_view_user;
     public static $jdbc_view_menu;
     public static $jdbc_view_privilegio;
+    public static $jdbc_function_exist_cliente;
     public static $jdbc_procedure_privilegios;
     public static $jdbc_procedure_cliente;
     public static $jdbc_view_colonia;
@@ -31,14 +32,30 @@ class PropertyKey {
     public static $jdbc_view_cliente_id;
     public static $jdbc_view_giro;
     public static $jdbc_view_giro_id;
+    public static $jdbc_view_cp;
+    public static $jdbc_view_cp_id;
     public static $session_access;
     public static $session_usuario;
     public static $session_clientes;
     public static $session_exists;
     public static $session_giro;
+    public static $session_colonias;
     public static $view_user;
     public static $view_password;
     public static $view_method;
+    public static $view_cliente_id;
+    public static $view_nombre;
+    public static $view_paterno;
+    public static $view_materno;
+    public static $view_telefono;
+    public static $view_otro_telefono;
+    public static $view_mail;
+    public static $view_calle;
+    public static $view_noExt;
+    public static $view_noInt;
+    public static $view_idCp;
+    public static $view_cboGiro;
+    public static $view_chkActivo;
     public static $php_index;
     public static $php_main_admin;
     public static $php_main_user;
@@ -66,6 +83,9 @@ class PropertyKey {
         self::$jdbc_view_giro = $this->getPropertyBd('jdbc.view.giro');
         self::$jdbc_view_giro_id = $this->getPropertyBd('jdbc.view.giro.id');
         self::$jdbc_procedure_privilegios = $this->getPropertyBd('jdbc.procedure.menu.privilegio');
+        self::$jdbc_view_cp = $this->getPropertyBd('jdbc.view.cp');
+        self::$jdbc_view_cp_id = $this->getPropertyBd('jdbc.view.cp.id');
+        self::$jdbc_function_exist_cliente = $this->getPropertyBd('jdbc.function.exist.cliente');
         self::$jdbc_procedure_cliente = $this->getPropertyBd('jdbc.procedure.cliente');
 
         self::$session_access = $this->getPropertySystem('session.acces');
@@ -73,6 +93,7 @@ class PropertyKey {
         self::$session_clientes = $this->getPropertySystem('session.clientes');
         self::$session_exists = $this->getPropertySystem('session.exists');
         self::$session_giro = $this->getPropertySystem('session.giro');
+        self::$session_colonias = $this->getPropertySystem('session.colonias');
 
         self::$php_index = $this->getPropertySystem('php.index');
         self::$php_main_admin = $this->getPropertySystem('php.main.admin');
@@ -82,6 +103,19 @@ class PropertyKey {
         self::$view_user = $this->getPropertySystem('view.user');
         self::$view_password = $this->getPropertySystem('view.password');
         self::$view_method = $this->getPropertySystem('view.method');
+        self::$view_cliente_id= $this->getPropertySystem('view.cliente.id');
+        self::$view_nombre= $this->getPropertySystem('view.nombre');
+        self::$view_paterno= $this->getPropertySystem('view.paterno');
+        self::$view_materno= $this->getPropertySystem('view.materno');
+        self::$view_telefono= $this->getPropertySystem('view.telefono');
+        self::$view_otro_telefono= $this->getPropertySystem('view.otro.telefono');
+        self::$view_mail= $this->getPropertySystem('view.mail');
+        self::$view_calle= $this->getPropertySystem('view.calle');
+        self::$view_noExt= $this->getPropertySystem('view.noExt');
+        self::$view_noInt= $this->getPropertySystem('view.noInt');
+        self::$view_idCp= $this->getPropertySystem('view.cp.id');
+        self::$view_cboGiro= $this->getPropertySystem('view.cbo.giro');
+        self::$view_chkActivo= $this->getPropertySystem('view.chk.activo');
     }
 
     //</editor-fold>
