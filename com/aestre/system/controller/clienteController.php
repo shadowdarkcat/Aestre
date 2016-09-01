@@ -99,7 +99,7 @@ class clienteController {
         $cliente->setTelefono($_REQUEST[PropertyKey::$view_telefono]);
         $cliente->setOtroTelefono(isset($_REQUEST[PropertyKey::$view_otro_telefono]) ? $_REQUEST[PropertyKey::$view_otro_telefono] : NULL);
         $cliente->setMail(strtolower($_REQUEST[PropertyKey::$view_mail]));
-        $cliente->setBeanGiro(FactoryGiro::newInstance($_REQUEST[PropertyKey::$view_cboGiro]));
+        $cliente->setGiro($_REQUEST[PropertyKey::$view_giro]);
         $cliente->setActivo(Utils::isChecked($_REQUEST[PropertyKey::$view_chkActivo]));
         $cliente->setRefresh(NULL);
         return $cliente;

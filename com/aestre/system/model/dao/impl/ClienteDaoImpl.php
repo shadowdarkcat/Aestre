@@ -87,7 +87,7 @@ class ClienteDaoImpl implements ClienteDao {
             , $obj->getTelefono()
             , $obj->getOtroTelefono()
             , $obj->getMail()
-            , $obj->getBeanGiro()->getIdGiro()
+            , $obj->getGiro()
             , $obj->getActivo()
             , $obj->getRefresh()
         );

@@ -178,7 +178,7 @@ function showData() {
         $('#txtTelefono').val($('.selected').find('#lblTelefono').text());
         $('#txtOtroTelefono').val(($('.selected').find('#lblOtroTelefono').text() == 'NULL') ? 'S/N' : $('.selected').find('#lblOtroTelefono').text());
         $('#txtMail').val($('.selected').find('#lblMail').text());
-        $('#cboGiro').val($('.selected').find('#lblIdGiro').text());
+        $('#txtGiro').val($('.selected').find('#lblGiro').text());
         $('#btnRegistrar').prop('disabled', true);
         $('#btnActualizar').prop('disabled', false);
         $('#btnEliminar').prop('disabled', false);

@@ -6,16 +6,11 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 $exist = '';
-$controller = new giroController();
-$controller->giros();
 
 if (isset($_SESSION[PropertyKey::$session_clientes])) {
     $clientes = unserialize($_SESSION[PropertyKey::$session_clientes]);
 }
-if (isset($_SESSION[PropertyKey::$session_giro])) {
-    $giro = unserialize($_SESSION[PropertyKey::$session_giro]);
-    unset($_SESSION[PropertyKey::$session_giro]);
-}
+
 if (isset($_SESSION[PropertyKey::$session_exists])) {
     $exist = unserialize($_SESSION[PropertyKey::$session_exists]);
     unset($_SESSION[PropertyKey::$session_exists]);
@@ -196,16 +191,8 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                     <tbody>
                                         <tr>
                                             <td class="dt-responsive">
-                                                <div class="form-group">
-                                                    <select id="cboGiro" name="cboGiro" class="required form-control">
-                                                        <option value=""></option>
-                                                        <?php
-                                                        foreach ($giro as $item) {
-                                                            echo ('<option value=' . $item->getIdGiro() . '>' . $item->getGiro() . '</option>');
-                                                        }
-                                                        ?>
-                                                    </select>
-                                                </div>
+                                                <input type="text" id="txtGiro" name="txtGiro" class="form-control" 
+                                                       placeholder="Ingrese Griro de la Empresa" onkeypress="mayuscula(this);"/>
                                             </td>
                                         </tr>
                                     </tbody> 
@@ -284,7 +271,7 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                             . '<label id="lblTelefono" class="font-size" style="display:none;">' . $item->getTelefono() . '</label>'
                             . '<label id="lblOtroTelefono" class="font-size" style="display:none;">' . $item->getOtroTelefono() . '</label>'
                             . '<label id="lblMail" class="font-size" style="display:none;">' . $item->getMail() . '</label>'
-                            . '<label id="lblIdGiro" class="font-size" style="display:none;">' . $item->getBeanGiro()->getIdGiro() . '</label>'
+                            . '<label id="lblGiro" class="font-size" style="display:none;">' . $item->getGiro() . '</label>'
                             . '</td></tr>');
                         }
                         ?>

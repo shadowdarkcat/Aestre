@@ -22,7 +22,7 @@ class DtoCliente {
     private $telefono;
     private $otroTelefono;
     private $mail;
-    private $beanGiro;
+    private $giro;
     private $activo;
     private $refresh;
 
@@ -72,8 +72,8 @@ class DtoCliente {
         return $this->mail;
     }
 
-    public function getBeanGiro() {
-        return $this->beanGiro;
+    public function getGiro() {
+        return $this->giro;
     }
 
     public function getActivo() {
@@ -128,8 +128,8 @@ class DtoCliente {
         $this->mail = $mail;
     }
 
-    public function setBeanGiro($beanGiro) {
-        $this->beanGiro = $beanGiro;
+    public function setGiro($giro) {
+        $this->giro = $giro;
     }
 
     public function setActivo($activo) {
@@ -140,5 +140,5 @@ class DtoCliente {
         $this->refresh = $refresh;
     }
 
-        //</editor-fold>
+//</editor-fold>
 }

@@ -13,14 +13,12 @@ class ClienteBoImpl implements ClienteBo {
     //<editor-fold defaultstate="collapsed" desc="Campos de Clase">
     private $dao;
     private $cpBo;
-    private $giroBo;
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Constructores">
     public function __construct() {
         $this->dao = new ClienteDaoImpl();
         $this->cpBo = new ColoniaBoImpl();
-        $this->giroBo = new GiroBoImpl();
     }
 
     //</editor-fold>
@@ -30,7 +28,6 @@ class ClienteBoImpl implements ClienteBo {
             $collection = $this->dao->findAll();
             foreach ($collection as $item) {
                 $item->setBeanCp($this->getCp($user, $item->getBeanCp()));
-                $item->setBeanGiro($this->getGiro($user, $item->getBeanGiro()));
             }
             return $collection;
         }
@@ -41,7 +38,6 @@ class ClienteBoImpl implements ClienteBo {
             $object = $this->clienteDao->findById($object);
             foreach ($object as $item) {
                 $item->setBeanCp($this->getCp($user, $item->getBeanCp()));
-                $item->setBeanGiro($this->getGiro($user, $item->getBeanGiro()));
             }
             return $this->createJson($object);
         }
@@ -91,7 +87,7 @@ class ClienteBoImpl implements ClienteBo {
                 , 'ciudad' => (empty($val->getBeanCp()->getCiudad()) ? 'NA' : $val->getBeanCp()->getCiudad())
                 , 'casa' => $val->getTelefono()
                 , 'otro' => (empty($val->getOtroTelefono()) ? 'NA' : $val->getOtroTelefono())
-                , 'mail' => $val->getMail(), 'giro' => (empty($val->getBeanGiro()->getGiro()) ? 'NA' : $val->getBeanGiro()->getGiro())
+                , 'mail' => $val->getMail(), 'giro' => (empty($val->getGiro()) ? 'NA' : $val->getGiro())
             );
         }
         return $json;
@@ -101,10 +97,6 @@ class ClienteBoImpl implements ClienteBo {
     //<editor-fold defaultstate="collapsed" desc="Metodos Privados">
     private final function getCp($user, $bean) {
         return $this->cpBo->findById($user, $bean);
-    }
-
-    private final function getGiro($user, $bean) {
-        return $this->giroBo->findById($user, $bean);
     }
 
     //</editor-fold>

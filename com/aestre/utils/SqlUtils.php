@@ -90,7 +90,7 @@ class SqlUtils {
         $dto->setTelefono($row[8]);
         $dto->setOtroTelefono($row[9]);
         $dto->setMail($row[10]);
-        $dto->setBeanGiro(FactoryGiro::newInstance($row[11]));
+        $dto->setGiro($row[11]);
         $dto->setActivo($row[12]);
         $dto->setRefresh($row[13]);
         return $dto;

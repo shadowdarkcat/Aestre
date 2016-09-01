@@ -54,8 +54,9 @@ class PropertyKey {
     public static $view_noExt;
     public static $view_noInt;
     public static $view_idCp;
-    public static $view_cboGiro;
+    public static $view_giro;
     public static $view_chkActivo;
+    public static $view_cboGiro;
     public static $php_index;
     public static $php_main_admin;
     public static $php_main_user;
@@ -114,8 +115,9 @@ class PropertyKey {
         self::$view_noExt= $this->getPropertySystem('view.noExt');
         self::$view_noInt= $this->getPropertySystem('view.noInt');
         self::$view_idCp= $this->getPropertySystem('view.cp.id');
-        self::$view_cboGiro= $this->getPropertySystem('view.cbo.giro');
+        self::$view_giro= $this->getPropertySystem('view.giro');
         self::$view_chkActivo= $this->getPropertySystem('view.chk.activo');
+        self::$view_cboGiro= $this->getPropertySystem('view.cbo.giro');
     }
 
     //</editor-fold>
