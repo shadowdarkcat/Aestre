@@ -11,21 +11,14 @@ $(document).ready(function () {
 
     $('#btnActualizar').prop('disabled', true);
     $('#btnEliminar').prop('disabled', true);
-    var table = $('#tblClientes').DataTable({
+    $('#tblClientes').DataTable({
+        "ordering": false,
+        "info":     false,
         language: {
             url: contextoGlobal + '/web/resources/es_ES.json'
         }
     });
 
-    $('#tblClientes tbody').on('click', 'tr', function () {
-        if ($(this).hasClass('selected')) {
-            $(this).removeClass('selected');
-        } else {
-            table.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-            showData();
-        }
-    });
     $(function () {
         $('#txtColonia').autocomplete({
             source: availableTags
@@ -109,7 +102,7 @@ $(document).ready(function () {
 
     $('#btnEliminar').on('click', function () {
         $('#chkActivo').prop('checked', false);
-        if ($('#frmCliente').validate().form()) {            
+        if ($('#frmCliente').validate().form()) {
             $('#frmCliente').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/clienteController.php?method=3');
             $('#divMessageDelete').modal('show');
         }
@@ -131,56 +124,87 @@ $(document).ready(function () {
 
 
 });
-function showData() {
-    $('#txtIdCliente').val($('.selected').find('#lblId').text());
-    $('#txtNombre').val($('.selected').find('#lblNombre').text());
-    $('#txtPaterno').val($('.selected').find('#lblPaterno').text());
-    $('#txtMaterno').val($('.selected').find('#lblMaterno').text());
-    if ($('.selected').find('#lblActivo').text() == 'Sí') {
+function showData(index, action) {
+    var data = clientes[index].split(',');    
+    if (action == 0) {
+        enabled();
+        $('#frmCliente').find('#btnActualizar').prop('disabled', false);
+        $('#frmCliente').find('#btnEliminar').prop('disabled', true);
+    } else {
+        disabled();
+        $('#frmCliente').find('#btnEliminar').prop('disabled', false);
+        $('#frmCliente').find('#btnActualizar').prop('disabled', true);
+    }
+    $('#txtIdCliente').val(data[0]);
+    $('#txtNombre').val(data[1]);
+    $('#txtPaterno').val(data[2]);
+    $('#txtMaterno').val(data[3]);
+    $('#txtCalle').val(data[4]);
+    $('#txtNoExterior').val(data[5]);
+    $('#txtNoInterior').val((data[6] == 'NULL') ? 'S/N' : data[6]);
+    $('#txtIdCp').val(data[7]);
+    $('#txtColonia').val(data[8]);
+    $('#txtCp').val(data[9]);
+    $('#thTitleMuni').empty('');
+    $('#tdMuni').empty('');
+    var th;
+    var td;
+    if (data[10] != '') {
+        th = '<label class="font-size"><span class="req">*</span> Delegaci&oacute;n</label> ';
+        td = '<td><input type="text" id="txtDelegacion" name="txtDelegacion" class="required form-control" value="'
+                + data[10] + '" readOnly="readOnly" /></td>';
+    } else if (data[11] != '') {
+        th = '<label class="font-size"><span class="req">*</span> Munic&iacute;pio</label> ';
+        td = '<td><input type="text" id="txtMunicipio" name="txtMunicipio" class="required form-control" value="'
+                + data[11] + '" readOnly="readOnly" /></td>';
+    }
+    $('#thTitleMuni').append(th);
+    $('#tdMuni').append(td);
+    $('#txtEstado').val(data[12]);
+    $('#txtCiudad').val(data[13]);
+    $('#txtTelefono').val(data[14]);
+    $('#txtOtroTelefono').val((data[15] == 'NULL') ? 'S/N' : data[15]);
+    $('#txtMail').val(data[16]);
+    $('#txtGiro').val(data[17]);
+    if (data[18] == true) {
         $('#chkActivo').prop('checked', true);
         $('#btnActivate').hide();
-        $('#btnEliminar').show();        
+        $('#btnEliminar').show();
     } else {
         $('#chkActivo').prop('checked', false);
         $('#btnActivate').show();
         $('#btnEliminar').hide();
     }
-    $('#txtCalle').val($('.selected').find('#lblCalle').text());
-    $('#txtNoExterior').val($('.selected').find('#lblNoExt').text());
-    $('#txtNoInterior').val(($('.selected').find('#lblNoInt').text() == 'NULL') ? 'S/N' : $('.selected').find('#lblNoInt').text());
-    for (var index = 0; index < availableTags.length; index++) {
-        var split = [];
-        split = availableTags[index].split(',');
-        if (split[0] == $('.selected').find('#lblIdCp').text()) {
-            $('#thTitleMuni').empty('');
-            $('#tdMuni').empty('');
-            var th;
-            var td;
-            if (split[2] != '') {
-                th = '<label class="font-size"><span class="req">*</span> Delegaci&oacute;n</label> ';
-                td = '<td><input type="text" id="txtDelegacion" name="txtDelegacion" class="required form-control" value="'
-                        + split[2] + '" readOnly="readOnly" /></td>';
-            } else if (split[3] != '') {
-                th = '<label class="font-size"><span class="req">*</span> Munic&iacute;pio</label> ';
-                td = '<td><input type="text" id="txtMunicipio" name="txtMunicipio" class="required form-control" value="'
-                        + split[3] + '" readOnly="readOnly" /></td>';
-            }
-            $('#thTitleMuni').append(th);
-            $('#tdMuni').append(td);
-            $('#txtCp').val(split[4]);
-            $('#txtCp').val(split[4]);
-            $('#txtEstado').val(split[5]);
-            $('#txtCiudad').val(split[6]);
-            $('#txtIdCp').val(split[0]);
-            $('#txtColonia').val(split[1]);
-            break;
-        }
-        $('#txtTelefono').val($('.selected').find('#lblTelefono').text());
-        $('#txtOtroTelefono').val(($('.selected').find('#lblOtroTelefono').text() == 'NULL') ? 'S/N' : $('.selected').find('#lblOtroTelefono').text());
-        $('#txtMail').val($('.selected').find('#lblMail').text());
-        $('#txtGiro').val($('.selected').find('#lblGiro').text());
-        $('#btnRegistrar').prop('disabled', true);
-        $('#btnActualizar').prop('disabled', false);
-        $('#btnEliminar').prop('disabled', false);
-    }
+    $('#btnRegistrar').prop('disabled', true);
+}
+
+function enabled() {
+    $('#txtIdCliente').prop('disabled', false);
+    $('#txtNombre').prop('disabled', false);
+    $('#txtPaterno').prop('disabled', false);
+    $('#txtMaterno').prop('disabled', false);
+    $('#txtCalle').prop('disabled', false);
+    $('#txtNoExterior').prop('disabled', false);
+    $('#txtNoInterior').prop('disabled', false);
+    $('#txtColonia').prop('disabled', false);
+    $('#txtCp').prop('disabled', false);
+    $('#txtTelefono').prop('disabled', false);
+    $('#txtOtroTelefono').prop('disabled', false);
+    $('#txtMail').prop('disabled', false);
+    $('#txtGiro').prop('disabled', false);
+}
+function disabled() {
+    $('#txtIdCliente').prop('disabled', true);
+    $('#txtNombre').prop('disabled', true);
+    $('#txtPaterno').prop('disabled', true);
+    $('#txtMaterno').prop('disabled', true);
+    $('#txtCalle').prop('disabled', true);
+    $('#txtNoExterior').prop('disabled', true);
+    $('#txtNoInterior').prop('disabled', true);
+    $('#txtColonia').prop('disabled', true);
+    $('#txtCp').prop('disabled', true);
+    $('#txtTelefono').prop('disabled', true);
+    $('#txtOtroTelefono').prop('disabled', true);
+    $('#txtMail').prop('disabled', true);
+    $('#txtGiro').prop('disabled', true);    
 }

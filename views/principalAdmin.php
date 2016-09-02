@@ -7,8 +7,6 @@ if (!isset($login)) {
     echo(PropertyKey::$php_index);
 }
 ?>
-<!DOCTYPE html>
-
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -39,8 +37,6 @@ if (!isset($login)) {
                 </div>
             </div>
         </nav>
-        <div class="container">
-        </div> 
     </body>
     <div id="divMessageUpdate" class="modal fade" role="dialog">
         <div class="modal-dialog">
