@@ -6,23 +6,23 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 if (isset($_REQUEST[PropertyKey::$view_method])) {
-    $controller = new giroController();
-    $controller->giros();
+    $controller = new dispositivoController();
+    $controller->dispositivos();
 }
 
 /**
- * Description of giroController
+ * Description of dispositivoController
  *
  * @author ShadowDarkCat
  */
-class giroController {
+class dispositivoController {
 
     private $session;
     private $method;
-    private $giroBo;
+    private $dispositivoBo;
 
     public function __construct() {
-        $this->giroBo = new GiroBoImpl();
+        $this->dispositivoBo = new DispositivoBoImpl();
         $this->session = $_SESSION[PropertyKey::$session_usuario];
         if (isset($_REQUEST[PropertyKey::$view_method])) {
             $this->method = $_REQUEST[PropertyKey::$view_method];
@@ -30,19 +30,17 @@ class giroController {
         unset($_REQUEST[PropertyKey::$view_method]);
     }
 
-    public function giros() {
+    public function dispositivos() {
         switch ($this->method) {
             case 0:
                 $this->findAll();
                 break;
         }
     }
-
     private function findAll() {
-        $giro = $this->giroBo->findAll($this->session);
-        if (!empty($giro)) {
-            $_SESSION[PropertyKey::$session_giro] = serialize($giro);
+        $dispositivos = $this->dispositivoBo->findAll($this->session);
+        if (!empty($dispositivos)) {
+            $_SESSION[PropertyKey::$session_dispositivos] = serialize($dispositivos);
         }
     }
-
 }

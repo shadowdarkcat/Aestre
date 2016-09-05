@@ -3,10 +3,14 @@ require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/com/aestre/AutoLoad
 require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/views/principalAdmin.php');
 spl_autoload_register('aestre_autoload', FALSE);
 if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+}
+if (!isset($login)) {
+    echo(PropertyKey::$php_index);
 }
 $exist = '';
-
 if (isset($_SESSION[PropertyKey::$session_clientes])) {
     $clientes = unserialize($_SESSION[PropertyKey::$session_clientes]);
 }
@@ -31,7 +35,8 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
         <br/><br/><br/><br/><br/>
         <div class="container-fluid" style="background: white;">
             <div class="container">
-                <div class="row"> <div class="col-lg-12 col-md-4 col-sm-6 col-xs-12">
+                <div class="row">
+                    <div class="col-lg-12 col-md-4 col-sm-6 col-xs-12">
                         <div class="table">
                             <table id="tblClientes" class="table table-striped table-bordered dt-responsive nowrap" data-role="datatable"  data-info="false">
                                 <thead>
@@ -47,7 +52,7 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                     <?php
                                     $index = 0;
                                     foreach ($clientes as $item) {
-                                        getData($item);
+                                        setData($item);
                                         echo ('<tr>'
                                         . '<td  style="text-align: center">'
                                         . '<label class="font-size" id="lblId">' . $item->getIdCliente()
@@ -61,16 +66,15 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                         . '<label class="font-size">'
                                         . (($item->getActivo() == TRUE) ? 'Sí' : 'NO')
                                         . '</label>'
-                                        . '</td>'
                                         . '<td  style="text-align: center">'
                                         . '<button type="button" class="btn" '
-                                        . 'onclick="showData(\'' . $index . '\',0);">'
-                                        . '<img src="../web/images/modificar.png"></button>'
+                                        . 'onclick="showData(' . $index . ',0);">'
+                                        . '<img src="../web/images/modificar.png" height="23px" width="29px;"></button>'
                                         . '</td>'
                                         . '<td  style="text-align: center">'
                                         . '<button type="button" class="btn"'
-                                        . 'onclick="showData(\'' . $index . '\',1);">'
-                                        . '<img src="../web/images/habilitar.png"></button>'
+                                        . 'onclick="showData(' . $index . ',1);">'
+                                        . '<img src="../web/images/habilitar.png" height="29px" width="23px;"></button>'
                                         . '</td></tr>');
                                         $index++;
                                     }
@@ -105,15 +109,15 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <input type="text" id="txtNombre" name="txtNombre" class="required form-control"  
+                                                    <input type="text" id="txtNombre" name="txtNombre" class="required form-control col-xs-1 input-sm"  
                                                            onkeypress="mayuscula(this);" placeholder="Ingrese el nombre"/>
                                                 </td>
                                                 <td>
-                                                    <input type="text" id="txtPaterno" name="txtPaterno" class="required form-control" 
+                                                    <input type="text" id="txtPaterno" name="txtPaterno" class="required form-control col-xs-1 input-sm" 
                                                            onkeypress="mayuscula(this);" placeholder="Ingrese el apellido paterno"/>
                                                 </td>
                                                 <td>
-                                                    <input type="text" id="txtMaterno" name="txtMaterno" class="required form-control" 
+                                                    <input type="text" id="txtMaterno" name="txtMaterno" class="required form-control col-xs-1 input-sm" 
                                                            onkeypress="mayuscula(this);" placeholder="Ingrese el apellido materno"/>
                                                 </td>
                                             </tr>
@@ -146,15 +150,15 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <input type="text" id="txtTelefono" name="txtTelefono" class="required form-control"  
+                                                    <input type="text" id="txtTelefono" name="txtTelefono" class="required form-control col-xs-1 input-sm"  
                                                            onkeypress="mayuscula(this);" placeholder="Ingrese el n&uacute;mero tel&eacute;fono"/>
                                                 </td>
                                                 <td>
-                                                    <input type="text" id="txtOtroTelefono" name="txtOtroTelefono" class="form-control" 
+                                                    <input type="text" id="txtOtroTelefono" name="txtOtroTelefono" class="form-control col-xs-1 input-sm" 
                                                            onkeypress="minuscula(this);" placeholder="Ingrese el n&uacute;mero celular"/>
                                                 </td>
                                                 <td>
-                                                    <input type="text" id="txtMail" name="txtMail" class="required form-control" 
+                                                    <input type="text" id="txtMail" name="txtMail" class="required form-control col-xs-1 input-sm" 
                                                            onkeypress="minuscula()(this);" placeholder="Ingrese el correo electr&oacute;nico"/>
                                                 </td>
                                             </tr>
@@ -188,15 +192,15 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <input type="text" id="txtCalle" name="txtCalle" class="required form-control"  
+                                                    <input type="text" id="txtCalle" name="txtCalle" class="required form-control col-xs-1 input-sm"  
                                                            onkeypress="mayuscula(this);" placeholder="Ingrese la calle"/>
                                                 </td>
                                                 <td>
-                                                    <input type="text" id="txtNoExterior" name="txtNoExterior" class="required form-control" 
+                                                    <input type="text" id="txtNoExterior" name="txtNoExterior" class="required form-control col-xs-1 input-sm" 
                                                            onkeypress="mayuscula(this);" placeholder="Ingrese el n&uacute;mero exterior"/>
                                                 </td>
                                                 <td>
-                                                    <input type="text" id="txtNoInterior" name="txtNoInterior" class="form-control" 
+                                                    <input type="text" id="txtNoInterior" name="txtNoInterior" class="form-control col-xs-1 input-sm" 
                                                            onkeypress="mayuscula(this);" placeholder="Ingrese el n&uacute;mero interior"/>
                                                 </td>                                                    
                                             </tr>
@@ -215,12 +219,12 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <input type="text" id="txtColonia" name="txtColonia" class="required form-control" 
+                                                    <input type="text" id="txtColonia" name="txtColonia" class="required form-control col-xs-1 input-sm" 
                                                            onkeypress="mayuscula(this);" placeholder="Ingrese la colonia"/>
-                                                    <input type="hidden" id="txtIdCp" name="txtIdCp" class="digits required form-control" />
+                                                    <input type="hidden" id="txtIdCp" name="txtIdCp" class="digits required form-control col-xs-1 input-sm" />
                                                 </td>
                                                 <td>
-                                                    <input type="text" id="txtCp" name="txtCp" class="required form-control"  
+                                                    <input type="text" id="txtCp" name="txtCp" class="required form-control col-xs-1 input-sm"  
                                                            onkeypress="mayuscula(this);" placeholder="C&oacute;digo Postal" disabled="disabled"/>
                                                 </td>
                                                 <td id="tdMuni" ></td>
@@ -237,11 +241,11 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <input type="text" id="txtEstado" name="txtEstado" class="required form-control" 
+                                                    <input type="text" id="txtEstado" name="txtEstado" class="required form-control col-xs-1 input-sm" 
                                                            onkeypress="minuscula(this);" placeholder="Estado" disabled="disabled"/>
                                                 </td>
                                                 <td>
-                                                    <input type="text" id="txtCiudad" name="txtCiudad" class="required form-control" 
+                                                    <input type="text" id="txtCiudad" name="txtCiudad" class="required form-control col-xs-1 input-sm" 
                                                            onkeypress="minuscula(this);" placeholder="Ciudad" disabled="disabled"/>
                                                 </td>
                                             </tr>
@@ -261,7 +265,7 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <input type="text" id="txtGiro" name="txtGiro" class="form-control" 
+                                                    <input type="text" id="txtGiro" name="txtGiro" class="form-control col-xs-1 input-sm" 
                                                            placeholder="Ingrese Griro de la Empresa" onkeypress="mayuscula(this);"/>
                                                 </td>
                                             </tr>
@@ -282,7 +286,7 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                             <tr>
                                                 <td>
                                                     <input type="checkbox" id="chkActivo" name="chkActivo"
-                                                           class="checkbox-inline text-muted" checked="checked" onclick="return false">S&iacute;
+                                                           class="checkbox-inline text-muted col-xs-1 input-sm" checked="checked" onclick="return false">S&iacute;
                                                 </td>
                                             </tr>
                                         </tbody>                                                    
@@ -309,7 +313,7 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
 </html>
 <?php
 
-function getData(DtoCliente $item) {
+function setData(DtoCliente $item) {
     ?>
     <script>
         clientes.push(

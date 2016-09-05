@@ -22,8 +22,10 @@ class PropertyKey {
     public static $jdbc_view_menu;
     public static $jdbc_view_privilegio;
     public static $jdbc_function_exist_cliente;
+    public static $jdbc_function_exist_vehiculo;
     public static $jdbc_procedure_privilegios;
     public static $jdbc_procedure_cliente;
+    public static $jdbc_procedure_vehiculo;
     public static $jdbc_view_colonia;
     public static $jdbc_view_colonia_id;
     public static $jdbc_view_dispositivo;
@@ -34,12 +36,23 @@ class PropertyKey {
     public static $jdbc_view_giro_id;
     public static $jdbc_view_cp;
     public static $jdbc_view_cp_id;
+    public static $jdbc_view_iconos;
+    public static $jdbc_view_iconos_id;
+    public static $jdbc_view_vehiculos;
+    public static $jdbc_view_vehiculos_id;
+    public static $jdbc_view_cliente_vehiculo_cliente;
+    public static $jdbc_view_cliente_vehiculo_vehiculo;
+    public static $jdbc_view_cliente_vehiculo_conductor;
+    public static $jdbc_view_cliente_vehiculo;
     public static $session_access;
     public static $session_usuario;
     public static $session_clientes;
     public static $session_exists;
     public static $session_giro;
     public static $session_colonias;
+    public static $session_dispositivos;
+    public static $session_iconos;
+    public static $session_vehiculos;
     public static $view_user;
     public static $view_password;
     public static $view_method;
@@ -57,10 +70,21 @@ class PropertyKey {
     public static $view_giro;
     public static $view_chkActivo;
     public static $view_cboGiro;
+    public static $view_vehiculo_id;
+    public static $view_cbo_clientes;
+    public static $view_imei;
+    public static $view_cbo_gps;
+    public static $view_modelo;
+    public static $view_marca;
+    public static $view_placa;
+    public static $view_color;
+    public static $view_dtp_verificacion;
+    public static $view_icono_id;
     public static $php_index;
     public static $php_main_admin;
     public static $php_main_user;
     public static $php_main_cliente;
+    public static $php_main_vehiculo;
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Constructores Privados">
@@ -83,11 +107,23 @@ class PropertyKey {
         self::$jdbc_view_cliente_id = $this->getPropertyBd('jdbc.view.cliente.id');
         self::$jdbc_view_giro = $this->getPropertyBd('jdbc.view.giro');
         self::$jdbc_view_giro_id = $this->getPropertyBd('jdbc.view.giro.id');
-        self::$jdbc_procedure_privilegios = $this->getPropertyBd('jdbc.procedure.menu.privilegio');
+        self::$jdbc_view_iconos = $this->getPropertyBd('jdbc.view.iconos');
+        self::$jdbc_view_iconos_id = $this->getPropertyBd('jdbc.view.iconos.id');
+        self::$jdbc_view_vehiculos = $this->getPropertyBd('jdbc.view.vehiculos');
+        self::$jdbc_view_vehiculos_id = $this->getPropertyBd('jdbc.view.vehiculos.id');
         self::$jdbc_view_cp = $this->getPropertyBd('jdbc.view.cp');
         self::$jdbc_view_cp_id = $this->getPropertyBd('jdbc.view.cp.id');
+        self::$jdbc_view_cliente_vehiculo_cliente = $this->getPropertyBd('jdbc.view.cliente.vehiculo.idCliente');
+        self::$jdbc_view_cliente_vehiculo_vehiculo = $this->getPropertyBd('jdbc.view.cliente.vehiculo.idVehiculo');
+        self::$jdbc_view_cliente_vehiculo_conductor = $this->getPropertyBd('jdbc.view.cliente.vehiculo.idConductor');
+        self::$jdbc_view_cliente_vehiculo = $this->getPropertyBd('jdbc.view.cliente.vehiculo');
+
+        self::$jdbc_procedure_privilegios = $this->getPropertyBd('jdbc.procedure.menu.privilegio');
+
         self::$jdbc_function_exist_cliente = $this->getPropertyBd('jdbc.function.exist.cliente');
+        self::$jdbc_function_exist_vehiculo = $this->getPropertyBd('jdbc.function.exist.vehiculo');
         self::$jdbc_procedure_cliente = $this->getPropertyBd('jdbc.procedure.cliente');
+        self::$jdbc_procedure_vehiculo = $this->getPropertyBd('jdbc.procedure.vehiculo');
 
         self::$session_access = $this->getPropertySystem('session.acces');
         self::$session_usuario = $this->getPropertySystem('session.usuario');
@@ -95,29 +131,43 @@ class PropertyKey {
         self::$session_exists = $this->getPropertySystem('session.exists');
         self::$session_giro = $this->getPropertySystem('session.giro');
         self::$session_colonias = $this->getPropertySystem('session.colonias');
-
+        self::$session_dispositivos = $this->getPropertySystem('session.dispositivos');
+        self::$session_iconos = $this->getPropertySystem('session.iconos');
+        self::$session_vehiculos = $this->getPropertySystem('session.vehiculos');
+        
         self::$php_index = $this->getPropertySystem('php.index');
         self::$php_main_admin = $this->getPropertySystem('php.main.admin');
         self::$php_main_user = $this->getPropertySystem('php.main.user');
         self::$php_main_cliente = $this->getPropertySystem('php.main.cliente');
+        self::$php_main_vehiculo = $this->getPropertySystem('php.main.vehiculo');
 
         self::$view_user = $this->getPropertySystem('view.user');
         self::$view_password = $this->getPropertySystem('view.password');
         self::$view_method = $this->getPropertySystem('view.method');
-        self::$view_cliente_id= $this->getPropertySystem('view.cliente.id');
-        self::$view_nombre= $this->getPropertySystem('view.nombre');
-        self::$view_paterno= $this->getPropertySystem('view.paterno');
-        self::$view_materno= $this->getPropertySystem('view.materno');
-        self::$view_telefono= $this->getPropertySystem('view.telefono');
-        self::$view_otro_telefono= $this->getPropertySystem('view.otro.telefono');
-        self::$view_mail= $this->getPropertySystem('view.mail');
-        self::$view_calle= $this->getPropertySystem('view.calle');
-        self::$view_noExt= $this->getPropertySystem('view.noExt');
-        self::$view_noInt= $this->getPropertySystem('view.noInt');
-        self::$view_idCp= $this->getPropertySystem('view.cp.id');
-        self::$view_giro= $this->getPropertySystem('view.giro');
-        self::$view_chkActivo= $this->getPropertySystem('view.chk.activo');
-        self::$view_cboGiro= $this->getPropertySystem('view.cbo.giro');
+        self::$view_cliente_id = $this->getPropertySystem('view.cliente.id');
+        self::$view_nombre = $this->getPropertySystem('view.nombre');
+        self::$view_paterno = $this->getPropertySystem('view.paterno');
+        self::$view_materno = $this->getPropertySystem('view.materno');
+        self::$view_telefono = $this->getPropertySystem('view.telefono');
+        self::$view_otro_telefono = $this->getPropertySystem('view.otro.telefono');
+        self::$view_mail = $this->getPropertySystem('view.mail');
+        self::$view_calle = $this->getPropertySystem('view.calle');
+        self::$view_noExt = $this->getPropertySystem('view.noExt');
+        self::$view_noInt = $this->getPropertySystem('view.noInt');
+        self::$view_idCp = $this->getPropertySystem('view.cp.id');
+        self::$view_giro = $this->getPropertySystem('view.giro');
+        self::$view_chkActivo = $this->getPropertySystem('view.chk.activo');
+        self::$view_cboGiro = $this->getPropertySystem('view.cbo.giro');
+        self::$view_vehiculo_id = $this->getPropertySystem('view.vehiculo.id');
+        self::$view_cbo_clientes = $this->getPropertySystem('view.cbo.clientes');
+        self::$view_imei = $this->getPropertySystem('view.imei');
+        self::$view_cbo_gps = $this->getPropertySystem('view.cbo.gps');
+        self::$view_modelo = $this->getPropertySystem('view.modelo');
+        self::$view_marca = $this->getPropertySystem('view.marca');
+        self::$view_placa = $this->getPropertySystem('view.placa');
+        self::$view_color = $this->getPropertySystem('view.color');
+        self::$view_dtp_verificacion = $this->getPropertySystem('view.dtp.verificacion');
+        self::$view_icono_id = $this->getPropertySystem('view.id.icono');
     }
 
     //</editor-fold>

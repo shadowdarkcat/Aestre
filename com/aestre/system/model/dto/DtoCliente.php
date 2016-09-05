@@ -25,6 +25,8 @@ class DtoCliente {
     private $giro;
     private $activo;
     private $refresh;
+    private $vehiculos;
+    private $clientes;
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Accesores">
@@ -84,6 +86,14 @@ class DtoCliente {
         return $this->refresh;
     }
 
+    public function getVehiculos() {
+        return $this->vehiculos;
+    }
+
+    public function getClientes() {
+        return $this->clientes;
+    }
+
     public function setIdCliente($idCliente) {
         $this->idCliente = $idCliente;
     }
@@ -138,6 +148,14 @@ class DtoCliente {
 
     public function setRefresh($refresh) {
         $this->refresh = $refresh;
+    }
+
+    public function setVehiculos($vehiculos) {
+        $this->vehiculos = $vehiculos;
+    }
+
+    public function setClientes($clientes) {
+        $this->clientes = $clientes;
     }
 
 //</editor-fold>

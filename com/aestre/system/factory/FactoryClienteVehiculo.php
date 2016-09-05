@@ -4,19 +4,18 @@ require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/com/aestre/AutoLoad
 spl_autoload_register('aestre_autoload', FALSE);
 
 /**
- * Description of FactoryDispositivo
+ * Description of FactoryClienteVehiculo
  *
  * @author ShadowDarkCat
  */
-class FactoryDispositivo {
-
+class FactoryClienteVehiculo {
     //<editor-fold defaultstate="collapsed" desc="Funciones P&uacute;blicas">
     public static final function newInstance($id) {
         if (Utils::isReallyEmptyOrNull($id)) {
-            return new BeanDispositivo();
+            return new BeanClienteVehiculo();
         } else {
-            $dto = new BeanDispositivo();
-            $dto->setIdDispositivo($id);
+            $dto = new BeanClienteVehiculo();
+            $dto->setId($id);
             return $dto;
         }
     }

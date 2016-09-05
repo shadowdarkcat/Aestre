@@ -35,11 +35,21 @@ class ClienteBoImpl implements ClienteBo {
 
     public function findById($user, $obj) {
         if (Utils::isSessionValid($user)) {
-            $object = $this->clienteDao->findById($object);
+            $object = $this->dao->findById($obj);
             foreach ($object as $item) {
                 $item->setBeanCp($this->getCp($user, $item->getBeanCp()));
             }
-            return $this->createJson($object);
+            return JsonUtils::createJson($object);
+        }
+    }
+
+    public function findByIdFromCv($user, $obj) {
+        if (Utils::isSessionValid($user)) {
+            $collection = $this->dao->findById($obj);
+            foreach ($collection as $item) {
+                $item->setBeanCp($this->getCp($user, $item->getBeanCp()));
+            }
+            return $collection;
         }
     }
 
@@ -71,31 +81,7 @@ class ClienteBoImpl implements ClienteBo {
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Funciones Privadas">
-    private function createJson($object) {
-        $json = array();
-        foreach ($object as $val) {
-            $json[] = array(
-                'id' => $val->getIdCliente(), 'nombre' => $val->getNombre()
-                , 'paterno' => $val->getPaterno(), 'materno' => $val->getMaterno()
-                , 'calle' => $val->getCalle(), 'exterior' => $val->getNoExterior()
-                , 'interior' => ($val->getNoInterior() == 'NULL' ? 'S/N' : $val->getNoInterior())
-                , 'idCp' => $val->getBeanCp()->getIdCp(), 'cp' => $val->getBeanCp()->getCp()
-                , 'col' => $val->getBeanCp()->getCol()
-                , 'dele' => (empty($val->getBeanCp()->getDelegacion()) ? 'NULL' : $val->getBeanCp()->getDelegacion())
-                , 'muni' => (empty($val->getBeanCp()->getMunicipio()) ? 'NULL' : $val->getBeanCp()->getMunicipio())
-                , 'estado' => $val->getBeanCp()->getEstado()
-                , 'ciudad' => (empty($val->getBeanCp()->getCiudad()) ? 'NA' : $val->getBeanCp()->getCiudad())
-                , 'casa' => $val->getTelefono()
-                , 'otro' => (empty($val->getOtroTelefono()) ? 'NA' : $val->getOtroTelefono())
-                , 'mail' => $val->getMail(), 'giro' => (empty($val->getGiro()) ? 'NA' : $val->getGiro())
-            );
-        }
-        return $json;
-    }
-
-    //</editor-fold>
-    //<editor-fold defaultstate="collapsed" desc="Metodos Privados">
-    private final function getCp($user, $bean) {
+     private final function getCp($user, $bean) {
         return $this->cpBo->findById($user, $bean);
     }
 

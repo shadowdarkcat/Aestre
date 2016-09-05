@@ -7,9 +7,5 @@ spl_autoload_register('aestre_autoload', FALSE);
  *
  * @author ShadowDarkCat
  */
-interface ClienteBo extends GenericBo {
-
-    function exist($user, $obj);
-
-    function findByIdFromCv($user, $obj);
+interface IconosBo extends GenericBo{
 }

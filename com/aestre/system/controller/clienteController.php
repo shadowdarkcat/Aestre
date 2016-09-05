@@ -2,8 +2,10 @@
 
 require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/com/aestre/AutoLoad.php');
 spl_autoload_register('aestre_autoload', FALSE);
-session_start();
-if (isset($_REQUEST['method'])) {
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (isset($_REQUEST[PropertyKey::$view_method])) {
     $controller = new clienteController();
     $controller->clientes();
 }
@@ -88,7 +90,7 @@ class clienteController {
     }
 
     private function getParametersFromRequest(DtoCliente $cliente, BeanCp $colonia) {
-        $cliente->setIdCliente(isset($_REQUEST[PropertyKey::$view_cliente_id]) ? strtoupper($_REQUEST[PropertyKey::$view_cliente_id]) : NULL );
+        $cliente->setIdCliente(isset($_REQUEST[PropertyKey::$view_cliente_id]) ? $_REQUEST[PropertyKey::$view_cliente_id] : NULL );
         $cliente->setNombre(strtoupper($_REQUEST[PropertyKey::$view_nombre]));
         $cliente->setPaterno(strtoupper($_REQUEST[PropertyKey::$view_paterno]));
         $cliente->setMaterno(strtoupper($_REQUEST[PropertyKey::$view_materno]));
@@ -100,6 +102,7 @@ class clienteController {
         $cliente->setOtroTelefono(isset($_REQUEST[PropertyKey::$view_otro_telefono]) ? $_REQUEST[PropertyKey::$view_otro_telefono] : NULL);
         $cliente->setMail(strtolower($_REQUEST[PropertyKey::$view_mail]));
         $cliente->setGiro($_REQUEST[PropertyKey::$view_giro]);
+        $cliente->setActivo(isset($_REQUEST[PropertyKey::$view_chkActivo]) ? Utils::isIsset($_REQUEST[PropertyKey::$view_chkActivo]) : Utils::isIsset(NULL));
         $cliente->setActivo(Utils::isChecked($_REQUEST[PropertyKey::$view_chkActivo]));
         $cliente->setRefresh(NULL);
         return $cliente;

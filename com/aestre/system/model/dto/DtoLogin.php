@@ -4,7 +4,9 @@ require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/com/aestre/AutoLoad
 spl_autoload_register('aestre_autoload', FALSE);
 new PropertyKey();
 if (session_status() === PHP_SESSION_NONE) {
+    if (session_status() === PHP_SESSION_NONE) {
     session_start();
+}
 }
 
 /**

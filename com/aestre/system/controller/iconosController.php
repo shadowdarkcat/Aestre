@@ -6,23 +6,23 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 if (isset($_REQUEST[PropertyKey::$view_method])) {
-    $controller = new giroController();
-    $controller->giros();
+    $controller = new iconosController();
+    $controller->iconos();
 }
 
 /**
- * Description of giroController
+ * Description of iconosController
  *
  * @author ShadowDarkCat
  */
-class giroController {
+class iconosController {
 
     private $session;
     private $method;
-    private $giroBo;
+    private $iconosBo;
 
     public function __construct() {
-        $this->giroBo = new GiroBoImpl();
+        $this->iconosBo = new IconosBoImpl();
         $this->session = $_SESSION[PropertyKey::$session_usuario];
         if (isset($_REQUEST[PropertyKey::$view_method])) {
             $this->method = $_REQUEST[PropertyKey::$view_method];
@@ -30,7 +30,7 @@ class giroController {
         unset($_REQUEST[PropertyKey::$view_method]);
     }
 
-    public function giros() {
+    public function iconos() {
         switch ($this->method) {
             case 0:
                 $this->findAll();
@@ -39,9 +39,9 @@ class giroController {
     }
 
     private function findAll() {
-        $giro = $this->giroBo->findAll($this->session);
-        if (!empty($giro)) {
-            $_SESSION[PropertyKey::$session_giro] = serialize($giro);
+        $iconos = $this->iconosBo->findAll($this->session);
+        if (!empty($iconos)) {
+            $_SESSION[PropertyKey::$session_iconos] = serialize($iconos);
         }
     }
 

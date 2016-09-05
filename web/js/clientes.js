@@ -8,17 +8,16 @@ $(document).ready(function () {
     $('#divMessageDelete').find('#lblTittleDelete').text('Cliente');
     $('#divActivar').find('#lblTittleActivar').text('Cliente');
     $('#divExiste').find('#lblTittleExists').text('Cliente');
-
     $('#btnActualizar').prop('disabled', true);
     $('#btnEliminar').prop('disabled', true);
     $('#tblClientes').DataTable({
-        "ordering": false,
-        "info":     false,
-        language: {
+        'ordering': false
+        , 'info': false
+        , 'displayLength': 1
+        , language: {
             url: contextoGlobal + '/web/resources/es_ES.json'
         }
     });
-
     $(function () {
         $('#txtColonia').autocomplete({
             source: availableTags
@@ -81,25 +80,21 @@ $(document).ready(function () {
             }
         });
     });
-
     $('#btnRegistrar').on('click', function () {
         $('#frmCliente').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/clienteController.php?&method=1');
         if ($('#frmCliente').validate().form()) {
             $('#frmCliente').submit();
         }
     });
-
     $('#btnActualizar').on('click', function () {
         if ($('#frmCliente').validate().form()) {
             $('#frmCliente').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/clienteController.php?method=2');
             $('#divMessageUpdate').modal('show');
         }
     });
-
     $('#btnUpdate').on('click', function () {
         $('#frmCliente').submit();
     });
-
     $('#btnEliminar').on('click', function () {
         $('#chkActivo').prop('checked', false);
         if ($('#frmCliente').validate().form()) {
@@ -110,7 +105,6 @@ $(document).ready(function () {
     $('#btnDelete').on('click', function () {
         $('#frmCliente').submit();
     });
-
     $('#btnActivate').on('click', function () {
         $('#chkActivo').prop('checked', true);
         if ($('#frmCliente').validate().form()) {
@@ -121,19 +115,24 @@ $(document).ready(function () {
     $('#btnAceptarActivar').on('click', function () {
         $('#frmCliente').submit();
     });
-
-
 });
 function showData(index, action) {
-    var data = clientes[index].split(',');    
-    if (action == 0) {
-        enabled();
-        $('#frmCliente').find('#btnActualizar').prop('disabled', false);
-        $('#frmCliente').find('#btnEliminar').prop('disabled', true);
+    var data = clientes[index].split(',');
+    if (data[18] == true) {
+        if (action == 0) {
+            enabled();
+            $('#frmCliente').find('#btnActualizar').prop('disabled', false);
+            $('#frmCliente').find('#btnEliminar').prop('disabled', true);
+        } else {
+            disabled();
+            $('#frmCliente').find('#btnEliminar').prop('disabled', false);
+            $('#frmCliente').find('#btnActualizar').prop('disabled', true);
+        }
     } else {
         disabled();
-        $('#frmCliente').find('#btnEliminar').prop('disabled', false);
-        $('#frmCliente').find('#btnActualizar').prop('disabled', true);
+        $('#btnActualizar').prop('disabled', true);
+        $('#btnEliminar').prop('disabled', true);
+        $('#chkActivo').prop('checked', false);
     }
     $('#txtIdCliente').val(data[0]);
     $('#txtNombre').val(data[1]);
@@ -179,32 +178,30 @@ function showData(index, action) {
 }
 
 function enabled() {
-    $('#txtIdCliente').prop('disabled', false);
-    $('#txtNombre').prop('disabled', false);
-    $('#txtPaterno').prop('disabled', false);
-    $('#txtMaterno').prop('disabled', false);
-    $('#txtCalle').prop('disabled', false);
-    $('#txtNoExterior').prop('disabled', false);
-    $('#txtNoInterior').prop('disabled', false);
-    $('#txtColonia').prop('disabled', false);
-    $('#txtCp').prop('disabled', false);
-    $('#txtTelefono').prop('disabled', false);
-    $('#txtOtroTelefono').prop('disabled', false);
-    $('#txtMail').prop('disabled', false);
-    $('#txtGiro').prop('disabled', false);
+    $('#txtNombre').prop('readonly', false);
+    $('#txtPaterno').prop('readonly', false);
+    $('#txtMaterno').prop('readonly', false);
+    $('#txtCalle').prop('readonly', false);
+    $('#txtNoExterior').prop('readonly', false);
+    $('#txtNoInterior').prop('readonly', false);
+    $('#txtColonia').prop('readonly', false);
+    $('#txtCp').prop('readonly', false);
+    $('#txtTelefono').prop('readonly', false);
+    $('#txtOtroTelefono').prop('readonly', false);
+    $('#txtMail').prop('readonly', false);
+    $('#txtGiro').prop('readonly', false);
 }
 function disabled() {
-    $('#txtIdCliente').prop('disabled', true);
-    $('#txtNombre').prop('disabled', true);
-    $('#txtPaterno').prop('disabled', true);
-    $('#txtMaterno').prop('disabled', true);
-    $('#txtCalle').prop('disabled', true);
-    $('#txtNoExterior').prop('disabled', true);
-    $('#txtNoInterior').prop('disabled', true);
-    $('#txtColonia').prop('disabled', true);
-    $('#txtCp').prop('disabled', true);
-    $('#txtTelefono').prop('disabled', true);
-    $('#txtOtroTelefono').prop('disabled', true);
-    $('#txtMail').prop('disabled', true);
-    $('#txtGiro').prop('disabled', true);    
+    $('#txtNombre').prop('readonly', true);
+    $('#txtPaterno').prop('readonly', true);
+    $('#txtMaterno').prop('readonly', true);
+    $('#txtCalle').prop('readonly', true);
+    $('#txtNoExterior').prop('readonly', true);
+    $('#txtNoInterior').prop('readonly', true);
+    $('#txtColonia').prop('readonly', true);
+    $('#txtCp').prop('readonly', true);
+    $('#txtTelefono').prop('readonly', true);
+    $('#txtOtroTelefono').prop('readonly', true);
+    $('#txtMail').prop('readonly', true);
+    $('#txtGiro').prop('readonly', true);
 }

@@ -1,7 +1,9 @@
 <?php
 require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/com/aestre/AutoLoad.php');
 spl_autoload_register('aestre_autoload', FALSE);
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 $login = $_SESSION[PropertyKey::$session_usuario];
 if (!isset($login)) {
     echo(PropertyKey::$php_index);

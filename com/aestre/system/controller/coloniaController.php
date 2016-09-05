@@ -2,6 +2,9 @@
 
 require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/com/aestre/AutoLoad.php');
 spl_autoload_register('aestre_autoload', FALSE);
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 if (isset($_REQUEST[PropertyKey::$view_method])) {
     $controller = new coloniaController();
     $controller->colonias();

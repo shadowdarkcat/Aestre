@@ -96,6 +96,6 @@ class Utils {
         }
         return $query;
     }
-
+    
     //</editor-fold>
 }

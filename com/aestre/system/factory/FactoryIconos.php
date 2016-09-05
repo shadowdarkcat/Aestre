@@ -4,19 +4,18 @@ require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/com/aestre/AutoLoad
 spl_autoload_register('aestre_autoload', FALSE);
 
 /**
- * Description of FactoryDispositivo
+ * Description of FactoryIconos
  *
  * @author ShadowDarkCat
  */
-class FactoryDispositivo {
-
-    //<editor-fold defaultstate="collapsed" desc="Funciones P&uacute;blicas">
+class FactoryIconos {
+     //<editor-fold defaultstate="collapsed" desc="Funciones P&uacute;blicas">
     public static final function newInstance($id) {
         if (Utils::isReallyEmptyOrNull($id)) {
-            return new BeanDispositivo();
+            return new BeanIconos();
         } else {
-            $dto = new BeanDispositivo();
-            $dto->setIdDispositivo($id);
+            $dto = new BeanIconos();
+            $dto->setIdIcono($id);
             return $dto;
         }
     }
