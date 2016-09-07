@@ -30,8 +30,12 @@ class SqlUtils {
             return self::getIconos($obj, $row);
         } else if ($obj instanceof DtoVehiculo) {
             return self::getVehiculos($obj, $row);
-        }else if($obj instanceof BeanClienteVehiculo){
-            return self::getClienteVehiculo($obj,$row);
+        } else if ($obj instanceof BeanClienteVehiculo) {
+            return self::getClienteVehiculo($obj, $row);
+        } else if ($obj instanceof BeanLicencia) {
+            return self::getLicencia($obj, $row);
+        } else if ($obj instanceof DtoConductor) {
+            return self::getConductor($obj, $row);
         }
     }
 
@@ -126,13 +130,13 @@ class SqlUtils {
         $dto->setActivo($row[8]);
         $dto->setApagado($row[9]);
         $dto->setBeanDispositivo(FactoryDispositivo::newInstance($row[10]));
-        $dto->setBeanZona(NULL);//FactoryZona::newInstance($row[11]));
+        $dto->setBeanZona(NULL); //FactoryZona::newInstance($row[11]));
         $dto->setBeanRuta(NULL); //FactoryRuta::newInstance($row[12]));
         $dto->setBeanIconos(FactoryIconos::newInstance($row[13]));
         $dto->setVerificacion($row[14]);
         return $dto;
     }
-    
+
     private static final function getClienteVehiculo(BeanClienteVehiculo $bean, $row) {
         $bean->setId($row[0]);
         $bean->setIdCliente($row[1]);
@@ -144,6 +148,35 @@ class SqlUtils {
         $bean->setEnterRuta($row[7]);
         return $bean;
     }
+
+    private static final function getLicencia(BeanLicencia $bean, $row) {
+        $bean->setIdLicencia($row[0]);
+        $bean->setLicencia($row[1]);
+        return $bean;
+    }
+
+    private static final function getConductor(DtoConductor $dto, $row) {
+        $dto->setIdConductor($row[0]);
+        $dto->setNombre($row[1]);
+        $dto->setPaterno($row[2]);
+        $dto->setMaterno($row[3]);
+        $dto->setTelefono($row[4]);
+        $dto->setOtroTelefono($row[5]);
+        $dto->setMail($row[6]);
+        $dto->setCalle($row[7]);
+        $dto->setNoExterior($row[8]);
+        $dto->setNoInterior($row[9]);
+        $dto->setBeanCp(FactoryColonia::newInstance($row[10]));
+        $dto->setNoLicencia($row[11]);
+        $dto->setVigencia($row[12]);
+        $dto->setBeanLicencia(FactoryLicencia::newInstance($row[13]));
+        $dto->setDtoVehiculo(FactoryVehiculo::newInstance(NULL));
+        $dto->setActivo($row[14]);
+        return $dto;
+    }
+/*
+ * o`
+ */
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Metodos P&uacute;blicos">
     public static final function execute(Jdbc $connection, $query) {

@@ -13,6 +13,8 @@ class JsonUtils {
             return self::getJsonCliente($obj);
         } else if ($obj[0] instanceof DtoVehiculo) {
             return self::getJsonVehiculo($obj);
+        } else if ($obj[0] instanceof DtoConductor) {
+            return self::getJsonConductor($obj);
         }
     }
 
@@ -54,7 +56,7 @@ class JsonUtils {
                 , 'dispositivo' => array(
                     'id' => $val->getBeanDispositivo()->getIdDispositivo(), 'dispositivo' => $val->getBeanDispositivo()->getDispositivo()
                 )
-               // , 'idZona' => $val->getBeanZona()->getId(), 'idRuta' => $val->getBeanRuta()->getId()
+                // , 'idZona' => $val->getBeanZona()->getId(), 'idRuta' => $val->getBeanRuta()->getId()
                 , 'icons' => array(
                     'id' => $val->getBeanIconos()->getIdIcono(), 'path' => $val->getBeanIconos()->getPathIcono()
                 )
@@ -62,5 +64,66 @@ class JsonUtils {
         }
         return $json;
     }
+
+    private static final function getJsonConductor(DtoVehiculo $dto) {
+        $json = array();
+        foreach ($object as $val) {
+            $json[] = array(
+                'id' => $val->getId(), 'nombre' => $val->getNombre()
+                , 'paterno' => $val->getPaterno(), 'materno' => $val->getMaterno()
+                , 'tel' => $val->getTelefono()
+                , 'otroTel' => $val->getOtroTelefono()
+                , 'mail' => $val->getMail()
+                , 'calle' => $val->getCalle(), 'exterior' => $val->getNoExterior()
+                , 'interior' => ($val->getNoInterior() == 'NULL' ? 'S/N' : $val->getNoInterior())
+                , 'cp' => $this->getColoniaJson($val)
+                , 'noLicencia' => $val->getNoLicencia(), 'vigencia' => $val->getVigencia()
+                , 'beanLicencia' => $this->getLicencia($val)
+                , 'activo' => $val->getActivo()
+                , 'dtoVehiculo' => $this->getVehiculoJson($val)
+            );
+        }
+        return $json;
+    }
+
     //</editor-fold>
+
+    private function getVehiculoJson($val) {
+        return array(
+            'id' => $val->getDtoVehiculo()->getId(), 'modelo' => $val->getDtoVehiculo()->getModelo()
+            , 'marca' => $val->getDtoVehiculo()->getMarca(), 'placa' => $val->getDtoVehiculo()->getPlaca()
+            , 'uso' => array(
+                'idUso' => $val->getDtoVehiculo()->getBeanUso()->getId(), 'uso' => $val->getDtoVehiculo()->getBeanUso()->getUso()
+            )
+            , 'color' => $val->getDtoVehiculo()->getColor(), 'veri' => $val->getDtoVehiculo()->getVerificacion(), 'imei' => $val->getDtoVehiculo()->getImei()
+            , 'celular' => $val->getDtoVehiculo()->getCelular(), 'apagado' => $val->getDtoVehiculo()->getApagado()
+            , 'dispositivo' => array(
+                'id' => $val->getDtoVehiculo()->getBeanDispositivo()->getId(), 'dispositivo' => $val->getDtoVehiculo()->getBeanDispositivo()->getDispositivo()
+            )
+            , 'idZona' => $val->getDtoVehiculo()->getIdZona(), 'idRuta' => $val->getDtoVehiculo()->getIdRuta()
+            , 'icons' => array(
+                'id' => $val->getDtoVehiculo()->getBeanIcon()->getId(), 'path' => $val->getDtoVehiculo()->getBeanIcon()->getPath()
+            )
+        );
+    }
+
+    private function getColoniaJson($val) {
+        return array(
+            'id' => $val->getId()
+            , 'idCp' => $val->getBeanCp()->getIdCp(), 'cp' => $val->getBeanCp()->getCp()
+            , 'col' => $val->getBeanCp()->getCol()
+            , 'dele' => (empty($val->getBeanCp()->getDelegacion()) ? 'NULL' : $val->getBeanCp()->getDelegacion())
+            , 'muni' => (empty($val->getBeanCp()->getMunicipio()) ? 'NULL' : $val->getBeanCp()->getMunicipio())
+            , 'estado' => $val->getBeanCp()->getEstado()
+            , 'ciudad' => (empty($val->getBeanCp()->getCiudad()) ? 'NA' : $val->getBeanCp()->getCiudad())
+        );
+    }
+
+    private function getLicencia($val) {
+        return array(
+            'id' => $val->getBeanLicencia()->getIdLicencia()
+            , 'tipo' => $val->getBeanLicencia()->getLicencia()
+        );
+    }
+
 }

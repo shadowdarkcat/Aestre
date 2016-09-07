@@ -3,34 +3,38 @@ require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/com/aestre/AutoLoad
 require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/views/principalAdmin.php');
 spl_autoload_register('aestre_autoload', FALSE);
 if (session_status() === PHP_SESSION_NONE) {
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
+    session_start();
 }
 if (!isset($login)) {
     echo(PropertyKey::$php_index);
 }
 $exist = '';
-$clientes=[];
-if (isset($_SESSION[PropertyKey::$session_clientes])) {
-    $clientes = unserialize($_SESSION[PropertyKey::$session_clientes]);
+$conductores = [];
+if (isset($_SESSION[PropertyKey::$session_conductores])) {
+    $conductores = unserialize($_SESSION[PropertyKey::$session_conductores]);
 }
-
-if (isset($_SESSION[PropertyKey::$session_exists])) {
-    $exist = unserialize($_SESSION[PropertyKey::$session_exists]);
-    unset($_SESSION[PropertyKey::$session_exists]);
+$controllerL = new licenciaController();
+$controllerL->licencias();
+if (isset($_SESSION[PropertyKey::$session_licencias])) {
+    $licencias = unserialize($_SESSION[PropertyKey::$session_licencias]);
+}
+$controllerV = new vehiculoController();
+$controllerV->findAllToConductor();
+if (isset($_SESSION[PropertyKey::$session_vehiculos])) {
+    $vehiculos = unserialize($_SESSION[PropertyKey::$session_vehiculos]);
 }
 ?>
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">        
-        <script type="text/javascript" src="../web/js/clientes.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <script type="text/javascript" src="../web/js/conductores.js"></script>
         <script>
-            var clientes = [];
+            var conductores = [];
         </script>
-        <title>Nuevo Cliente</title>
+        <title>Nuevo Conductor</title>
     </head>
     <body>
         <br/><br/><br/>
@@ -39,11 +43,12 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                 <div class="row">
                     <div class="col-lg-12 col-md-4 col-sm-6 col-xs-12">
                         <div class="table">
-                            <table id="tblClientes" class="table table-striped table-bordered dt-responsive nowrap" data-role="datatable"  data-info="false">
+                            <table id="tblConductores" class="table table-striped table-bordered dt-responsive nowrap display">
                                 <thead>
                                     <tr>
-                                        <th style="text-align: center"><label class="font-size">Cliente</label></th>
+                                        <th style="text-align: center"><label class="font-size"># Conductor</label></th>
                                         <th style="text-align: center"><label class="font-size">Nombre Completo</label></th>
+                                        <th style="text-align: center"><label class="font-size">Veh&iacute;culo</label></th>
                                         <th style="text-align: center"><label class="font-size">Activo</label></th>
                                         <th style="text-align: center"><label class="font-size">Editar</label></th>
                                         <th style="text-align: center"><label class="font-size">Habilitar/Inhabilitar</label></th>
@@ -52,17 +57,18 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                 <tbody>
                                     <?php
                                     $index = 0;
-                                    foreach ($clientes as $item) {
+                                    foreach ($conductores as $item) {
                                         setData($item);
-                                        echo ('<tr>'
-                                        . '<td  style="text-align: center">'
-                                        . '<label class="font-size" id="lblId">' . $item->getIdCliente()
-                                        . '</label></td>'
-                                        . '<td  style="text-align: center">'
-                                        . '<label class="font-size">'
-                                        . $item->getNombre() . ' '
-                                        . $item->getPaterno() . ' '
-                                        . $item->getMaterno() . '</label></td>'
+                                        echo('<tr>' .
+                                        '<td style="text-align: center">'
+                                        . $item->getIdConductor()
+                                        . '</td>'
+                                        . '<td style="text-align: center">'
+                                        . $item->getNombre() . ' ' . $item->getPaterno() . ' ' . $item->getMaterno()
+                                        . '</td>'
+                                        . '<td style="text-align: center">'
+                                        . $item->getDtoVehiculo()->getMarca() . ' ' . $item->getDtoVehiculo()->getModelo() . ' ' . $item->getDtoVehiculo()->getPlaca()
+                                        . '</td>'
                                         . '<td  style="text-align: center">'
                                         . '<label class="font-size">'
                                         . (($item->getActivo() == TRUE) ? 'Sí' : 'NO')
@@ -77,21 +83,22 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                         . 'onclick="showData(' . $index . ',1);">'
                                         . '<img src="../web/images/habilitar.png" height="29px" width="23px;"></button>'
                                         . '</td></tr>');
-                                        $index++;
                                     }
                                     ?>
-                                </tbody>                    
+                                </tbody>
                             </table>
                         </div>
-                    </div>                   
-                    <form id="frmCliente" name="frmCliente" method="post">
-                        <input type="hidden" id="txtIdCliente" name="txtIdCliente" />
+                    </div>
+                </div>
+                <div class="row">
+                    <form id="frmConductor" name="frmConductor" method="post">
+                        <input type="hidden" id="txtIdConductor" name="txtIdConductor" />
                         <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
                             <div class="table-responsive">
                                 <fieldset>
                                     <legend class="text-muted alert-info">
                                         <img src="../web/images/nuevoRegistro.png">
-                                        <label class="font-size">Datos Cliente</label>
+                                        <label class="font-size">Datos Conductor</label>
                                     </legend>       
                                     <table id="tblRegistroCliente" class="table">
                                         <thead>
@@ -141,7 +148,7 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                                     <label class="font-size"> <span class="req">*</span> N<sup>o</sup> Local</label>
                                                 </th>
                                                 <th class="dt-responsive alert-info" style="text-align: center">
-                                                    <label class="font-size"> <span class="req">*</span> N<sup>o</sup> M&oacute;vil</label>
+                                                    <label class="font-size"> N<sup>o</sup> M&oacute;vil</label>
                                                 </th>
                                                 <th class="dt-responsive alert-info" style="text-align: center">
                                                     <label class="font-size"> <span class="req">*</span>  E-Mail</label>
@@ -259,18 +266,74 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                             <div class="table-responsive">
                                 <fieldset>
                                     <legend class="text-muted alert-info">
-                                        <img src="../web/images/giro.png">
-                                        <label class="font-size">Giro</label>
+                                        <img src="../web/images/licencia.png">
+                                        <label class="font-size">Datos Licencia</label>
                                     </legend>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="dt-responsive alert-info" style="text-align: center">
+                                                    <label class="font-size"> <span class="req">*</span> N<sup>o</sup> Licencia</label>
+                                                </th>
+                                                <th class="dt-responsive alert-info" style="text-align: center">
+                                                    <label class="font-size"> <span class="req">*</span> Vigencia</label>
+                                                </th>
+                                                <th class="dt-responsive alert-info" style="text-align: center">
+                                                    <label class="font-size"> <span class="req">*</span> Tipo Licencia</label>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <input type="text" id="txtNoLicencia" name="txtNoLicencia" class="required form-control col-xs-1 input-sm" 
+                                                           placeholder="Ingrese la licencia" onkeypress="mayuscula(this);"/>
+                                                </td>
+                                                <td>
+                                                    <input type="text" id="txtVigencia" name="txtVigencia" class="required form-control col-xs-1 input-sm" 
+                                                           placeholder="Ingrese la vigencia" onkeypress="mayuscula(this);"/>
+                                                </td>
+                                                <td>
+                                                    <select id="cboLicencia" name="cboLicencia" class="required form-control col-xs-1 input-sm">
+                                                        <option value=""></option>
+                                                        <?php
+                                                        foreach ($licencias as $item) {
+                                                            echo('<option value="' . $item->getIdLicencia() . '">' . $item->getLicencia() . '</option>');
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </tbody> 
+                                    </table>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
+                            <div class="table-responsive">
+                                <fieldset>
+                                    <legend class="text-muted alert-info">
+                                        <img src="../web/images/menuConductor.png">
+                                        <label class="font-size">Ve&iacute;culo a Conducir</label>
+                                    </legend>   
                                     <table class="table">
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <input type="text" id="txtGiro" name="txtGiro" class="form-control col-xs-1 input-sm" 
-                                                           placeholder="Ingrese Griro de la Empresa" onkeypress="mayuscula(this);"/>
+                                                    <select id="cboVehiculo" name="cboVehiculo" class="required form-control col-xs-1 input-sm">
+                                                        <option value=""></option>
+                                                        <?php
+                                                        foreach ($vehiculos->getClientes() as $item) {
+                                                            foreach ($item->getVehiculos() as $items) {
+                                                                echo('<option value="' . $items->getIdVehiculo() . '">' . $items->getModelo() . ' '
+                                                                . $items->getPlaca() . '</option>');
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </select>
                                                 </td>
                                             </tr>
-                                        </tbody> 
+                                        </tbody>                                                    
                                     </table>
                                 </fieldset>
                             </div>
@@ -306,28 +369,32 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                                 <button type="button" class="btn" id="btnActivate" name="btnActivate" style="display: none;">
                                     <img src="../web/images/habilitar.png">Habilitar</button>
                             </div>
-                        </div>
+                        </div>                    
                     </form>
                 </div>
-            </div>           
+            </div>
+        </div>
     </body>
 </html>
 <?php
 
-function setData(DtoCliente $item) {
+function setData(DtoConductor $item) {
     ?>
     <script>
-        clientes.push(
+        conductores.push(
     <?php
-    echo('\'' . $item->getIdCliente() . ',' . $item->getNombre()
+    echo('\'' . $item->getIdConductor() . ',' . $item->getNombre()
     . ',' . $item->getPaterno() . ',' . $item->getMaterno()
+    . ',' . $item->getTelefono() . ',' . $item->getOtroTelefono() . ',' . $item->getMail()
     . ',' . $item->getCalle() . ',' . $item->getNoExterior()
     . ',' . $item->getNoInterior() . ',' . $item->getBeanCp()->getIdCp()
     . ',' . $item->getBeanCp()->getCol() . ',' . $item->getBeanCp()->getCp()
     . ',' . $item->getBeanCp()->getDelegacion() . ',' . $item->getBeanCp()->getMunicipio()
     . ',' . $item->getBeanCp()->getEstado() . ',' . $item->getBeanCp()->getCiudad()
-    . ',' . $item->getTelefono() . ',' . $item->getOtroTelefono() . ',' . $item->getMail()
-    . ',' . $item->getGiro() . ',' . $item->getActivo() . '\'');
+    . ',' . $item->getNoLicencia() . ',' . $item->getVigencia()
+    . ',' . $item->getBeanLicencia()->getIdLicencia()
+    . ',' . $item->getDtoVehiculo()->getIdVehiculo()
+    . ',' . $item->getActivo() . '\'');
     ?>);
     </script>
     <?php

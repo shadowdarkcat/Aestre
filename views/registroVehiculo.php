@@ -9,6 +9,7 @@ if (!isset($login)) {
     echo(PropertyKey::$php_index);
 }
 $exist = '';
+$vehiculos=[];
 if (isset($_SESSION[PropertyKey::$session_vehiculos])) {
     $vehiculos = unserialize($_SESSION[PropertyKey::$session_vehiculos]);
 }
@@ -48,7 +49,7 @@ if (isset($_SESSION[PropertyKey::$session_clientes])) {
         <title>Nuevo Vehiculo</title>
     </head>
     <body>
-        <br/><br/><br/><br/><br/>
+        <br/><br/><br/>
         <div class="container-fluid" style="background: white;">
             <div class="container">
                 <div class="row">
@@ -127,7 +128,8 @@ if (isset($_SESSION[PropertyKey::$session_clientes])) {
                                     <table class="table table-striped table-bordered dt-responsive nowrap display">
                                         <thead>
                                             <tr>
-                                                <th class="alert-info" style="text-align: center">Cliente</th>
+                                                <th class="alert-info" style="text-align: center">
+                                                    <label class=" font-size">Cliente</label></th>
                                             </tr>
                                         </thead>
                                         <tbody>

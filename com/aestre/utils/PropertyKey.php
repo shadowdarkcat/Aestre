@@ -18,14 +18,17 @@ class PropertyKey {
     public static $jdbc_password;
     public static $jdbc_port;
     public static $jdbc_charset;
-    public static $jdbc_view_user;
-    public static $jdbc_view_menu;
-    public static $jdbc_view_privilegio;
     public static $jdbc_function_exist_cliente;
     public static $jdbc_function_exist_vehiculo;
+    public static $jdbc_function_exist_conductor;
+    public static $jdbc_function_last_conductor;
     public static $jdbc_procedure_privilegios;
     public static $jdbc_procedure_cliente;
     public static $jdbc_procedure_vehiculo;
+    public static $jdbc_procedure_conductor;
+    public static $jdbc_view_user;
+    public static $jdbc_view_menu;
+    public static $jdbc_view_privilegio;
     public static $jdbc_view_colonia;
     public static $jdbc_view_colonia_id;
     public static $jdbc_view_dispositivo;
@@ -44,6 +47,10 @@ class PropertyKey {
     public static $jdbc_view_cliente_vehiculo_vehiculo;
     public static $jdbc_view_cliente_vehiculo_conductor;
     public static $jdbc_view_cliente_vehiculo;
+    public static $jdbc_view_licencia;
+    public static $jdbc_view_licencia_id;
+    public static $jdbc_view_conductor;
+    public static $jdbc_view_conductor_id;
     public static $session_access;
     public static $session_usuario;
     public static $session_clientes;
@@ -53,6 +60,8 @@ class PropertyKey {
     public static $session_dispositivos;
     public static $session_iconos;
     public static $session_vehiculos;
+    public static $session_licencias;
+    public static $session_conductores;
     public static $view_user;
     public static $view_password;
     public static $view_method;
@@ -80,11 +89,17 @@ class PropertyKey {
     public static $view_color;
     public static $view_dtp_verificacion;
     public static $view_icono_id;
+    public static $view_licencia;
+    public static $view_vigencia;
+    public static $view_cbo_licencia;
+    public static $view_cbo_vehiculo;
+    public static $view_idConductor;
     public static $php_index;
     public static $php_main_admin;
     public static $php_main_user;
     public static $php_main_cliente;
     public static $php_main_vehiculo;
+    public static $php_main_conductor;
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Constructores Privados">
@@ -117,13 +132,20 @@ class PropertyKey {
         self::$jdbc_view_cliente_vehiculo_vehiculo = $this->getPropertyBd('jdbc.view.cliente.vehiculo.idVehiculo');
         self::$jdbc_view_cliente_vehiculo_conductor = $this->getPropertyBd('jdbc.view.cliente.vehiculo.idConductor');
         self::$jdbc_view_cliente_vehiculo = $this->getPropertyBd('jdbc.view.cliente.vehiculo');
+        self::$jdbc_view_licencia = $this->getPropertyBd('jdbc.view.licencias');
+        self::$jdbc_view_licencia_id = $this->getPropertyBd('jdbc.view.licencias.id');
+        self::$jdbc_view_conductor = $this->getPropertyBd('jdbc.view.conductores');
+        self::$jdbc_view_conductor_id = $this->getPropertyBd('jdbc.view.conductores.id');
 
         self::$jdbc_procedure_privilegios = $this->getPropertyBd('jdbc.procedure.menu.privilegio');
 
         self::$jdbc_function_exist_cliente = $this->getPropertyBd('jdbc.function.exist.cliente');
         self::$jdbc_function_exist_vehiculo = $this->getPropertyBd('jdbc.function.exist.vehiculo');
+        self::$jdbc_function_exist_conductor = $this->getPropertyBd('jdbc.function.exist.conductor');
+        self::$jdbc_function_last_conductor = $this->getPropertyBd('jdbc.function.last.conductor');
         self::$jdbc_procedure_cliente = $this->getPropertyBd('jdbc.procedure.cliente');
         self::$jdbc_procedure_vehiculo = $this->getPropertyBd('jdbc.procedure.vehiculo');
+        self::$jdbc_procedure_conductor = $this->getPropertyBd('jdbc.procedure.conductor');
 
         self::$session_access = $this->getPropertySystem('session.acces');
         self::$session_usuario = $this->getPropertySystem('session.usuario');
@@ -134,12 +156,15 @@ class PropertyKey {
         self::$session_dispositivos = $this->getPropertySystem('session.dispositivos');
         self::$session_iconos = $this->getPropertySystem('session.iconos');
         self::$session_vehiculos = $this->getPropertySystem('session.vehiculos');
-        
+        self::$session_licencias = $this->getPropertySystem('session.licencias');
+        self::$session_conductores = $this->getPropertySystem('session.conductores');
+
         self::$php_index = $this->getPropertySystem('php.index');
         self::$php_main_admin = $this->getPropertySystem('php.main.admin');
         self::$php_main_user = $this->getPropertySystem('php.main.user');
         self::$php_main_cliente = $this->getPropertySystem('php.main.cliente');
         self::$php_main_vehiculo = $this->getPropertySystem('php.main.vehiculo');
+        self::$php_main_conductor = $this->getPropertySystem('php.main.conductor');
 
         self::$view_user = $this->getPropertySystem('view.user');
         self::$view_password = $this->getPropertySystem('view.password');
@@ -168,6 +193,11 @@ class PropertyKey {
         self::$view_color = $this->getPropertySystem('view.color');
         self::$view_dtp_verificacion = $this->getPropertySystem('view.dtp.verificacion');
         self::$view_icono_id = $this->getPropertySystem('view.id.icono');
+        self::$view_licencia = $this->getPropertySystem('view.licencia');
+        self::$view_vigencia = $this->getPropertySystem('view.vigencia');
+        self::$view_cbo_licencia = $this->getPropertySystem('view.cbo.licencia');
+        self::$view_cbo_vehiculo = $this->getPropertySystem('view.cbo.vehiculo');
+        self::$view_idConductor = $this->getPropertySystem('view.id.conductor');
     }
 
     //</editor-fold>

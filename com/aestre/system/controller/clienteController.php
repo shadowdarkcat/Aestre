@@ -103,7 +103,6 @@ class clienteController {
         $cliente->setMail(strtolower($_REQUEST[PropertyKey::$view_mail]));
         $cliente->setGiro($_REQUEST[PropertyKey::$view_giro]);
         $cliente->setActivo(isset($_REQUEST[PropertyKey::$view_chkActivo]) ? Utils::isIsset($_REQUEST[PropertyKey::$view_chkActivo]) : Utils::isIsset(NULL));
-        $cliente->setActivo(Utils::isChecked($_REQUEST[PropertyKey::$view_chkActivo]));
         $cliente->setRefresh(NULL);
         return $cliente;
     }

@@ -4,6 +4,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
+    font-family: "Times New Roman", Georgia, Serif, Arial, Helvetica, sans-serif;
 }
 
 .req{
@@ -11,9 +12,13 @@ body {
 }
 
 .font-size{    
-    font-size: 12px;
+    font-size: 11px;
 }
 
+.error{
+    font-family: "Times New Roman", Georgia, Serif, Arial, Helvetica, sans-serif;
+    font-size: 11px;
+}
 .modal .modal-body {
     max-height: 420px;
     overflow-y: auto;
@@ -191,4 +196,91 @@ html, body, #divMapGeorutaBaja  {
 #divMapGeorutaBaja {
     width:100%;
     height:380px;
+}
+
+div.dataTables_wrapper {
+	background-color: transparent;
+}
+
+div.dataTables_length {
+	float: left;
+        font-family: "Times New Roman", Georgia, Serif, Arial, Helvetica, sans-serif;
+        font-size: 11px;
+}
+
+div.dataTables_filter {
+	float: right;
+        
+}
+
+div.dataTables_info {
+	padding: 9px 6px 6px 6px;
+	float: left;
+}
+
+div.dataTables_paginate {
+	float: right;
+}
+
+div.dataTables_length,
+div.dataTables_filter,
+div.dataTables_paginate {
+	padding: 0px;
+        font-family: "Times New Roman", Georgia, Serif, Arial, Helvetica, sans-serif;
+        font-size: 11px;
+}
+
+/* Self clearing - http://www.webtoolkit.info/css-clearfix.html */
+.dataTables_wrapper:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+ 
+html[xmlns] .dataTables_wrapper {
+	display: block;
+}
+ 
+* html .dataTables_wrapper {
+	height: 1%;
+}
+
+
+/*
+ * Table styles
+ */
+table.pretty {
+	width: 100%;
+	clear: both;
+}
+
+table.pretty td,
+table.pretty th {
+	padding: 2px;
+	border: 1px solid #fff;
+        
+}
+
+/* Header cells */
+table.pretty thead th {
+	text-align: center;
+	background: #66a9bd;
+}
+
+/* Body cells */
+table.pretty tbody th {
+	text-align: left;
+	background: #91c5d4;
+}
+	
+table.pretty tbody td {
+	text-align: center;
+	background: #d5eaf0;
+}
+		
+table.pretty tbody tr.odd td { 
+	background: #bcd9e1;
 }
