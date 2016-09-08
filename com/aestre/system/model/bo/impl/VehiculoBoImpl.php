@@ -51,7 +51,7 @@ class VehiculoBoImpl implements VehiculoBo {
         $objVehiculo = array();
         $dv = NULL;
         if (Utils::isSessionValid($user)) {
-            foreach ($this->getClienteVehiculo($object, $user)as $cv) {
+            foreach ($this->getClienteVehiculo($user,$object)as $cv) {
                 $dv=FactoryVehiculo::newInstance(NULL);
                 $dv->setIdVehiculo($cv->getIdVehiculo());
                 if ($idAnterior != $cv->getIdCliente()) {
@@ -188,7 +188,7 @@ class VehiculoBoImpl implements VehiculoBo {
     }
 
     private function getClienteVehiculo($user, $obj) {
-        return $this->clienteVehiculoBo->findById($obj, $user);
+        return $this->clienteVehiculoBo->findById($user,$obj);
     }
 
     private function getCliente($id, DtoLogin $user) {

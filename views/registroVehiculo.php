@@ -2,10 +2,11 @@
 require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/com/aestre/AutoLoad.php');
 require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/views/principalAdmin.php');
 spl_autoload_register('aestre_autoload', FALSE);
+new PropertyKey();
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if (!isset($login)) {
+if (!Utils::isSessionValid($_SESSION[PropertyKey::$session_usuario])) {
     echo(PropertyKey::$php_index);
 }
 $exist = '';

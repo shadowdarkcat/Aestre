@@ -33,6 +33,9 @@ class loginController {
             case 0:
                 $this->doLogin($obj, $menu);
                 break;
+            case 3:
+                $this->doLogout();
+                break;
         }
     }
 
@@ -45,19 +48,24 @@ class loginController {
             $validate = $this->loginBo->validateLogin(NULL, $obj);
             if (!Utils::isIsset($validate)) {
                 $_SESSION[PropertyKey::$session_access] = 0;
-                header(PropertyKey::$php_index);
+                echo(PropertyKey::$php_index);
             } else if ($validate->getIdUsuario() != 0) {
                 unset($_SESSION[PropertyKey::$session_access]);
                 $validate->setMenu($menu->getMenuUsuario($validate));
                 DtoLogin::setSession($validate);
                 if ($validate->getAdmin()) {
-                    header(PropertyKey::$php_main_admin);
+                    echo(PropertyKey::$php_main_admin);
                 } else {
                     echo(PropertyKey::$php_main_user);
                 }
             }
         }
-        die();
     }
 
+    private function doLogout() {
+        session_unset();
+        session_destroy();
+        session_write_close();        
+        echo(PropertyKey::$php_index);
+    }
 }
