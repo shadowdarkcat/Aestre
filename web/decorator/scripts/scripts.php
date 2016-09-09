@@ -41,6 +41,8 @@ if (isset($_SESSION[PropertyKey::$session_colonias])) {
 <link type="text/css" href="/Aestre/web/css/jquery.dataTables.css" rel="stylesheet" />
 <link type="text/css" href="/Aestre/web/css/dataTables.responsive.nightly.css" rel="stylesheet" />
 <link type="text/css" href="/Aestre/web/css/jquery.timepicker.css" rel="stylesheet" />
+<link type="text/css" href="/Aestre/web/css/jquery.tree.min.css" rel="stylesheet" />
+<link type="text/css" href="/Aestre/web/css/jquery.tree.css" rel="stylesheet" />
 <link type="text/css" href="/Aestre/web/css/style.css" rel="stylesheet" />
 <!--<style type="text/css">
 
@@ -68,6 +70,8 @@ if (isset($_SESSION[PropertyKey::$session_colonias])) {
 <script type="text/javascript" src="/Aestre/web/jquery/bootstrap/bootstrap-submenu.min.js"></script>
 <script type="text/javascript" src="/Aestre/web/jquery/bootstrap/ie-emulation-modes-warning.js"></script>
 <script type="text/javascript" src="/Aestre/web/jquery/bootstrap/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="/Aestre/web/jquery/jquery/jquery.tree.min.js"></script>
+<script type="text/javascript" src="/Aestre/web/jquery/jquery/jquery.tree.js"></script>
 <script type="text/javascript" src="/Aestre/web/resources/es-MX.js"></script>
 <script type="text/javascript" src="/Aestre/web/js/generales.js"></script>
 

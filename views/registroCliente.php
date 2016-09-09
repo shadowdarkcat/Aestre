@@ -308,7 +308,8 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                         </div>
                     </form>
                 </div>
-            </div>           
+            </div>   
+        </div>
     </body>
 </html>
 <?php

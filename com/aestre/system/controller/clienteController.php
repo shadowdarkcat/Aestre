@@ -52,6 +52,14 @@ class clienteController {
         }
     }
 
+    public function findAllToUsuario() {
+        unset($_SESSION[PropertyKey::$session_clientes]);
+        $clientes = $this->clienteBo->findAll($this->session);
+        if (!empty($clientes)) {
+            $_SESSION[PropertyKey::$session_clientes] = serialize($clientes);
+        }
+    }
+
     public function findAll($exist) {
         $this->redirect($this->clienteBo->findAll($this->session), $exist);
     }

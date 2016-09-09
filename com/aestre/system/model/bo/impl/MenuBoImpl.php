@@ -13,12 +13,14 @@ class MenuBoImpl implements MenuBo {
     //<editor-fold defaultstate="collapsed" desc="Campos de Clase">
     private $menuDao;
     private $index;
+    private $str;
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Constructores">
     public function __construct() {
         $this->index = 0;
         $this->menuDao = new MenuDaoImpl();
+        $this->str = array();
     }
 
     //</editor-fold>
@@ -108,9 +110,10 @@ class MenuBoImpl implements MenuBo {
     }
 
     private final function primerRecorridoMenu($menu, $menuDeUsuario) {
-        $str = '<div style="display: display;"><ul id="nodoPrincipal">'
-                . $this->recorridoMenu($menu, $menuDeUsuario) . '</ul>' . '</div>';
-        return $str;
+        array_push($this->str, '<div style="display: display;"><ul id="nodoPrincipal">');
+        $this->recorridoMenu($menu, $menuDeUsuario);
+        array_push($this->str, '</ul>' . '</div>');
+        return $this->str;
     }
 
     private final function recorridoMenu($menu, $menuDeUsuario) {
@@ -118,24 +121,26 @@ class MenuBoImpl implements MenuBo {
             foreach ($menu as $menuHijo) {
                 if (isset($menuHijo)) {
                     if ($menuHijo->getLeyenda() != NULL && !empty($menuHijo->getLeyenda())) {
-                        $str .='<li class="collapsed"><input type="checkbox" id="chkMenu[]" name="chkMenu[]" checked="'
+                        array_push($this->str, '<li class="collapsed"><input type="checkbox" id="chkMenu[]" name="chkMenu[]" '
+                                . 'class="checkbox-inline text-muted" checked="'
                                 . ($this->existeNodo($menuHijo, $menuDeUsuario) ? 'checked' : '')
                                 . '" value="' . $menuHijo->getId()
-                                . '" ><label class="text-muted" title="' . $menuHijo->getToolTip() . '">' . $menuHijo->getLeyenda()
-                                . '</label>';
+                                . '" ><label class="font-size" title="' . $menuHijo->getToolTip() . '">' . $menuHijo->getLeyenda()
+                                . '</label>');
                         if ($menuHijo->getChildItems() != null && !empty($menuHijo->getChildItems())) {
-                            $str .= '<ul>' . $this->recorridoMenu($menuHijo->getChildItems(), $menuDeUsuario) . '</ul>';
+                            array_push($this->str, '<ul>');
+                            $this->recorridoMenu($menuHijo->getChildItems(), $menuDeUsuario);
+                            array_push($this->str, '</ul>');
                         }
-                        $str .= '</li>';
+                        array_push($this->str, '</li>');
                     }
                 }
             }
         }
-        return $str;
     }
 
     private final function existeNodo($nodo, $menuDeUsuario) {
-        if (strpos($menuDeUsuario, $nodo)) {
+        if (@strpos($menuDeUsuario, $nodo)) {
             return true;
         } else {
             $bandera = false;

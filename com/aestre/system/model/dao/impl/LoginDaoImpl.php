@@ -23,11 +23,12 @@ class LoginDaoImpl implements LoginDao {
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Funciones P&uacute;blicas">
     public function findAll() {
-        return NULL;
+        return $this->getResultSet(PropertyKey::$jdbc_view_usuario);
     }
 
     public function findById($obj) {
-        return $obj;
+        $args = array($obj->getIdUsuario());
+        return $this->getResultSet(Utils::replaceQuery(PropertyKey::$jdbc_view_usuario, $args));
     }
 
     public function validateLogin($obj) {
@@ -38,15 +39,15 @@ class LoginDaoImpl implements LoginDao {
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Metodos P&uacute;blicos">
     public function insert($obj) {
-        
+        SqlUtils::execute($this->jdbc, Utils::replaceQuery(PropertyKey::$jdbc_procedure_login, $this->getParameters(1, $obj)));
     }
 
     public function update($obj) {
-        
+        SqlUtils::execute($this->jdbc, Utils::replaceQuery(PropertyKey::$jdbc_procedure_login, $this->getParameters(2, $obj)));
     }
 
     public function delete($obj) {
-        
+        SqlUtils::execute($this->jdbc, Utils::replaceQuery(PropertyKey::$jdbc_procedure_login, $this->getParameters(3, $obj)));
     }
 
     //</editor-fold>
@@ -61,6 +62,20 @@ class LoginDaoImpl implements LoginDao {
         }
         SqlUtils::close($this->jdbc, $rs);
         return $object;
+    }
+
+    private function getParameters($opcion, $obj) {
+        return array($opcion,
+            $obj->getIdUsuario(),
+            $obj->getNombreUsuario(),
+            $obj->getPwd(),
+            $obj->getNombre(),
+            $obj->getTelefono(),
+            $obj->getMail(),
+            $obj->getActivo(),
+            $obj->getIdCliente(),
+            $obj->getAdmin()
+        );
     }
 
     //</editor-fold>

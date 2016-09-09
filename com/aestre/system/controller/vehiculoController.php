@@ -59,7 +59,8 @@ class vehiculoController {
     }
 
     public function findAllToConductor() {
-        $this->vehiculoBo->findAll($this->session);
+        unset($_SESSION[PropertyKey::$session_vehiculos]);
+        $vehiculos = $this->vehiculoBo->findAll($this->session);
         if (!empty($vehiculos)) {
             $_SESSION[PropertyKey::$session_vehiculos] = serialize($vehiculos);
         }
