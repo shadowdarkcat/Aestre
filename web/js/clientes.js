@@ -8,9 +8,7 @@ $(document).ready(function () {
     $('#divMessageUpdate').find('#lblTittleUpdate').text('Cliente');
     $('#divMessageDelete').find('#lblTittleDelete').text('Cliente');
     $('#divActivar').find('#lblTittleActivar').text('Cliente');
-    $('#divExiste').find('#lblTittleExists').text('Cliente');
-    $('#btnActualizar').prop('disabled', true);
-    $('#btnEliminar').prop('disabled', true);
+    $('#divExiste').find('#lblTittleExists').text('Cliente');    
     $('#tblClientes').DataTable({
         language: {
             url: contextoGlobal + '/web/resources/es_ES.json'
@@ -70,6 +68,8 @@ function showNew() {
     complete();
     $('#txtNombre').focus();
     btns();
+    $('#btnActualizar').prop('disabled', true);
+    $('#btnEliminar').prop('disabled', true);
 }
 function showData(index, action) {
     var data = clientes[index].split(',');
