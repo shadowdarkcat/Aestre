@@ -21,27 +21,27 @@ class LoginBoImpl implements LoginBo {
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Funciones P&uacute;blicas">
+    public function exist($user, $obj) {
+        if (Utils::isSessionValid($user)) {
+            return $this->dao->exist($obj);
+        }
+    }
+
     public function findAll($user) {
         if (Utils::isSessionValid($user)) {
             return $this->dao->findAll();
-        } else {
-            
         }
     }
 
     public function findById($user, $obj) {
         if (Utils::isSessionValid($user)) {
             return $this->dao->findById($obj);
-        } else {
-            
         }
     }
 
     public function validateLogin($user, $obj) {
         if (!Utils::isSessionValid($user)) {
             return $this->dao->validateLogin($obj);
-        } else {
-            
         }
     }
 
@@ -49,25 +49,19 @@ class LoginBoImpl implements LoginBo {
     //<editor-fold defaultstate="collapsed" desc="Metodos P&uacute;blicos">
     public function insert($user, $obj) {
         if (Utils::isSessionValid($user)) {
-            $this->dao->insert($obj);
-        } else {
-            
+            return $this->dao->insert($obj);
         }
     }
 
     public function update($user, $obj) {
         if (Utils::isSessionValid($user)) {
             $this->dao->update($obj);
-        } else {
-            
         }
     }
 
     public function delete($user, $obj) {
         if (Utils::isSessionValid($user)) {
             $this->dao->delete($obj);
-        } else {
-            
         }
     }
 

@@ -23,6 +23,7 @@ class PropertyKey {
     public static $jdbc_function_exist_conductor;
     public static $jdbc_function_exist_login;
     public static $jdbc_function_last_conductor;
+    public static $jdbc_function_last_login;
     public static $jdbc_procedure_privilegios;
     public static $jdbc_procedure_cliente;
     public static $jdbc_procedure_vehiculo;
@@ -101,6 +102,7 @@ class PropertyKey {
     public static $view_idConductor;
     public static $view_chkAdmin;
     public static $view_usuario_id;
+    public static $view_chk_menu;
     public static $php_index;
     public static $php_main_admin;
     public static $php_main_user;
@@ -152,6 +154,7 @@ class PropertyKey {
         self::$jdbc_function_exist_login = $this->getPropertyBd('jdbc.function.exist.login');
         self::$jdbc_function_exist_conductor = $this->getPropertyBd('jdbc.function.exist.conductor');
         self::$jdbc_function_last_conductor = $this->getPropertyBd('jdbc.function.last.conductor');
+        self::$jdbc_function_last_login = $this->getPropertyBd('jdbc.function.last.login');
 
         self::$jdbc_procedure_privilegios = $this->getPropertyBd('jdbc.procedure.menu.privilegio');
         self::$jdbc_procedure_cliente = $this->getPropertyBd('jdbc.procedure.cliente');
@@ -214,6 +217,7 @@ class PropertyKey {
         self::$view_idConductor = $this->getPropertySystem('view.id.conductor');
         self::$view_chkAdmin = $this->getPropertySystem('view.chk.admin');
         self::$view_usuario_id = $this->getPropertySystem('view.usuario.id');
+        self::$view_chk_menu = $this->getPropertySystem('view.chk.menu');
         
     }
 

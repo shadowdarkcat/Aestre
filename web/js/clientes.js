@@ -1,3 +1,4 @@
+var clicks = 0;
 $(document).ready(function () {
     changeErrorMessage('frmCliente');
     $('#divMessageUpdate').find('#lblTittleUpdate').empty();
@@ -11,74 +12,18 @@ $(document).ready(function () {
     $('#btnActualizar').prop('disabled', true);
     $('#btnEliminar').prop('disabled', true);
     $('#tblClientes').DataTable({
-        'ordering': false
-        , 'info': false
-        , 'displayLength': 1
-        , language: {
+        language: {
             url: contextoGlobal + '/web/resources/es_ES.json'
         }
     });
     $(function () {
-        $('#txtColonia').autocomplete({
-            source: availableTags
-            , select: function (event, data) {
-                $('#thTitleMuni').empty('');
-                $('#tdMuni').empty('');
-                var split = [];
-                var td;
-                if (data.item) {
-                    split = data.item.value.split(',');
-                }
-                var th;
-                var td;
-                if (split[2] != '') {
-                    th = '<label class="font-size"><span class="req">*</span> Delegaci&oacute;n</label> ';
-                    td = '<td><input type="text" id="txtDelegacion" name="txtDelegacion" class="required form-control" value="'
-                            + split[2] + '" readOnly="readOnly" /></td>';
-                } else if (split[3] != '') {
-                    th = '<label class="font-size"><span class="req">*</span> Munic&iacute;pio</label> ';
-                    td = '<td><input type="text" id="txtMunicipio" name="txtMunicipio" class="required form-control" value="'
-                            + split[3] + '" readOnly="readOnly" /></td>';
-                }
-                $('#thTitleMuni').append(th);
-                $('#tdMuni').append(td);
-                $('#txtCp').val(split[4]);
-                $('#txtEstado').val(split[5]);
-                $('#txtCiudad').val(split[6]);
-                $('#txtColonia').val(split[1]);
-                $('#txtIdCp').val(split[0]);
-                $(this).val(split[1]);
-                return false;
-            }
-        }).keypress(function (e, data) {
-            if (e.which == 13) {
-                var split = [];
-                var td;
-                if (data.item) {
-                    split = data.item.value.split(',');
-                }
-                var th;
-                var td;
-                if (split[2] != '') {
-                    th = '<label class="font-size"><span class="req">*</span> Delegaci&oacute;n</label> ';
-                    td = '<td><input type="text" id="txtDelegacion" name="txtDelegacion" class="required form-control" value="'
-                            + split[2] + '" readOnly="readOnly" /></td>';
-                } else if (split[3] != '') {
-                    th = '<label class="font-size"><span class="req">*</span> Munic&iacute;pio</label> ';
-                    td = '<td><input type="text" id="txtMunicipio" name="txtMunicipio" class="required form-control" value="'
-                            + split[3] + '" readOnly="readOnly" /></td>';
-                }
-                $('#thTitleMuni').append(th);
-                $('#tdMuni').append(td);
-                $('#txtCp').val(split[4]);
-                $('#txtCp').val(split[4]);
-                $('#txtEstado').val(split[5]);
-                $('#txtCiudad').val(split[6]);
-                $('#txtIdCp').val(split[0]);
-                $(this).val(split[1]);
-                return false;
-            }
-        });
+        $('#foot').append('<tr><td  style="text-align: center">'
+                + '<button type="button" class="btn"'
+                + '     onclick="showNew();">'
+                + ' <img src="../web/images/modificar.png" height="23px" width="29px;">Nuevo</button>'
+                + '</td>'
+                + '</tr>'
+                + '<tr id="trIndxFoot0"></tr>');
     });
     $('#btnRegistrar').on('click', function () {
         $('#frmCliente').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/clienteController.php?&method=1');
@@ -116,8 +61,17 @@ $(document).ready(function () {
         $('#frmCliente').submit();
     });
 });
+function showNew() {
+    clear(size);
+    $('#trIndxFoot0').append('<td colspan="5">' + getFormCliente() + '</td></tr>');
+    complete();
+    $('#txtNombre').focus();
+}
 function showData(index, action) {
     var data = clientes[index].split(',');
+    clear(size);
+    $('#trIndxFoot0').empty();
+    $('#trIndx' + index).before('<tr id="trIntIndx' + index + '"><td colspan="5">' + getFormCliente() + '</td></tr>');
     if (data[18] == true) {
         if (action == 0) {
             enabled();
@@ -134,6 +88,7 @@ function showData(index, action) {
         $('#btnEliminar').prop('disabled', true);
         $('#chkActivo').prop('checked', false);
     }
+    $('#txtNombre').focus();
     $('#txtIdCliente').val(data[0]);
     $('#txtNombre').val(data[1]);
     $('#txtPaterno').val(data[2]);
@@ -175,6 +130,7 @@ function showData(index, action) {
         $('#btnEliminar').hide();
     }
     $('#btnRegistrar').prop('disabled', true);
+    complete();
 }
 
 function enabled() {
@@ -205,3 +161,71 @@ function disabled() {
     $('#txtMail').prop('readonly', true);
     $('#txtGiro').prop('readonly', true);
 }
+
+function clear(size) {
+    for (var indx = 0; indx < size; indx++) {
+        $('#trIntIndx' + indx).remove();
+    }
+}
+complete = function () {
+    $('#txtColonia').autocomplete({
+        source: availableTags
+        , select: function (event, data) {
+            $('#thTitleMuni').empty('');
+            $('#tdMuni').empty('');
+            var split = [];
+            var td;
+            if (data.item) {
+                split = data.item.value.split(',');
+            }
+            var th;
+            var td;
+            if (split[2] != '') {
+                th = '<label class="font-size"><span class="req">*</span> Delegaci&oacute;n</label> ';
+                td = '<td><input type="text" id="txtDelegacion" name="txtDelegacion" class="required form-control" value="'
+                        + split[2] + '" readOnly="readOnly" /></td>';
+            } else if (split[3] != '') {
+                th = '<label class="font-size"><span class="req">*</span> Munic&iacute;pio</label> ';
+                td = '<td><input type="text" id="txtMunicipio" name="txtMunicipio" class="required form-control" value="'
+                        + split[3] + '" readOnly="readOnly" /></td>';
+            }
+            $('#thTitleMuni').append(th);
+            $('#tdMuni').append(td);
+            $('#txtCp').val(split[4]);
+            $('#txtEstado').val(split[5]);
+            $('#txtCiudad').val(split[6]);
+            $('#txtColonia').val(split[1]);
+            $('#txtIdCp').val(split[0]);
+            $(this).val(split[1]);
+            return false;
+        }
+    }).keypress(function (e, data) {
+        if (e.which == 13) {
+            var split = [];
+            var td;
+            if (data.item) {
+                split = data.item.value.split(',');
+            }
+            var th;
+            var td;
+            if (split[2] != '') {
+                th = '<label class="font-size"><span class="req">*</span> Delegaci&oacute;n</label> ';
+                td = '<td><input type="text" id="txtDelegacion" name="txtDelegacion" class="required form-control" value="'
+                        + split[2] + '" readOnly="readOnly" /></td>';
+            } else if (split[3] != '') {
+                th = '<label class="font-size"><span class="req">*</span> Munic&iacute;pio</label> ';
+                td = '<td><input type="text" id="txtMunicipio" name="txtMunicipio" class="required form-control" value="'
+                        + split[3] + '" readOnly="readOnly" /></td>';
+            }
+            $('#thTitleMuni').append(th);
+            $('#tdMuni').append(td);
+            $('#txtCp').val(split[4]);
+            $('#txtCp').val(split[4]);
+            $('#txtEstado').val(split[5]);
+            $('#txtCiudad').val(split[6]);
+            $('#txtIdCp').val(split[0]);
+            $(this).val(split[1]);
+            return false;
+        }
+    });
+};

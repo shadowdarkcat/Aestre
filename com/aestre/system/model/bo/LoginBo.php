@@ -9,4 +9,5 @@ spl_autoload_register('aestre_autoload', FALSE);
  */
 interface LoginBo extends GenericBo {
     function validateLogin($user, $obj);
+    function exist($user, $obj);
 }

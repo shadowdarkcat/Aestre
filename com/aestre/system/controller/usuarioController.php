@@ -40,6 +40,15 @@ class usuarioController {
             case 0:
                 $this->findAll(FALSE);
                 break;
+            case 1:
+                $this->insert($usuario);
+                break;
+            case 2:
+                $this->update($usuario);
+                break;
+            case 3:
+                $this->delete($usuario);
+                break;
             case 6:
                 echo(json_encode($this->getMenu($usuario)));
                 break;
@@ -48,6 +57,29 @@ class usuarioController {
 
     private function findAll($exist) {
         $this->redirect($this->loginBo->findAll($this->session), $exist);
+    }
+
+    private function insert(DtoLogin $usuario) {
+        $usuario = $this->getParametersFromRequest($usuario);
+        $exist = $this->loginBo->exist($this->session, $usuario);
+        if (!$exist) {
+            $object = FactoryLogin::newInstance(NULL);
+            $idInsert = $this->loginBo->insert($this->session, $usuario);
+            $object->setIdUsuario($idInsert);
+            $this->menuBo->insertMultiplesPrivilegios($this->session, $this->getPropiedadesDelMenu(), $object);
+        }
+        $this->findAll($exist);
+    }
+
+    private function update(DtoLogin $usuario) {
+        $this->loginBo->update($this->session, $this->getParametersFromRequest($usuario));
+        $this->menuBo->insertMultiplesPrivilegios($this->session, $this->getPropiedadesDelMenu(), $usuario);
+        $this->findAll(FALSE);
+    }
+
+    private function delete(DtoLogin $usuario) {
+        $this->loginBo->delete($this->session, $this->getParametersFromRequest($usuario));
+        $this->findAll(FALSE);
     }
 
     private function getMenu($usuario) {
@@ -72,6 +104,32 @@ class usuarioController {
         }
         $_SESSION[PropertyKey::$session_exists] = $exist;
         echo(PropertyKey::$php_main_usuario);
+    }
+
+    private function getParametersFromRequest(DtoLogin $usuario) {
+        $usuario->setIdUsuario(isset($_REQUEST[PropertyKey::$view_usuario_id]) ? strtoupper($_REQUEST[PropertyKey::$view_usuario_id]) : NULL );
+        $usuario->setNombreUsuario(strtoupper($_REQUEST[PropertyKey::$view_user]));
+        $usuario->setPwd(strtoupper($_REQUEST[PropertyKey::$view_password]));
+        $usuario->setNombre(strtoupper($_REQUEST[PropertyKey::$view_nombre]));
+        $usuario->setTelefono(strtoupper($_REQUEST[PropertyKey::$view_telefono]));
+        $usuario->setMail(strtolower($_REQUEST[PropertyKey::$view_mail]));
+        $usuario->setActivo(isset($_REQUEST[PropertyKey::$view_chkActivo]) ? Utils::isIsset($_REQUEST[PropertyKey::$view_chkActivo]) : Utils::isIsset(NULL));
+        $usuario->setAdmin(isset($_REQUEST[PropertyKey::$view_chkAdmin]) ? Utils::isIsset($_REQUEST[PropertyKey::$view_chkAdmin]) : Utils::isIsset(NULL));
+        $usuario->setIdCliente(isset($_REQUEST[PropertyKey::$view_cbo_clientes]) ? strtoupper($_REQUEST[PropertyKey::$view_cbo_clientes]) : NULL );
+        return $usuario;
+    }
+
+    private function getPropiedadesDelMenu() {
+        $valores = $_REQUEST[PropertyKey::$view_chk_menu];
+        $menu = array();
+        if (!empty($valores)) {
+            foreach ($valores as $item) {
+                $menuItem = new MenuBean();
+                $menuItem->setId($item);
+                $menu[] = $menuItem;
+            }
+        }
+        return $menu;
     }
 
 }

@@ -10,4 +10,6 @@ spl_autoload_register('aestre_autoload', FALSE);
 interface LoginDao extends GenericDao {
 
     function validateLogin($obj);
+
+    function exist($obj);
 }

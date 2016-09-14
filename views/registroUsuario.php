@@ -54,6 +54,7 @@ if (isset($_SESSION[PropertyKey::$session_clientes])) {
                                     <?php
                                     $index = 0;
                                     foreach ($usuarios as $item) {
+                                        setData($item);
                                         echo('<tr>'
                                         . '<td style="text-align: center">'
                                         . '<label class="font-size" id="lblId">' . $item->getIdUsuario() . '</label>'
@@ -251,3 +252,23 @@ if (isset($_SESSION[PropertyKey::$session_clientes])) {
             </div>
     </body>
 </html>
+<?php
+
+function setData(DtoLogin $item) {
+    ?>
+    <script>
+        usuarios.push(
+    <?php
+    echo('\'' . $item->getIdUsuario() . ',' . $item->getNombreUsuario()
+    . ',' . $item->getNombre() . ',' . $item->getTelefono()
+    . ',' . $item->getMail() . ',' . $item->getIdCliente()
+    . ',' . $item->getAdmin(). ',' .$item->getActivo(). '\'');
+    ?>);
+    </script>
+    <?php
+}
+
+if ($exist) {
+    echo('<script>$("#divExiste").modal("show");</script>');
+}
+?>
