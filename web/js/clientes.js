@@ -25,47 +25,51 @@ $(document).ready(function () {
                 + '</tr>'
                 + '<tr id="trIndxFoot0"></tr>');
     });
-    $('#btnRegistrar').on('click', function () {
-        $('#frmCliente').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/clienteController.php?&method=1');
-        if ($('#frmCliente').validate().form()) {
+    btns = function () {
+        $('#btnRegistrar').on('click', function () {
+            $('#frmCliente').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/clienteController.php?&method=1');
+            if ($('#frmCliente').validate().form()) {
+                $('#frmCliente').submit();
+            }
+        });
+        $('#btnActualizar').on('click', function () {
+            if ($('#frmCliente').validate().form()) {
+                $('#frmCliente').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/clienteController.php?method=2');
+                $('#divMessageUpdate').modal('show');
+            }
+        });
+        $('#btnUpdate').on('click', function () {
             $('#frmCliente').submit();
-        }
-    });
-    $('#btnActualizar').on('click', function () {
-        if ($('#frmCliente').validate().form()) {
-            $('#frmCliente').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/clienteController.php?method=2');
-            $('#divMessageUpdate').modal('show');
-        }
-    });
-    $('#btnUpdate').on('click', function () {
-        $('#frmCliente').submit();
-    });
-    $('#btnEliminar').on('click', function () {
-        $('#chkActivo').prop('checked', false);
-        if ($('#frmCliente').validate().form()) {
-            $('#frmCliente').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/clienteController.php?method=3');
-            $('#divMessageDelete').modal('show');
-        }
-    });
-    $('#btnDelete').on('click', function () {
-        $('#frmCliente').submit();
-    });
-    $('#btnActivate').on('click', function () {
-        $('#chkActivo').prop('checked', true);
-        if ($('#frmCliente').validate().form()) {
-            $('#frmCliente').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/clienteController.php?method=3');
-            $('#divActivar').modal('show');
-        }
-    });
-    $('#btnAceptarActivar').on('click', function () {
-        $('#frmCliente').submit();
-    });
+        });
+        $('#btnEliminar').on('click', function () {
+            $('#chkActivo').prop('checked', false);
+            if ($('#frmCliente').validate().form()) {
+                $('#frmCliente').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/clienteController.php?method=3');
+                $('#divMessageDelete').modal('show');
+            }
+        });
+        $('#btnDelete').on('click', function () {
+            $('#frmCliente').submit();
+        });
+        $('#btnActivate').on('click', function () {
+            $('#chkActivo').prop('checked', true);
+            if ($('#frmCliente').validate().form()) {
+                $('#frmCliente').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/clienteController.php?method=3');
+                $('#divActivar').modal('show');
+            }
+        });
+        $('#btnAceptarActivar').on('click', function () {
+            $('#frmCliente').submit();
+        });
+    };
 });
+
 function showNew() {
     clear(size);
     $('#trIndxFoot0').append('<td colspan="5">' + getFormCliente() + '</td></tr>');
     complete();
     $('#txtNombre').focus();
+    btns();
 }
 function showData(index, action) {
     var data = clientes[index].split(',');
@@ -131,6 +135,7 @@ function showData(index, action) {
     }
     $('#btnRegistrar').prop('disabled', true);
     complete();
+    btns();
 }
 
 function enabled() {
@@ -229,3 +234,4 @@ complete = function () {
         }
     });
 };
+
