@@ -8,17 +8,22 @@ $(document).ready(function () {
     $('#divMessageDelete').find('#lblTittleDelete').text('Conductor');
     $('#divActivar').find('#lblTittleActivar').text('Conductor');
     $('#divExiste').find('#lblTittleExists').text('Conductor');
-    $('#btnActualizar').prop('disabled', true);
-    $('#btnEliminar').prop('disabled', true);
+
     $('#tblConductores').DataTable({
-        'ordering': false
-        , 'info': false
-        , 'displayLength': 1
-        , language: {
+        language: {
             url: contextoGlobal + '/web/resources/es_ES.json'
         }
     });
     $(function () {
+        $('#foot').append('<tr><td  style="text-align: center">'
+                + '<button type="button" class="btn" '
+                + 'onclick="showNew();">'
+                + '<img src="../web/images/nuevo.png" >Nuevo</button>'
+                + '</td>'
+                + '</tr>'
+                + '<tr id="trIndxFoot0"></tr>');
+    });
+    complete = function () {
         $('#txtColonia').autocomplete({
             source: availableTags
             , select: function (event, data) {
@@ -79,46 +84,73 @@ $(document).ready(function () {
                 return false;
             }
         });
-    });
-
-    $('#btnRegistrar').on('click', function () {
-        $('#frmConductor').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/conductorController.php?&method=1');
-        if ($('#frmConductor').validate().form()) {
+    };
+    btns = function () {
+        $('#btnRegistrar').on('click', function () {
+            $('#frmConductor').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/conductorController.php?&method=1');
+            if ($('#frmConductor').validate().form()) {
+                $('#frmConductor').submit();
+            }
+        });
+        $('#btnActualizar').on('click', function () {
+            if ($('#frmConductor').validate().form()) {
+                $('#frmConductor').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/conductorController.php?method=2');
+                $('#divMessageUpdate').modal('show');
+            }
+        });
+        $('#btnUpdate').on('click', function () {
             $('#frmConductor').submit();
-        }
-    });
-    $('#btnActualizar').on('click', function () {
-        if ($('#frmConductor').validate().form()) {
-            $('#frmConductor').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/conductorController.php?method=2');
-            $('#divMessageUpdate').modal('show');
-        }
-    });
-    $('#btnUpdate').on('click', function () {
-        $('#frmConductor').submit();
-    });
-    $('#btnEliminar').on('click', function () {
-        $('#chkActivo').prop('checked', false);
-        if ($('#frmConductor').validate().form()) {
-            $('#frmConductor').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/conductorController.php?method=3');
-            $('#divMessageDelete').modal('show');
-        }
-    });
-    $('#btnDelete').on('click', function () {
-        $('#frmConductor').submit();
-    });
-    $('#btnActivate').on('click', function () {
-        $('#chkActivo').prop('checked', true);
-        if ($('#frmConductor').validate().form()) {
-            $('#frmConductor').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/conductorController.php?method=3');
-            $('#divActivar').modal('show');
-        }
-    });
-    $('#btnAceptarActivar').on('click', function () {
-        $('#frmConductor').submit();
-    });
+        });
+        $('#btnEliminar').on('click', function () {
+            $('#chkActivo').prop('checked', false);
+            if ($('#frmConductor').validate().form()) {
+                $('#frmConductor').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/conductorController.php?method=3');
+                $('#divMessageDelete').modal('show');
+            }
+        });
+        $('#btnDelete').on('click', function () {
+            $('#frmConductor').submit();
+        });
+        $('#btnActivate').on('click', function () {
+            $('#chkActivo').prop('checked', true);
+            if ($('#frmConductor').validate().form()) {
+                $('#frmConductor').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/conductorController.php?method=3');
+                $('#divActivar').modal('show');
+            }
+        });
+        $('#btnAceptarActivar').on('click', function () {
+            $('#frmConductor').submit();
+        });
+        $('#btnCancel').on('click', function () {
+            $('#divMessageCancel').modal('show');
+        });
+        $('#btnAceptarCerrar').on('click', function () {
+            clear(size);
+            $('#trIndxFoot0').empty();
+        });
+    }
 });
+
+function showNew() {
+    clear(size);
+    $('#trIndxFoot0').append('<td colspan="5">' + getFormConductor() + '</td></tr>');
+    $('#txtNombre').focus();
+    $('#cboLicencia').append(cboLicencia);
+    $('#cboVehiculo').append(cboVehiculo);
+    $('#btnActualizar').prop('disabled', true);
+    $('#btnEliminar').prop('disabled', true);
+    complete();
+    btns();
+}
 function showData(index, action) {
     var data = conductores[index].split(',');
+    clear(size);
+    $('#trIndxFoot0').empty();
+    $('#trIndx' + index).before('<tr id="trIntIndx' + index + '"><td colspan="5">' + getFormConductor() + '</td></tr>');
+    $('#cboLicencia').append(cboLicencia);
+    $('#cboVehiculo').append(cboVehiculo);
+    $('#btnActualizar').prop('disabled', true);
+    $('#btnEliminar').prop('disabled', true);
     if (data[21] == true) {
         if (action == 0) {
             enabled();
@@ -135,7 +167,6 @@ function showData(index, action) {
         $('#btnEliminar').prop('disabled', true);
         $('#chkActivo').prop('checked', false);
     }
-
     $('#txtIdConductor').val(data[0]);
     $('#txtNombre').val(data[1]);
     $('#txtPaterno').val(data[2]);
@@ -180,6 +211,8 @@ function showData(index, action) {
         $('#btnEliminar').hide();
     }
     $('#btnRegistrar').prop('disabled', true);
+    complete();
+    btns();
 }
 
 function enabled() {
@@ -217,4 +250,10 @@ function disabled() {
     $('#txtCiudad').prop('readonly', true);
     $('#txtNoLicencia').prop('readonly', true);
     $('#txtVigencia').prop('readonly', true);
+}
+
+function clear(size) {
+    for (var indx = 0; indx < size; indx++) {
+        $('#trIntIndx' + indx).remove();
+    }
 }

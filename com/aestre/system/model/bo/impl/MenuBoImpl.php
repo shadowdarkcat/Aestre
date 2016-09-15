@@ -25,11 +25,11 @@ class MenuBoImpl implements MenuBo {
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Funciones P&uacute;blicas">
-    public function getMenu(DtoLogin $user) {
+    public function getMenu($user) {
         return $this->menuDao->getMenu($user);
     }
 
-    public function getMenuUsuario(DtoLogin $obj) {
+    public function getMenuUsuario($obj) {
         $buffer = NULL;
         if (!empty($obj->getIdUsuario())) {
             $menu = $this->menuDao->getMenuPrivilegios($obj);
@@ -57,29 +57,29 @@ class MenuBoImpl implements MenuBo {
         return $buffer;
     }
 
-    public function getMenuPrivilegios(DtoLogin $user) {
+    public function getMenuPrivilegios($user) {
         return $this->menuDao->getMenuPrivilegios($user);
     }
 
-    public function getConvercionMenu(DtoLogin $user) {
+    public function getConvercionMenu($user) {
         return $this->primerRecorridoMenu($this->getMenu($user), $this->getMenuPrivilegios($user));
     }
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Metodos P&uacute;blicos">
-    public function insertMultiplesPrivilegios(DtoLogin $user, BeanMenu $nuevoMenu, DtoLogin $obj) {
+    public function insertMultiplesPrivilegios($user, $nuevoMenu, $obj) {
         if (Utils::isSessionValid($user)) {
             $this->menuDao->insertMultiplesPrivilegios($obj, $nuevoMenu);
         }
     }
 
-    public function insertPrivilegio(DtoLogin $user, DtoLogin $obj, BeanMenu $menuItem) {
+    public function insertPrivilegio($user, $obj, $menuItem) {
         if (Utils::isSessionValid($user)) {
             $this->menuDao->insertPrivilegio($obj, $menuItem);
         }
     }
 
-    public function deletePrivilegios(DtoLogin $user, DtoLogin $obj) {
+    public function deletePrivilegios($user, $obj) {
         if (Utils::isSessionValid($user)) {
             $this->menuDao->deletePrivilegios($obj);
         }

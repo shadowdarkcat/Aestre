@@ -218,6 +218,8 @@ function getFormCliente() {
             + '<img src = "../web/images/eliminar.png" > Inhabilitar </button>'
             + '<button type = "button" class="btn" id = "btnActivate" name = "btnActivate" style = "display: none;">'
             + '<img src = "../web/images/habilitar.png" > Habilitar </button>'
+            + '<button type = "button" class="btn" id = "btnCancel" name = "btnCancel">'
+            + '<img src = "../web/images/cancel.png" > Cerrar </button>'
             + '</div>'
             + '</div>'
             + '</form>'

@@ -33,11 +33,12 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
         <title>Nuevo Cliente</title>
     </head>
     <body>
-        <br/><br/><br/>
+        <br/><br/><br/><br/><br/>
         <div class="container-fluid" style="background: white;">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 col-md-4 col-sm-6 col-xs-12">
+                        <h4 style="text-align: center">CLIENTES</h4>
                         <div class="table">                            
                             <table id="tblClientes" class="table table-striped table-bordered dt-responsive nowrap" data-role="datatable" cellspacing="0" width="100%" data-info="false">
                                 <thead>

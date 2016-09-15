@@ -65,12 +65,12 @@ class MenuDaoImpl implements MenuDao {
     }
 
     public function insertPrivilegio($user, $menuItem) {
-        $args = array(1, $menuItem->getId(), $user->getId());
+        $args = array(1, $menuItem->getId(), $user->getIdUsuario());
         SqlUtils::execute($this->jdbc, Utils::replaceQuery(PropertyKey::$jdbc_procedure_privilegios, $args));
     }
 
     public function deletePrivilegios($user) {
-        $args = array(2, FactoryMenu::newInstance(NULL), $user->getId());
+        $args = array(2, '', $user->getIdUsuario());
         SqlUtils::execute($this->jdbc, Utils::replaceQuery(PropertyKey::$jdbc_procedure_privilegios, $args));
     }
 

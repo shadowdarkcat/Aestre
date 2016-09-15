@@ -102,7 +102,7 @@ class usuarioController {
         if (!empty($usuarios)) {
             $_SESSION[PropertyKey::$session_users] = serialize($usuarios);
         }
-        $_SESSION[PropertyKey::$session_exists] = $exist;
+        $_SESSION[PropertyKey::$session_exists] = serialize($exist);
         echo(PropertyKey::$php_main_usuario);
     }
 
@@ -113,8 +113,8 @@ class usuarioController {
         $usuario->setNombre(strtoupper($_REQUEST[PropertyKey::$view_nombre]));
         $usuario->setTelefono(strtoupper($_REQUEST[PropertyKey::$view_telefono]));
         $usuario->setMail(strtolower($_REQUEST[PropertyKey::$view_mail]));
-        $usuario->setActivo(isset($_REQUEST[PropertyKey::$view_chkActivo]) ? Utils::isIsset($_REQUEST[PropertyKey::$view_chkActivo]) : Utils::isIsset(NULL));
-        $usuario->setAdmin(isset($_REQUEST[PropertyKey::$view_chkAdmin]) ? Utils::isIsset($_REQUEST[PropertyKey::$view_chkAdmin]) : Utils::isIsset(NULL));
+        $usuario->setActivo(isset($_REQUEST[PropertyKey::$view_chkActivo]) ? Utils::isIsset($_REQUEST[PropertyKey::$view_chkActivo]) : Utils::isChecked(NULL));
+        $usuario->setAdmin(isset($_REQUEST[PropertyKey::$view_chkAdmin]) ? Utils::isIsset($_REQUEST[PropertyKey::$view_chkAdmin]) : Utils::isChecked(NULL));
         $usuario->setIdCliente(isset($_REQUEST[PropertyKey::$view_cbo_clientes]) ? strtoupper($_REQUEST[PropertyKey::$view_cbo_clientes]) : NULL );
         return $usuario;
     }
@@ -124,7 +124,7 @@ class usuarioController {
         $menu = array();
         if (!empty($valores)) {
             foreach ($valores as $item) {
-                $menuItem = new MenuBean();
+                $menuItem = FactoryMenu::newInstance(NULL);
                 $menuItem->setId($item);
                 $menu[] = $menuItem;
             }

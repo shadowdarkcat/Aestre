@@ -9,17 +9,17 @@ spl_autoload_register('aestre_autoload', FALSE);
  */
 interface MenuBo {
 
-    function getMenu(DtoLogin $user);
+    function getMenu($user);
 
-    function getMenuUsuario(DtoLogin $obj);
+    function getMenuUsuario($obj);
 
-    function getMenuPrivilegios(DtoLogin $user);
+    function getMenuPrivilegios($user);
 
-    function getConvercionMenu(DtoLogin $user);
+    function getConvercionMenu($user);
 
-    function insertMultiplesPrivilegios(DtoLogin $user, BeanMenu $nuevoMenu, DtoLogin $obj);
+    function insertMultiplesPrivilegios($user, $nuevoMenu, $obj);
 
-    function insertPrivilegio(DtoLogin $user, DtoLogin $obj, BeanMenu $menuItem);
+    function insertPrivilegio($user, $obj, $menuItem);
 
-    function deletePrivilegios(DtoLogin $user, DtoLogin $obj);
+    function deletePrivilegios($user, $obj);
 }

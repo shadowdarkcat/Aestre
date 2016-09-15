@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
 if (!Utils::isSessionValid($_SESSION[PropertyKey::$session_usuario])) {
     echo(PropertyKey::$php_index);
 }
-$exist = '';
+
 if (isset($_SESSION[PropertyKey::$session_users])) {
     $usuarios = unserialize($_SESSION[PropertyKey::$session_users]);
 }
@@ -17,6 +17,12 @@ $controllerC = new clienteController();
 $controllerC->findAllToUsuario();
 if (isset($_SESSION[PropertyKey::$session_clientes])) {
     $clientes = unserialize($_SESSION[PropertyKey::$session_clientes]);
+}
+
+$exist = '';
+if (isset($_SESSION[PropertyKey::$session_exists])) {
+    $exist = unserialize($_SESSION[PropertyKey::$session_exists]);
+    unset($_SESSION[PropertyKey::$session_exists]);
 }
 ?>
 <!DOCTYPE html>
@@ -139,7 +145,8 @@ if (isset($_SESSION[PropertyKey::$session_clientes])) {
                                                 <th class="dt-responsive alert-info" style="text-align: center">
                                                     <label class="font-size"> <span class="req">*</span> E-Mail</label>
                                                 </th>
-                                            </tr>                                           
+                                            </tr>
+                                        </thead>
                                         <tbody>
                                             <tr>
                                                 <td>
@@ -152,24 +159,26 @@ if (isset($_SESSION[PropertyKey::$session_clientes])) {
                                                 </td>
                                             </tr>
                                         </tbody>
-                                        <thead>
-                                            <tr>
-                                                <th colspan="3">
-                                                    <fieldset>
-                                                        <legend class="text-muted alert-info">
-                                                            <label class="font-size">Cuenta Administrador</label>
-                                                        </legend>
-                                                    </fieldset>
-                                                </th>
-                                            </tr>                                            
-                                        </thead>
+                                    </table>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12">
+                            <div class="table-responsive">
+                                <fieldset>
+                                    <legend class="text-muted alert-info">
+                                        <label class="font-size">Tipo Cuenta / Privilegios</label>
+                                    </legend>
+                                    <table  class="table">
                                         <tbody>
                                             <tr>
-                                                <td class="dt-responsive form-control">
+                                                <td class="dt-responsive form-control" style="height: 100%">
                                                     <input type="checkbox" id="chkAdmin" name="chkAdmin"
                                                            class="checkbox-inline text-muted" checked="checked" onclick="isAdmin();" >
-                                                    <label id="lblIsAdmin">S&iacute;</label>
-                                                </td>                                                
+                                                    <label id="lblIsAdmin">Administrador</label>
+                                                    <br/>
+                                                    <div id="tree"></div>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -219,22 +228,10 @@ if (isset($_SESSION[PropertyKey::$session_clientes])) {
                                                 </fieldset>                                             
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <fieldset>
-                                                    <legend class="text-muted alert-info">
-                                                        <label class="font-size">Privilegios Usuario</label>
-                                                    </legend>
-                                                    <div id="tree">                                    
-                                                    </div>
-                                                </fieldset>
-                                            </td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-
                         <div class="col-lg-12 col-md-4 col-sm-6 col-xs-12">
                             <div style="text-align:  center;">
                                 <button type="button" class="btn" id="btnRegistrar" name="btnRegistrar">
@@ -262,7 +259,7 @@ function setData(DtoLogin $item) {
     echo('\'' . $item->getIdUsuario() . ',' . $item->getNombreUsuario()
     . ',' . $item->getNombre() . ',' . $item->getTelefono()
     . ',' . $item->getMail() . ',' . $item->getIdCliente()
-    . ',' . $item->getAdmin(). ',' .$item->getActivo(). '\'');
+    . ',' . $item->getAdmin() . ',' . $item->getActivo() . '\'');
     ?>);
     </script>
     <?php

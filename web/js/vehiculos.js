@@ -1,5 +1,7 @@
 $(document).ready(function () {
-    $('.carousel').carousel();
+    car = function () {
+        $('.carousel').carousel();
+    }
     changeErrorMessage('frmVehiculo');
     $('#divMessageUpdate').find('#lblTittleUpdate').empty();
     $('#divMessageDelete').find('#lblTittleDelete').empty();
@@ -9,14 +11,14 @@ $(document).ready(function () {
     $('#divMessageDelete').find('#lblTittleDelete').text('Veh&iacute;culo');
     $('#divActivar').find('#lblTittleActivar').text('Veh&iacute;culo');
     $('#divExiste').find('#lblTittleExists').text('Veh&iacute;culo');
-    $('#btnActualizar').prop('disabled', true);
-    $('#btnEliminar').prop('disabled', true);
-    $('#dtpVerificacion').datepicker({
-        beforeShow: function () {
-            $(".ui-datepicker").css('font-size', 12)
-        }
-        , maxDate: '+0d'
-    });
+    dtp = function () {
+        $('#dtpVerificacion').datepicker({
+            beforeShow: function () {
+                $(".ui-datepicker").css('font-size', 12)
+            }
+            , maxDate: '+0d'
+        });
+    }
 
     $('#tblVehiculos').DataTable({
         responsive: true,
@@ -26,7 +28,6 @@ $(document).ready(function () {
             , {'sortable': false, 'targets': 5}, {'sortable': false, 'targets': 6}, {'sortable': false, 'targets': 7}
         ],
         'order': [[1, 'asc']],
-        'displayLength': 1,
         'drawCallback': function (settings) {
             var api = this.api();
             var rows = api.rows({page: 'current'}).nodes();
@@ -48,45 +49,80 @@ $(document).ready(function () {
         , 'ordering': false
         , 'info': false
     });
-    $('#btnRegistrar').on('click', function () {
-        $('#frmVehiculo').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/vehiculoController.php?&method=1');
-        if ($('#frmVehiculo').validate().form()) {
+
+    $(function () {
+        $('#foot').append('<tr><td  style="text-align: center">'
+                + '<button type="button" class="btn" '
+                + 'onclick="showNew();">'
+                + '<img src="../web/images/nuevo.png" >Nuevo</button>'
+                + '</td>'
+                + '</tr>'
+                + '<tr id="trIndxFoot0"></tr>');
+    });
+    btns = function () {
+        $('#btnRegistrar').on('click', function () {
+            $('#frmVehiculo').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/vehiculoController.php?&method=1');
+            if ($('#frmVehiculo').validate().form()) {
+                $('#frmVehiculo').submit();
+            }
+        });
+
+        $('#btnActualizar').on('click', function () {
+            if ($('#frmVehiculo').validate().form()) {
+                $('#frmVehiculo').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/vehiculoController.php?method=2');
+                $('#divMessageUpdate').modal('show');
+            }
+        });
+        $('#btnUpdate').on('click', function () {
             $('#frmVehiculo').submit();
-        }
-    });
-    
-    $('#btnActualizar').on('click', function () {
-        if ($('#frmVehiculo').validate().form()) {
-            $('#frmVehiculo').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/vehiculoController.php?method=2');
-            $('#divMessageUpdate').modal('show');
-        }
-    });
-    $('#btnUpdate').on('click', function () {
-        $('#frmVehiculo').submit();
-    });
-    $('#btnEliminar').on('click', function () {
-        $('#chkActivo').prop('checked', false);
-        $('#lblActivo').text('No');
-        if ($('#frmVehiculo').validate().form()) {
-            $('#frmVehiculo').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/vehiculoController.php?method=3');
-            $('#divMessageDelete').modal('show');
-        }
-    });
-    $('#btnDelete').on('click', function () {
-        $('#frmVehiculo').submit();
-    });
-    $('#btnActivate').on('click', function () {
-        $('#chkActivo').prop('checked', true);
-        $('#lblActivo').text('Sí');
-        if ($('#frmVehiculo').validate().form()) {
-            $('#frmVehiculo').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/vehiculoController.php?method=3');
-            $('#divActivar').modal('show');
-        }
-    });
-    $('#btnAceptarActivar').on('click', function () {
-        $('#frmVehiculo').submit();
-    });
+        });
+        $('#btnEliminar').on('click', function () {
+            $('#chkActivo').prop('checked', false);
+            $('#lblActivo').text('No');
+            if ($('#frmVehiculo').validate().form()) {
+                $('#frmVehiculo').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/vehiculoController.php?method=3');
+                $('#divMessageDelete').modal('show');
+            }
+        });
+        $('#btnDelete').on('click', function () {
+            $('#frmVehiculo').submit();
+        });
+        $('#btnActivate').on('click', function () {
+            $('#chkActivo').prop('checked', true);
+            $('#lblActivo').text('Sí');
+            if ($('#frmVehiculo').validate().form()) {
+                $('#frmVehiculo').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/vehiculoController.php?method=3');
+                $('#divActivar').modal('show');
+            }
+        });
+        $('#btnAceptarActivar').on('click', function () {
+            $('#frmVehiculo').submit();
+        });
+
+        $('#btnCancel').on('click', function () {
+            $('#divMessageCancel').modal('show');
+        });
+        $('#btnAceptarCerrar').on('click', function () {
+            clear(size);
+            $('#trIndxFoot0').empty();
+        });
+    }
 });
+
+function showNew() {
+    clear(size);
+    $('#trIndxFoot0').append('<td colspan="8">' + getFormVehiculo() + '</td></tr>');    
+    $('#btnActualizar').prop('disabled', true);
+    $('#btnEliminar').prop('disabled', true);
+    $('#cboCliente').append(cboCliente);
+    $('#cboGps').append(cboGps);
+    $('#cboGiro').append(cboGiro);
+    $('#divContenido').append(icons);
+    $('#txtIdImage').val(def);
+    car();
+    btns();
+    dtp();
+}
 
 function show() {
     if ($('#chkIcon').is(':checked')) {
@@ -114,6 +150,14 @@ function iconChange(idIcon) {
 
 function showData(index, action) {
     var data = vehiculos[index].split(',');
+    clear(size);
+    $('#trIndx' + index).before('<tr id="trIntIndx' + index + '"><td colspan="9">' + getFormVehiculo() + '</td></tr>');
+    $('#cboCliente').append(cboCliente);
+    $('#cboGps').append(cboGps);
+    $('#cboGiro').append(cboGiro);
+    $('#divContenido').append(icons);
+    $('#txtIdImage').val(def);
+    $('#trIndxFoot0').empty();
     if (data[12] == true) {
         if (action == 0) {
             enabled();
@@ -128,7 +172,7 @@ function showData(index, action) {
         disabled();
         $('#btnActualizar').prop('disabled', true);
         $('#btnEliminar').prop('disabled', true);
-        $('#chkActivo').prop('checked', false);        
+        $('#chkActivo').prop('checked', false);
     }
     $('#cboCliente').val(data[0]);
     $('#txtIdVehiculo').val(data[1]);
@@ -158,10 +202,13 @@ function showData(index, action) {
     } else {
         $('#chkActivo').prop('checked', false);
         $('#btnActivate').show();
-        $('#btnEliminar').hide();        
+        $('#btnEliminar').hide();
         $('#lblActivo').text('No');
     }
     $('#btnRegistrar').prop('disabled', true);
+    car();
+    btns();
+    dtp();
 }
 
 function enabled() {
@@ -189,4 +236,9 @@ function disabled() {
     $('#dtpVerificacion').prop('readonly', true);
     $('#cboGiro').prop('readonly', true);
     $('#chkIcon').prop('readonly', true);
+}
+function clear(size) {
+    for (var indx = 0; indx < size; indx++) {
+        $('#trIntIndx' + indx).remove();
+    }
 }

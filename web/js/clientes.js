@@ -8,7 +8,7 @@ $(document).ready(function () {
     $('#divMessageUpdate').find('#lblTittleUpdate').text('Cliente');
     $('#divMessageDelete').find('#lblTittleDelete').text('Cliente');
     $('#divActivar').find('#lblTittleActivar').text('Cliente');
-    $('#divExiste').find('#lblTittleExists').text('Cliente');    
+    $('#divExiste').find('#lblTittleExists').text('Cliente');
     $('#tblClientes').DataTable({
         language: {
             url: contextoGlobal + '/web/resources/es_ES.json'
@@ -16,13 +16,75 @@ $(document).ready(function () {
     });
     $(function () {
         $('#foot').append('<tr><td  style="text-align: center">'
-                + '<button type="button" class="btn"'
-                + '     onclick="showNew();">'
-                + ' <img src="../web/images/modificar.png" height="23px" width="29px;">Nuevo</button>'
+                + '<button type="button" class="btn" '
+                + 'onclick="showNew();">'
+                + '<img src="../web/images/nuevo.png" >Nuevo</button>'
                 + '</td>'
                 + '</tr>'
                 + '<tr id="trIndxFoot0"></tr>');
     });
+    complete = function () {
+        $('#txtColonia').autocomplete({
+            source: availableTags
+            , select: function (event, data) {
+                $('#thTitleMuni').empty('');
+                $('#tdMuni').empty('');
+                var split = [];
+                var td;
+                if (data.item) {
+                    split = data.item.value.split(',');
+                }
+                var th;
+                var td;
+                if (split[2] != '') {
+                    th = '<label class="font-size"><span class="req">*</span> Delegaci&oacute;n</label> ';
+                    td = '<td><input type="text" id="txtDelegacion" name="txtDelegacion" class="required form-control" value="'
+                            + split[2] + '" readOnly="readOnly" /></td>';
+                } else if (split[3] != '') {
+                    th = '<label class="font-size"><span class="req">*</span> Munic&iacute;pio</label> ';
+                    td = '<td><input type="text" id="txtMunicipio" name="txtMunicipio" class="required form-control" value="'
+                            + split[3] + '" readOnly="readOnly" /></td>';
+                }
+                $('#thTitleMuni').append(th);
+                $('#tdMuni').append(td);
+                $('#txtCp').val(split[4]);
+                $('#txtEstado').val(split[5]);
+                $('#txtCiudad').val(split[6]);
+                $('#txtColonia').val(split[1]);
+                $('#txtIdCp').val(split[0]);
+                $(this).val(split[1]);
+                return false;
+            }
+        }).keypress(function (e, data) {
+            if (e.which == 13) {
+                var split = [];
+                var td;
+                if (data.item) {
+                    split = data.item.value.split(',');
+                }
+                var th;
+                var td;
+                if (split[2] != '') {
+                    th = '<label class="font-size"><span class="req">*</span> Delegaci&oacute;n</label> ';
+                    td = '<td><input type="text" id="txtDelegacion" name="txtDelegacion" class="required form-control" value="'
+                            + split[2] + '" readOnly="readOnly" /></td>';
+                } else if (split[3] != '') {
+                    th = '<label class="font-size"><span class="req">*</span> Munic&iacute;pio</label> ';
+                    td = '<td><input type="text" id="txtMunicipio" name="txtMunicipio" class="required form-control" value="'
+                            + split[3] + '" readOnly="readOnly" /></td>';
+                }
+                $('#thTitleMuni').append(th);
+                $('#tdMuni').append(td);
+                $('#txtCp').val(split[4]);
+                $('#txtCp').val(split[4]);
+                $('#txtEstado').val(split[5]);
+                $('#txtCiudad').val(split[6]);
+                $('#txtIdCp').val(split[0]);
+                $(this).val(split[1]);
+                return false;
+            }
+        });
+    };
     btns = function () {
         $('#btnRegistrar').on('click', function () {
             $('#frmCliente').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/clienteController.php?&method=1');
@@ -59,17 +121,25 @@ $(document).ready(function () {
         $('#btnAceptarActivar').on('click', function () {
             $('#frmCliente').submit();
         });
+
+        $('#btnCancel').on('click', function () {
+            $('#divMessageCancel').modal('show');
+        });
+        $('#btnAceptarCerrar').on('click', function () {
+            clear(size);
+            $('#trIndxFoot0').empty();
+        });
     };
 });
 
 function showNew() {
     clear(size);
-    $('#trIndxFoot0').append('<td colspan="5">' + getFormCliente() + '</td></tr>');
-    complete();
-    $('#txtNombre').focus();
-    btns();
+    $('#trIndxFoot0').append('<td colspan="5">' + getFormCliente() + '</td></tr>');    
+    $('#txtNombre').focus();    
     $('#btnActualizar').prop('disabled', true);
     $('#btnEliminar').prop('disabled', true);
+    complete();
+    btns();
 }
 function showData(index, action) {
     var data = clientes[index].split(',');
@@ -172,66 +242,4 @@ function clear(size) {
         $('#trIntIndx' + indx).remove();
     }
 }
-complete = function () {
-    $('#txtColonia').autocomplete({
-        source: availableTags
-        , select: function (event, data) {
-            $('#thTitleMuni').empty('');
-            $('#tdMuni').empty('');
-            var split = [];
-            var td;
-            if (data.item) {
-                split = data.item.value.split(',');
-            }
-            var th;
-            var td;
-            if (split[2] != '') {
-                th = '<label class="font-size"><span class="req">*</span> Delegaci&oacute;n</label> ';
-                td = '<td><input type="text" id="txtDelegacion" name="txtDelegacion" class="required form-control" value="'
-                        + split[2] + '" readOnly="readOnly" /></td>';
-            } else if (split[3] != '') {
-                th = '<label class="font-size"><span class="req">*</span> Munic&iacute;pio</label> ';
-                td = '<td><input type="text" id="txtMunicipio" name="txtMunicipio" class="required form-control" value="'
-                        + split[3] + '" readOnly="readOnly" /></td>';
-            }
-            $('#thTitleMuni').append(th);
-            $('#tdMuni').append(td);
-            $('#txtCp').val(split[4]);
-            $('#txtEstado').val(split[5]);
-            $('#txtCiudad').val(split[6]);
-            $('#txtColonia').val(split[1]);
-            $('#txtIdCp').val(split[0]);
-            $(this).val(split[1]);
-            return false;
-        }
-    }).keypress(function (e, data) {
-        if (e.which == 13) {
-            var split = [];
-            var td;
-            if (data.item) {
-                split = data.item.value.split(',');
-            }
-            var th;
-            var td;
-            if (split[2] != '') {
-                th = '<label class="font-size"><span class="req">*</span> Delegaci&oacute;n</label> ';
-                td = '<td><input type="text" id="txtDelegacion" name="txtDelegacion" class="required form-control" value="'
-                        + split[2] + '" readOnly="readOnly" /></td>';
-            } else if (split[3] != '') {
-                th = '<label class="font-size"><span class="req">*</span> Munic&iacute;pio</label> ';
-                td = '<td><input type="text" id="txtMunicipio" name="txtMunicipio" class="required form-control" value="'
-                        + split[3] + '" readOnly="readOnly" /></td>';
-            }
-            $('#thTitleMuni').append(th);
-            $('#tdMuni').append(td);
-            $('#txtCp').val(split[4]);
-            $('#txtCp').val(split[4]);
-            $('#txtEstado').val(split[5]);
-            $('#txtCiudad').val(split[6]);
-            $('#txtIdCp').val(split[0]);
-            $(this).val(split[1]);
-            return false;
-        }
-    });
-};
 

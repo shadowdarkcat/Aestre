@@ -135,5 +135,28 @@ if (!Utils::isSessionValid($login)) {
             </div>
         </div>
     </div>
-
+    <div id="divMessageCancel" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title label-warning">Advertencia</h4>
+                </div>
+                <div class="modal-body">
+                    <table>
+                        <tr>
+                            <td class="dt-responsive form-control">
+                                <p><label class="text-muted text-center text-info">
+                                        Se perderan los datos nos guardados al cerrar. Desea continuar?</label></p>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnAceptarCerrar" name="btnAceptarCerrar">Aceptar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCancelar" name="btnCancelar">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </html>
