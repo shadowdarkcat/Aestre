@@ -107,7 +107,7 @@ if (isset($_SESSION[PropertyKey::$session_clientes])) {
                     <div class="col-lg-12 col-md-4 col-sm-6 col-xs-12">
                         <h4 style="text-align: center;" >VEH&Iacute;CULOS</h4>
                         <div class="table">
-                            <table id="tblVehiculos" class="table table-striped table-bordered dt-responsive nowrap display">
+                            <table id="tblVehiculos" class="table table-striped table-bordered dt-responsive nowrap" data-role="datatable" cellspacing="0" width="100%" data-info="false">
                                 <thead>
                                     <tr>
                                         <th style="text-align: center;"><label class="font-size">Cliente</label></th>

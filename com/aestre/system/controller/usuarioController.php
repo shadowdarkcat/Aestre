@@ -109,7 +109,7 @@ class usuarioController {
     private function getParametersFromRequest(DtoLogin $usuario) {
         $usuario->setIdUsuario(isset($_REQUEST[PropertyKey::$view_usuario_id]) ? strtoupper($_REQUEST[PropertyKey::$view_usuario_id]) : NULL );
         $usuario->setNombreUsuario(strtoupper($_REQUEST[PropertyKey::$view_user]));
-        $usuario->setPwd(strtoupper($_REQUEST[PropertyKey::$view_password]));
+        $usuario->setPwd(isset($_REQUEST[PropertyKey::$view_password])?strtoupper($_REQUEST[PropertyKey::$view_password]):NULL);
         $usuario->setNombre(strtoupper($_REQUEST[PropertyKey::$view_nombre]));
         $usuario->setTelefono(strtoupper($_REQUEST[PropertyKey::$view_telefono]));
         $usuario->setMail(strtolower($_REQUEST[PropertyKey::$view_mail]));

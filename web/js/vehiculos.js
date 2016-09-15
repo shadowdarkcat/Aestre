@@ -2,7 +2,7 @@ $(document).ready(function () {
     car = function () {
         $('.carousel').carousel();
     }
-    changeErrorMessage('frmVehiculo');
+    
     $('#divMessageUpdate').find('#lblTittleUpdate').empty();
     $('#divMessageDelete').find('#lblTittleDelete').empty();
     $('#divActivar').find('#lblTittleActivar').empty();
@@ -60,6 +60,7 @@ $(document).ready(function () {
                 + '<tr id="trIndxFoot0"></tr>');
     });
     btns = function () {
+        changeErrorMessage('frmVehiculo');
         $('#btnRegistrar').on('click', function () {
             $('#frmVehiculo').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/vehiculoController.php?&method=1');
             if ($('#frmVehiculo').validate().form()) {

@@ -121,8 +121,9 @@ class MenuBoImpl implements MenuBo {
             foreach ($menu as $menuHijo) {
                 if (isset($menuHijo)) {
                     if ($menuHijo->getLeyenda() != NULL && !empty($menuHijo->getLeyenda())) {
-                        array_push($this->str, '<li class="collapsed"><input type="checkbox" id="chkMenu[]" name="chkMenu[]" '
-                                . 'class="checkbox-inline text-muted" checked="'
+                        array_push($this->str, '<li id="node' . $this->index
+                                . '" class="collapsed"><input type="checkbox" id="chkMenu[]" name="chkMenu[]" '
+                                . 'class="checkbox-inline text-muted checkbox'.$this->index.'" checked="'
                                 . ($this->existeNodo($menuHijo, $menuDeUsuario) ? 'checked' : '')
                                 . '" value="' . $menuHijo->getId()
                                 . '" ><label class="font-size" title="' . $menuHijo->getToolTip() . '">' . $menuHijo->getLeyenda()
@@ -135,6 +136,7 @@ class MenuBoImpl implements MenuBo {
                         array_push($this->str, '</li>');
                     }
                 }
+                $this->index++;
             }
         }
     }

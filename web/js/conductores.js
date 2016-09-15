@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    changeErrorMessage('frmConductor');
     $('#divMessageUpdate').find('#lblTittleUpdate').empty();
     $('#divMessageDelete').find('#lblTittleDelete').empty();
     $('#divActivar').find('#lblTittleActivar').empty();
@@ -86,6 +85,7 @@ $(document).ready(function () {
         });
     };
     btns = function () {
+        changeErrorMessage('frmConductor');
         $('#btnRegistrar').on('click', function () {
             $('#frmConductor').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/conductorController.php?&method=1');
             if ($('#frmConductor').validate().form()) {
