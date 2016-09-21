@@ -30,31 +30,30 @@ class MenuBoImpl implements MenuBo {
     }
 
     public function getMenuUsuario($obj) {
-        $buffer = NULL;
         if (!empty($obj->getIdUsuario())) {
             $menu = $this->menuDao->getMenuPrivilegios($obj);
             foreach ($menu as $item => $val) {
                 if (isset($val)) {
                     if (empty($val->getLink())) {
-                        $buffer.="\n\t<li class='dropdown'><a href='#' target='"
+                        array_push($this->str,"\n\t<li class='dropdown'><a href='#' target='"
                                 . $val->getTarget() . "' class='dropdown-toggle' data-toggle='dropdown'>\n"
                                 . "<img src='" . $val->getImage() . "'>" . $val->getLeyenda()
-                                . "\n<b class='caret'></b></a>\n<ul class='dropdown-menu' role='menu'>\n";
-                        $buffer .= $this->getMenuString($val);
+                                . "\n<b class='caret'></b></a>\n<ul class='dropdown-menu' role='menu'>\n");
+                        $this->getMenuString($val);
                     } else {
-                        $buffer.="\n\t<li><a href='" . $val->getLink() . "' target='"
+                        array_push($this->str,"\n\t<li><a href='" . $val->getLink() . "' target='"
                                 . $val->getTarget() . "'>"
                                 . "\n<img src='" . $val->getImage() . "'>"
                                 . $val->getLeyenda()
-                                . "</a></li>\n";
+                                . "</a></li>\n");
                     }
                     if (empty($val->getLink())) {
-                        $buffer .= "</ul></li>";
+                        array_push($this->str,"</ul></li>");
                     }
                 }
             }
         }
-        return $buffer;
+        return $this->str;
     }
 
     public function getMenuPrivilegios($user) {
@@ -88,25 +87,23 @@ class MenuBoImpl implements MenuBo {
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Funciones Privadas">
     private final function getMenuString($itemA) {
-        $buffer = NULL;
         $childItems = $itemA->getChildItems();
         foreach ($childItems as $item) {
             if (isset($item)) {
                 if (empty($item->getLink())) {
-                    $buffer.="\n\t<li class='dropdown-submenu'><a tabindex='0' data-toggle='dropdown'>" . $item->getLeyenda()
-                            . "</a>\n<ul class='dropdown-menu'>\n";
+                    array_push($this->str,"\n\t<li class='dropdown-submenu'><a tabindex='0' data-toggle='dropdown'>" . $item->getLeyenda()
+                            . "</a>\n<ul class='dropdown-menu'>\n");
                 } else {
-                    $buffer.="\n\t<li><a id='link" . $this->index . "' href='" . $item->getLink() . "' target='"
+                    array_push($this->str,"\n\t<li><a id='link" . $this->index . "' href='" . $item->getLink() . "' target='"
                             . $item->getTarget() . "'>"
                             . "\n<img src='" . $item->getImage() . "' style='align: left;'>"
                             . $item->getLeyenda()
-                            . "</a></li>\n";
+                            . "</a></li>\n");
                     $this->index++;
                 }
-                $buffer.=$this->getMenuString($item);
+                $this->getMenuString($item);
             }
         }
-        return $buffer;
     }
 
     private final function primerRecorridoMenu($menu, $menuDeUsuario) {

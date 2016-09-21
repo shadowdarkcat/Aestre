@@ -5,8 +5,8 @@ spl_autoload_register('aestre_autoload', FALSE);
 new PropertyKey();
 if (session_status() === PHP_SESSION_NONE) {
     if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+        session_start();
+    }
 }
 
 /**
@@ -40,7 +40,11 @@ class DtoLogin {
     }
 
     public function setMenu($menu) {
-        $this->menu = $menu;
+        $str = '';
+        foreach ($menu as $item) {
+            $str.=$item;
+        }
+        $this->menu = $str;
     }
 
     public static function setSession($login) {

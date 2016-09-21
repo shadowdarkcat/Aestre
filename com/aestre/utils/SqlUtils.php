@@ -20,8 +20,8 @@ class SqlUtils {
             return self::getColonia($obj, $row);
         } else if ($obj instanceof BeanDispositivo) {
             return self::getDispositivo($obj, $row);
-            /*  }else if($obj instanceof BeanZona){
-              return self::getZona($obj, $row); */
+        } else if ($obj instanceof BeanZona) {
+            return self::getZona($obj, $row);
         } else if ($obj instanceof DtoCliente) {
             return self::getCliente($obj, $row);
         } else if ($obj instanceof BeanGiro) {
@@ -36,6 +36,8 @@ class SqlUtils {
             return self::getLicencia($obj, $row);
         } else if ($obj instanceof DtoConductor) {
             return self::getConductor($obj, $row);
+        } else if ($obj instanceof BeanLocalizar) {
+            return self::getLocalizar($obj, $row);
         }
     }
 
@@ -81,12 +83,12 @@ class SqlUtils {
         return $bean;
     }
 
-    /*  private static final function getZona(BeanDispositivo $bean, $row) {
-      $bean->setId($row[0]);
-      $bean->setNombre($row[1]);
-      $bean->setJson($row[2]);
-      return $bean;
-      } */
+    private static final function getZona(BeanGeozona $bean, $row) {
+        $bean->setId($row[0]);
+        $bean->setNombre($row[1]);
+        $bean->setJson($row[2]);
+        return $bean;
+    }
 
     private static final function getCliente(DtoCliente $dto, $row) {
         $dto->setIdCliente($row[0]);
@@ -130,8 +132,8 @@ class SqlUtils {
         $dto->setActivo($row[8]);
         $dto->setApagado($row[9]);
         $dto->setBeanDispositivo(FactoryDispositivo::newInstance($row[10]));
-        $dto->setBeanZona(NULL); //FactoryZona::newInstance($row[11]));
-        $dto->setBeanRuta(NULL); //FactoryRuta::newInstance($row[12]));
+        $dto->setBeanGeozona(FactoryGeozona::newInstance($row[11]));
+        $dto->setBeanGeoruta(FactoryGeoruta::newInstance($row[12]));
         $dto->setBeanIconos(FactoryIconos::newInstance($row[13]));
         $dto->setVerificacion($row[14]);
         return $dto;
@@ -174,9 +176,23 @@ class SqlUtils {
         $dto->setActivo($row[14]);
         return $dto;
     }
-/*
- * o`
- */
+
+    private static final function getLocalizar(BeanLocalizar $bean, $row) {
+        $bean->setId($row[0]);
+        $bean->setImei($row[1]);
+        $bean->setLat($row[2]);
+        $bean->setLon($row[3]);
+        $bean->setDateTime($row[4]);
+        $bean->setAddress($row[5]);
+        $bean->setSpeed($row[6]);
+        $bean->setJson($row[7]);
+        return $bean;
+    }
+
+    /*
+     * o`
+     */
+
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Metodos P&uacute;blicos">
     public static final function execute(Jdbc $connection, $query) {

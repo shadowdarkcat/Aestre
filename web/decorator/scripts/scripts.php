@@ -3,14 +3,21 @@ require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/com/aestre/AutoLoad
 spl_autoload_register('aestre_autoload', FALSE);
 if (session_status() === PHP_SESSION_NONE) {
     if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+        session_start();
+    }
 }
 $controller = new coloniaController();
 $controller->colonias();
 if (isset($_SESSION[PropertyKey::$session_colonias])) {
     $colonias = json_decode($_SESSION[PropertyKey::$session_colonias]);
     unset($_SESSION[PropertyKey::$session_colonias]);
+}
+
+$login = $_SESSION[PropertyKey::$session_usuario];
+if (!$login->getAdmin()) {
+    $controller = new clienteVehiculoController();
+    $dto = new DtoCliente();
+    $controller->findByIdCliente($login->getIdCliente(), $dto);
 }
 ?>
 <!DOCTYPE html>
@@ -64,6 +71,8 @@ if (isset($_SESSION[PropertyKey::$session_colonias])) {
 <script type="text/javascript" src="/Aestre/web/jquery/jquery/jquery.validate.js"></script>
 <script type="text/javascript" src="/Aestre/web/jquery/jquery/dataTables.responsive.min.js"></script>
 <script type="text/javascript" src="/Aestre/web/jquery/jquery/dataTables.responsive.nightly.js"></script>
+<script type="text/javascript" src="/Aestre/web/jquery/jquery/markerclusterer_compiled.js"></script>
+<script type="text/javascript" src="/Aestre/web/jquery/jquery/additional-methods.js"></script>
 <script type="text/javascript" src="/Aestre/web/jquery/bootstrap/bootstrap.js"></script>
 <script type="text/javascript" src="/Aestre/web/jquery/bootstrap/bootstrap.min.js"></script>
 <script type="text/javascript" src="/Aestre/web/jquery/bootstrap/bootstrap-submenu.js"></script>

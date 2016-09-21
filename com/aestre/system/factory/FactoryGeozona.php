@@ -4,19 +4,20 @@ require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/com/aestre/AutoLoad
 spl_autoload_register('aestre_autoload', FALSE);
 
 /**
- * Description of FactoryZona
+ * Description of FactoryCliente
  *
  * @author ShadowDarkCat
  */
-class FactoryZona {
+class FactoryGeozona {
+
     //<editor-fold defaultstate="collapsed" desc="Funciones P&uacute;blicas">
     public static final function newInstance($id) {
         if (Utils::isReallyEmptyOrNull($id)) {
             return new BeanGeozona();
         } else {
-            $dto = new BeanGeozona();
-            $dto->setId($id);
-            return $dto;
+            $bean = new BeanGeozona();
+            $bean->setId($id);
+            return $bean;
         }
     }
 

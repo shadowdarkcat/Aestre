@@ -51,8 +51,8 @@ class VehiculoBoImpl implements VehiculoBo {
         $objVehiculo = array();
         $dv = NULL;
         if (Utils::isSessionValid($user)) {
-            foreach ($this->getClienteVehiculo($user,$object)as $cv) {
-                $dv=FactoryVehiculo::newInstance(NULL);
+            foreach ($this->getClienteVehiculo($user, $object)as $cv) {
+                $dv = FactoryVehiculo::newInstance(NULL);
                 $dv->setIdVehiculo($cv->getIdVehiculo());
                 if ($idAnterior != $cv->getIdCliente()) {
                     if ($indexV != 0) {
@@ -130,6 +130,18 @@ class VehiculoBoImpl implements VehiculoBo {
         }
     }
 
+    public function find($user, $object) {
+        if (Utils::isSessionValid($user)) {
+            $object = $this->dao->findAllById($object);
+            foreach ($object as $item) {
+                $item->setBeanGiro($this->getGiro($user, $item->getBeanGiro()));
+                $item->setBeanDispositivo($this->getDispositivo($user, $item->getBeanDispositivo()));
+                $item->setBeanIconos($this->getIconos($user, $item->getBeanIconos()));
+            }
+            return $object;
+        }
+    }
+
     public function insert($user, $obj) {
         if (Utils::isSessionValid($user)) {
             $this->dao->insert($obj);
@@ -188,7 +200,7 @@ class VehiculoBoImpl implements VehiculoBo {
     }
 
     private function getClienteVehiculo($user, $obj) {
-        return $this->clienteVehiculoBo->findById($user,$obj);
+        return $this->clienteVehiculoBo->findById($user, $obj);
     }
 
     private function getCliente($id, DtoLogin $user) {

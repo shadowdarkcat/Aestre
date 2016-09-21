@@ -22,12 +22,14 @@ class DtoVehiculo {
     private $activo;
     private $apagado;
     private $beanDispositivo;
-    private $beanZona;
-    private $beanRuta;
+    private $beanGeozona;
+    private $beanGeoruta;
     private $beanIconos;
     private $verificacion;
     private $clientes;
     private $idCliente;
+    private $beanLocalizar;
+    private $dtoConductor;
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Accesores">
     public function getIdVehiculo() {
@@ -74,12 +76,12 @@ class DtoVehiculo {
         return $this->beanDispositivo;
     }
 
-    public function getBeanZona() {
-        return $this->beanZona;
+    public function getBeanGeozona() {
+        return $this->beanGeozona;
     }
 
-    public function getBeanRuta() {
-        return $this->beanRuta;
+    public function getBeanGeoruta() {
+        return $this->beanGeoruta;
     }
 
     public function getBeanIconos() {
@@ -96,6 +98,14 @@ class DtoVehiculo {
 
     public function getIdCliente() {
         return $this->idCliente;
+    }
+
+    public function getBeanLocalizar() {
+        return $this->beanLocalizar;
+    }
+
+    public function getDtoConductor() {
+        return $this->dtoConductor;
     }
 
     public function setIdVehiculo($idVehiculo) {
@@ -142,12 +152,12 @@ class DtoVehiculo {
         $this->beanDispositivo = $beanDispositivo;
     }
 
-    public function setBeanZona($beanZona) {
-        $this->beanZona = $beanZona;
+    public function setBeanGeozona($beanGeozona) {
+        $this->beanGeozona = $beanGeozona;
     }
 
-    public function setBeanRuta($beanRuta) {
-        $this->beanRuta = $beanRuta;
+    public function setBeanGeoruta($beanGeoruta) {
+        $this->beanGeoruta = $beanGeoruta;
     }
 
     public function setBeanIconos($beanIconos) {
@@ -164,6 +174,14 @@ class DtoVehiculo {
 
     public function setIdCliente($idCliente) {
         $this->idCliente = $idCliente;
+    }
+
+    public function setBeanLocalizar($beanLocalizar) {
+        $this->beanLocalizar = $beanLocalizar;
+    }
+
+    public function setDtoConductor($dtoConductor) {
+        $this->dtoConductor = $dtoConductor;
     }
 
         //</editor-fold>

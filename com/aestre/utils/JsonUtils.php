@@ -15,6 +15,10 @@ class JsonUtils {
             return self::getJsonVehiculo($obj);
         } else if ($obj[0] instanceof DtoConductor) {
             return self::getJsonConductor($obj);
+        } else if ($obj[0] instanceof BeanGeozona) {
+            return self::getJsonZona($obj);
+        } else if ($obj[0] instanceof BeanGeoruta) {
+            return self::getJsonRuta($obj);
         }
     }
 
@@ -67,7 +71,7 @@ class JsonUtils {
 
     private static final function getJsonConductor(DtoVehiculo $dto) {
         $json = array();
-        foreach ($object as $val) {
+        foreach ($obj as $val) {
             $json[] = array(
                 'id' => $val->getId(), 'nombre' => $val->getNombre()
                 , 'paterno' => $val->getPaterno(), 'materno' => $val->getMaterno()
@@ -86,9 +90,7 @@ class JsonUtils {
         return $json;
     }
 
-    //</editor-fold>
-
-    private function getVehiculoJson($val) {
+    private final function getVehiculoJson($val) {
         return array(
             'id' => $val->getDtoVehiculo()->getId(), 'modelo' => $val->getDtoVehiculo()->getModelo()
             , 'marca' => $val->getDtoVehiculo()->getMarca(), 'placa' => $val->getDtoVehiculo()->getPlaca()
@@ -107,7 +109,7 @@ class JsonUtils {
         );
     }
 
-    private function getColoniaJson($val) {
+    private final function getColoniaJson($val) {
         return array(
             'id' => $val->getId()
             , 'idCp' => $val->getBeanCp()->getIdCp(), 'cp' => $val->getBeanCp()->getCp()
@@ -119,11 +121,31 @@ class JsonUtils {
         );
     }
 
-    private function getLicencia($val) {
+    private final function getLicencia($val) {
         return array(
             'id' => $val->getBeanLicencia()->getIdLicencia()
             , 'tipo' => $val->getBeanLicencia()->getLicencia()
         );
+    }
+
+    private static final function getJsonZona(BeanGeozona $obj) {
+        foreach ($obj as $item) {
+            $json[] = array(
+                'id' => $item->getId(), 'nombre' => $item->getNombre()
+                , 'zona' => $item->getJson()
+            );
+        }
+        return $json;
+    }
+
+    private static final function getJsonRuta($obj) {
+        foreach ($obj as $item) {
+            $json[] = array(
+                'id' => $item->getId(), 'nombre' => $item->getNombre(), 'ruta' => $item->getJson()
+                , 'lenght' => $item->getLenght()
+            );
+        }
+        return $json;
     }
 
 }

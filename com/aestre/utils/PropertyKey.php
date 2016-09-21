@@ -24,11 +24,15 @@ class PropertyKey {
     public static $jdbc_function_exist_login;
     public static $jdbc_function_last_conductor;
     public static $jdbc_function_last_login;
+    public static $jdbc_function_last_zona;
+    public static $jdbc_function_last_ruta;
     public static $jdbc_procedure_privilegios;
     public static $jdbc_procedure_cliente;
     public static $jdbc_procedure_vehiculo;
     public static $jdbc_procedure_conductor;
     public static $jdbc_procedure_login;
+    public static $jdbc_procedure_zona;
+    public static $jdbc_procedure_ruta;
     public static $jdbc_view_user;
     public static $jdbc_view_menu;
     public static $jdbc_view_privilegio;
@@ -56,6 +60,16 @@ class PropertyKey {
     public static $jdbc_view_conductor_id;
     public static $jdbc_view_usuario;
     public static $jdbc_view_usuario_id;
+    public static $jdbc_view_localizar_imei_date;
+    public static $jdbc_view_localizar_imei;
+    public static $jdbc_view_localizar_fecha_ini;
+    public static $jdbc_view_localizar_fecha_ini_fin;
+    public static $jdbc_view_localizar_hora_ini;
+    public static $jdbc_view_localizar_hora_ini_fin;
+    public static $jdbc_view_geozona;
+    public static $jdbc_view_geozona_id;
+    public static $jdbc_view_georuta;
+    public static $jdbc_view_georuta_id;
     public static $session_access;
     public static $session_usuario;
     public static $session_clientes;
@@ -110,7 +124,7 @@ class PropertyKey {
     public static $php_main_vehiculo;
     public static $php_main_conductor;
     public static $php_main_usuario;
-
+    
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Constructores Privados">
     public function __construct() {
@@ -148,19 +162,32 @@ class PropertyKey {
         self::$jdbc_view_conductor_id = $this->getPropertyBd('jdbc.view.conductores.id');
         self::$jdbc_view_usuario = $this->getPropertyBd('jdbc.view.usuario');
         self::$jdbc_view_usuario_id = $this->getPropertyBd('jdbc.view.usuario.id');
-
+        self::$jdbc_view_localizar_imei_date = $this->getPropertyBd('jdbc.view.localizar.imei.date');
+        self::$jdbc_view_localizar_imei = $this->getPropertyBd('jdbc.view.localizar.imei');
+        self::$jdbc_view_localizar_fecha_ini = $this->getPropertyBd('jdbc.view.localizar.fechaIni');
+        self::$jdbc_view_localizar_fecha_ini_fin = $this->getPropertyBd('jdbc.view.localizar.fechaIni.fechaFn');
+        self::$jdbc_view_localizar_hora_ini = $this->getPropertyBd('jdbc.view.localizar.horaIni');
+        self::$jdbc_view_localizar_hora_ini_fin = $this->getPropertyBd('jdbc.view.localizar.horaIni.horaFn');
+        self::$jdbc_view_geozona = $this->getPropertyBd('jdbc.view.geozona');
+        self::$jdbc_view_geozona_id = $this->getPropertyBd('jdbc.view.geozona.id');
+        self::$jdbc_view_georuta = $this->getPropertyBd('jdbc.view.georuta');
+        self::$jdbc_view_georuta_id = $this->getPropertyBd('jdbc.view.georuta.id');
         self::$jdbc_function_exist_cliente = $this->getPropertyBd('jdbc.function.exist.cliente');
         self::$jdbc_function_exist_vehiculo = $this->getPropertyBd('jdbc.function.exist.vehiculo');
         self::$jdbc_function_exist_login = $this->getPropertyBd('jdbc.function.exist.login');
         self::$jdbc_function_exist_conductor = $this->getPropertyBd('jdbc.function.exist.conductor');
         self::$jdbc_function_last_conductor = $this->getPropertyBd('jdbc.function.last.conductor');
         self::$jdbc_function_last_login = $this->getPropertyBd('jdbc.function.last.login');
+        self::$jdbc_function_last_zona = $this->getPropertyBd('jdbc.function.last.zona');
+        self::$jdbc_function_last_ruta = $this->getPropertyBd('jdbc.function.last.ruta');
 
         self::$jdbc_procedure_privilegios = $this->getPropertyBd('jdbc.procedure.menu.privilegio');
         self::$jdbc_procedure_cliente = $this->getPropertyBd('jdbc.procedure.cliente');
         self::$jdbc_procedure_vehiculo = $this->getPropertyBd('jdbc.procedure.vehiculo');
         self::$jdbc_procedure_conductor = $this->getPropertyBd('jdbc.procedure.conductor');
         self::$jdbc_procedure_login = $this->getPropertyBd('jdbc.procedure.login');
+        self::$jdbc_procedure_zona = $this->getPropertyBd('jdbc.procedure.zona');
+        self::$jdbc_procedure_ruta = $this->getPropertyBd('jdbc.procedure.ruta');
 
         self::$session_access = $this->getPropertySystem('session.acces');
         self::$session_usuario = $this->getPropertySystem('session.usuario');
@@ -218,7 +245,6 @@ class PropertyKey {
         self::$view_chkAdmin = $this->getPropertySystem('view.chk.admin');
         self::$view_usuario_id = $this->getPropertySystem('view.usuario.id');
         self::$view_chk_menu = $this->getPropertySystem('view.chk.menu');
-        
     }
 
     //</editor-fold>

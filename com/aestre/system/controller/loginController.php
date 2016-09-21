@@ -65,7 +65,8 @@ class loginController {
     private function doLogout() {
         session_unset();
         session_destroy();
-        session_write_close();        
+        session_write_close();
         echo(PropertyKey::$php_index);
     }
+
 }

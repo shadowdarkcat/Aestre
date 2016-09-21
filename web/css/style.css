@@ -44,160 +44,6 @@ tr.group:hover {
     display: none;
 }
 
-html, body, #gralMapping  {
-    margin: 0;
-    padding: 0;
-    height: 150%;
-}
-#gralMapping {
-    width:100%;
-    height:785px;
-}
-
-html, body, #oneMapping  {
-    margin: 0;
-    padding: 0;
-    height: 150%;
-}
-#oneMapping {
-    width:100%;
-    height:785px;
-}
-
-html, body, #historialRutaMapping  {
-    margin: 0;
-    padding: 0;
-    height: 150%;
-}
-#historialRutaMapping {
-    width:100%;
-    height:785px;
-}
-
-html, body, #divMapGeozona  {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-}
-#divMapGeozona {
-    width:100%;
-    height:380px;
-}
-
-#div1 {
-    overflow:scroll;
-    height:380px;
-    width:372px;
-}
-
-#div2 {
-    overflow:scroll;
-    height:264px;
-    width:378px;
-}
-#div1 table {
-    width:500px;
-}
-
-div.parteM{
-    border: 1px solid #000000;
-    float: left;
-    width: 48%;
-    height: 100%;
-}
-
-div.parte{
-    border: 1px solid #000000;
-    float: left;
-    width: 48%;
-    height: 100%;
-}
-html, body, #divMapGeozonaAnterior  {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-}
-#divMapGeozonaAnterior {
-    width:100%;
-    height:250px;
-}
-html, body, #divMapGeozonaNueva  {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-}
-#divMapGeozonaNueva {
-    width:100%;
-    height:250px;
-}
-
-html, body, #divMapGeozonaBaja  {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-}
-#divMapGeozonaBaja {
-    width:100%;
-    height:380px;
-}
-
-html, body, #mapAsosicar  {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-}
-#mapAsosicar {
-    width:100%;
-    height:380px;
-}
-html, body, #divMapGeorutas  {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-}
-#divMapGeorutas {
-    width:100%;
-    height:380px;
-}
-html, body, #divMapGeorutaAnterior  {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-}
-#divMapGeorutaAnterior {
-    width:100%;
-    height:380px;
-}
-html, body, #divMapGeorutaNueva  {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-}
-#divMapGeorutaNueva {
-    width:100%;
-    height:380px;
-}
-
-html, body, #mapAsociar  {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-}
-#mapAsociar {
-    width:100%;
-    height:380px;
-}
-
-html, body, #divMapGeorutaBaja  {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-}
-#divMapGeorutaBaja {
-    width:100%;
-    height:380px;
-}
-
 div.dataTables_wrapper {
 	background-color: transparent;
 }
@@ -283,4 +129,38 @@ table.pretty tbody td {
 		
 table.pretty tbody tr.odd td { 
 	background: #bcd9e1;
+}
+
+div#left {
+	position: absolute;
+	display: block;
+	top: 50px;
+	bottom: 0px;
+	left: 0px;
+	padding: 10px;
+	width: 130px;
+	height: 100%;
+	background:#009900;
+	overflow: hidden;
+}
+
+div#center {
+	position: absolute;
+	height: auto;
+	top: 50px;
+	left: 150px;
+	right: 0px;
+	bottom: 0px;
+	background:#fff;
+	overflow: auto;
+}
+
+html, body, #divMap  {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+#divMap {
+    width:100%;
+    height:700px;
 }
