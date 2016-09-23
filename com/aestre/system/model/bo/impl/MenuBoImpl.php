@@ -35,20 +35,34 @@ class MenuBoImpl implements MenuBo {
             foreach ($menu as $item => $val) {
                 if (isset($val)) {
                     if (empty($val->getLink())) {
-                        array_push($this->str,"\n\t<li class='dropdown'><a href='#' target='"
+                        array_push($this->str, "\n\t<li class='dropdown'><a href='#' target='"
                                 . $val->getTarget() . "' class='dropdown-toggle' data-toggle='dropdown'>\n"
                                 . "<img src='" . $val->getImage() . "'>" . $val->getLeyenda()
                                 . "\n<b class='caret'></b></a>\n<ul class='dropdown-menu' role='menu'>\n");
                         $this->getMenuString($val);
                     } else {
-                        array_push($this->str,"\n\t<li><a href='" . $val->getLink() . "' target='"
+                        array_push($this->str, "\n\t<li><a href='" . $val->getLink() . "' target='"
                                 . $val->getTarget() . "'>"
                                 . "\n<img src='" . $val->getImage() . "'>"
                                 . $val->getLeyenda()
                                 . "</a></li>\n");
                     }
                     if (empty($val->getLink())) {
-                        array_push($this->str,"</ul></li>");
+                        array_push($this->str, "</ul></li>");
+                    }
+                }
+            }
+        }
+        return $this->str;
+    }
+
+    function getMenuConfiguraciones($obj) {
+        if (!empty($obj->getIdUsuario())) {
+            $menu = $this->menuDao->getMenuPrivilegios($obj);
+            foreach ($menu as $item => $val) {
+                if (isset($val)) {
+                    if (empty($val->getLink())) {
+                        $this->getMenuStringConfiguraciones($val);
                     }
                 }
             }
@@ -91,10 +105,10 @@ class MenuBoImpl implements MenuBo {
         foreach ($childItems as $item) {
             if (isset($item)) {
                 if (empty($item->getLink())) {
-                    array_push($this->str,"\n\t<li class='dropdown-submenu'><a tabindex='0' data-toggle='dropdown'>" . $item->getLeyenda()
+                    array_push($this->str, "\n\t<li class='dropdown-submenu'><a tabindex='0' data-toggle='dropdown'>" . $item->getLeyenda()
                             . "</a>\n<ul class='dropdown-menu'>\n");
                 } else {
-                    array_push($this->str,"\n\t<li><a id='link" . $this->index . "' href='" . $item->getLink() . "' target='"
+                    array_push($this->str, "\n\t<li><a id='link" . $this->index . "' href='" . $item->getLink() . "' target='"
                             . $item->getTarget() . "'>"
                             . "\n<img src='" . $item->getImage() . "' style='align: left;'>"
                             . $item->getLeyenda()
@@ -102,6 +116,20 @@ class MenuBoImpl implements MenuBo {
                     $this->index++;
                 }
                 $this->getMenuString($item);
+            }
+        }
+    }
+
+    private final function getMenuStringConfiguraciones($itemA) {
+        $childItems = $itemA->getChildItems();
+        foreach ($childItems as $item) {
+            if (isset($item)) {
+                array_push($this->str, "<br/><button class='active btn-primary form-control' id='btn"
+                        . $item->getLeyenda() . "' name='btn"
+                        . $item->getLeyenda() . "'><label class='font-size'>"
+                        . $item->getLeyenda()
+                        . "</label></a></button>\n");
+                $this->getMenuStringConfiguraciones($item);
             }
         }
     }
@@ -120,12 +148,13 @@ class MenuBoImpl implements MenuBo {
                     if ($menuHijo->getLeyenda() != NULL && !empty($menuHijo->getLeyenda())) {
                         array_push($this->str, '<li id="node' . $this->index
                                 . '" class="collapsed"><input type="checkbox" id="chkMenu[]" name="chkMenu[]" '
-                                . 'class="checkbox-inline text-muted checkbox'.$this->index.'" checked="'
+                                . 'class="checkbox-inline text-muted checkbox' . $this->index . '" checked="'
                                 . ($this->existeNodo($menuHijo, $menuDeUsuario) ? 'checked' : '')
                                 . '" value="' . $menuHijo->getId()
                                 . '" ><label class="font-size" title="' . $menuHijo->getToolTip() . '">' . $menuHijo->getLeyenda()
                                 . '</label>');
                         if ($menuHijo->getChildItems() != null && !empty($menuHijo->getChildItems())) {
+                            $this->index++;
                             array_push($this->str, '<ul>');
                             $this->recorridoMenu($menuHijo->getChildItems(), $menuDeUsuario);
                             array_push($this->str, '</ul>');

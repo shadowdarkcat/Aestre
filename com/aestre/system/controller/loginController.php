@@ -50,12 +50,14 @@ class loginController {
                 $_SESSION[PropertyKey::$session_access] = 0;
                 echo(PropertyKey::$php_index);
             } else if ($validate->getIdUsuario() != 0) {
-                unset($_SESSION[PropertyKey::$session_access]);
-                $validate->setMenu($menu->getMenuUsuario($validate));
-                DtoLogin::setSession($validate);
+                unset($_SESSION[PropertyKey::$session_access]);                              
                 if ($validate->getAdmin()) {
+                    $validate->setMenu($menu->getMenuUsuario($validate));  
+                    DtoLogin::setSession($validate);
                     echo(PropertyKey::$php_main_admin);
                 } else {
+                    $validate->setMenu($menu->getMenuConfiguraciones($validate));
+                    DtoLogin::setSession($validate);
                     echo(PropertyKey::$php_main_user);
                 }
             }

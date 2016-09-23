@@ -1,11 +1,31 @@
 var clicks = 0;
+var color;
+var path = [];
+
 $(document).ready(function () {
     $('#listVehiculos').animate({height: 'toggle'});
     $('#lblTittleListV').text("Mostrar Lista Vehiculos");
+
+    $(function () {
+        $('#foot').append('<tr><td  style="text-align: center">'
+                + '<button type="button" class="btn" '
+                + 'onclick="showNew();">'
+                + '<img src="../web/images/nuevo.png" >Nuevo</button>'
+                + '</td>'
+                + '</tr>'
+                + '<tr id="trIndxFoot0"></tr>');
+    });
+
     $('#tblVehiculosMap').DataTable({
         "pagingType": "simple",
         "ordering": false,
         'displayLength': 2,
+        language: {
+            url: contextoGlobal + '/web/resources/es_ES.json'
+        }
+    });
+    $('#tblGeozonas').DataTable({
+        "pagingType": "simple",
         language: {
             url: contextoGlobal + '/web/resources/es_ES.json'
         }
@@ -33,6 +53,65 @@ $(document).ready(function () {
                 $(".ui-datepicker").css('font-size', 12)
             }
             , maxDate: '+0d'
+        });
+    }
+
+    $('#btnGeoZona').on('click', function () {
+        window.clearInterval(inter);
+        $('#divMap').empty();
+        $('#divMap').append($('#divZonas').html());
+        onloadAllMini();
+    });
+
+    other = function () {
+        changeErrorMessage('frmGeoZona');
+        $('#colorPicker').on('change', function () {
+            color = '#' + $('#colorPicker').val();
+            crearZona();
+        });
+        
+        $('#btnRegistrar').on('click', function () {
+            $('#frmGeoZona').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/geozonaController.php?&method=1');
+            if ($('#frmGeoZona').validate().form()) {
+                $('#frmGeoZona').submit();
+            }
+        });
+        $('#btnActualizar').on('click', function () {
+            if ($('#frmGeoZona').validate().form()) {
+                $('#frmGeoZona').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/geozonaController.php?method=2');
+                $('#divMessageUpdate').modal('show');
+            }
+        });
+        $('#btnUpdate').on('click', function () {
+            $('#frmGeoZona').submit();
+        });
+        $('#btnEliminar').on('click', function () {
+            $('#chkActivo').prop('checked', false);
+            if ($('#frmGeoZona').validate().form()) {
+                $('#frmGeoZona').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/geozonaController.php?method=3');
+                $('#divMessageDelete').modal('show');
+            }
+        });
+        $('#btnDelete').on('click', function () {
+            $('#frmGeoZona').submit();
+        });
+        $('#btnActivate').on('click', function () {
+            $('#chkActivo').prop('checked', true);
+            if ($('#frmGeoZona').validate().form()) {
+                $('#frmGeoZona').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/geozonaController.php?method=3');
+                $('#divActivar').modal('show');
+            }
+        });
+        $('#btnAceptarActivar').on('click', function () {
+            $('#frmGeoZona').submit();
+        });
+
+        $('#btnCancel').on('click', function () {
+            $('#divMessageCancel').modal('show');
+        });
+        $('#btnAceptarCerrar').on('click', function () {
+            clear(size);
+            $('#trIndxFoot0').empty();
         });
     }
 });
@@ -73,14 +152,16 @@ function showRuta(index, imei) {
 
 function cerrar() {
     clear(size);
-    $('#rdbHistorial').prop('checked',false);
+    $('#rdbHistorial').prop('checked', false);
     intervals();
 }
+
 function clear(size) {
     for (var indx = 0; indx < size; indx++) {
         $('#trIntIndx' + indx).remove();
     }
 }
+
 function cboTime() {
     var option = '';
     for (var i = 1; i < 25; i++) {
@@ -92,4 +173,14 @@ function cboTime() {
     }
     $('#cboHrInicial').append('<option value ="">Hora Inicial</option>' + option);
     $('#cboHrFinal').append('<option value ="">Hora Final</option>' + option);
+}
+
+function showNew() {
+    clear(size);
+    $('#trIndxFoot0').append('<td colspan="5">' + getFormGeozona() + '</td></tr>');
+    $('#txtNombre').focus();
+    $('#btnActualizar').prop('disabled', true);
+    $('#btnEliminar').prop('disabled', true);
+    geoMap();
+    other();
 }

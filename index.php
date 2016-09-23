@@ -12,7 +12,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <link type="text/css" href="web/css/signin.css" rel="stylesheet">
         <link type="text/css" href="web/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
         <link type="text/css" href="web/css/style.css" rel="stylesheet">
-        <script type="text/javascript" src="web/jquery/boostrap/ie-emulation-modes-warning.js"></script>
+        <script type="text/javascript" src="web/jquery/bootstrap/ie-emulation-modes-warning.js"></script>
         <title>Acceso Sistema</title>        
     </head>
     <div class="container">
@@ -36,5 +36,5 @@ if (session_status() === PHP_SESSION_NONE) {
             </form>
         </div>
     </div>    
-    <script src="web/jquery/boostrap/ie10-viewport-bug-workaround.js"></script>
+    <script src="web/jquery/bootstrap/ie10-viewport-bug-workaround.js"></script>
 </html>

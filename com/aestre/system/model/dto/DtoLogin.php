@@ -41,8 +41,10 @@ class DtoLogin {
 
     public function setMenu($menu) {
         $str = '';
-        foreach ($menu as $item) {
-            $str.=$item;
+        if (!Utils::isReallyEmptyOrNull($menu)) {
+            foreach ($menu as $item) {
+                $str.=$item;
+            }
         }
         $this->menu = $str;
     }

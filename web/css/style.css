@@ -164,3 +164,23 @@ html, body, #divMap  {
     width:100%;
     height:700px;
 }
+
+html, body, #divMiniMap  {
+    margin: 0;
+    padding: 0;
+    height: 50%;
+}
+#divMiniMap {
+    width:100%;
+    height:300px;
+}
+
+html, body, #divMapGeozona  {
+    margin: 0;
+    padding: 0;
+    height: 50%;
+}
+#divMapGeozona {
+    width:100%;
+    height:300px;
+}

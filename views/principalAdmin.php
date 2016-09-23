@@ -37,6 +37,12 @@ if (!Utils::isSessionValid($login)) {
                     <img  src="/Aestre/web/images/logoAestre.ico"/>
                     <ul class="nav navbar-nav">                        
                         <?php echo($login->getMenu()); ?>
+                        <li>
+                            <a href="../com/aestre/system/controller/loginController.php?method=3">
+                                <img src="/Aestre/web/images/menuSalir.png">
+                                CERRAR SESI&Oacute;N
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -22,4 +22,6 @@ interface MenuBo {
     function insertPrivilegio($user, $obj, $menuItem);
 
     function deletePrivilegios($user, $obj);
+    
+    function getMenuConfiguraciones($obj);
 }

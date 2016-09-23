@@ -9,16 +9,18 @@ class JsonUtils {
 
     //<editor-fold defaultstate="collapsed" desc="Metodos Privados">
     public static final function createJson($obj) {
-        if ($obj[0] instanceof DtoCliente) {
-            return self::getJsonCliente($obj);
-        } else if ($obj[0] instanceof DtoVehiculo) {
-            return self::getJsonVehiculo($obj);
-        } else if ($obj[0] instanceof DtoConductor) {
-            return self::getJsonConductor($obj);
-        } else if ($obj[0] instanceof BeanGeozona) {
-            return self::getJsonZona($obj);
-        } else if ($obj[0] instanceof BeanGeoruta) {
-            return self::getJsonRuta($obj);
+        if (!Utils::isReallyEmptyOrNull($obj)) {
+            if ($obj[0] instanceof DtoCliente) {
+                return self::getJsonCliente($obj);
+            } else if ($obj[0] instanceof DtoVehiculo) {
+                return self::getJsonVehiculo($obj);
+            } else if ($obj[0] instanceof DtoConductor) {
+                return self::getJsonConductor($obj);
+            } else if ($obj[0] instanceof BeanGeozona) {
+                return self::getJsonZona($obj);
+            } else if ($obj[0] instanceof BeanGeoruta) {
+                return self::getJsonRuta($obj);
+            }
         }
     }
 

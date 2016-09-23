@@ -7,10 +7,18 @@ var globalMap;
 var path = [];
 var pathRuta = [];
 var inter;
-
+var polygon;
+var indexClick = 0;
+var map;
 function intervals() {
     inter = setInterval(function () {
         onloadAll();
+    }, 60000);
+}
+
+function intervalsMini() {
+    inter = setInterval(function () {
+        onloadAllMini();
     }, 60000);
 }
 
@@ -115,6 +123,132 @@ onloadAll = function () {
     intervals();
 };
 
+onloadAllMini = function () {
+    closeInfoWindow();
+    $('#divMiniMap').empty();
+    var data = {'method': 0};
+    $.getJSON(contextoGlobal + '/com/aestre/system/controller/localizarController.php', data, function (response) {
+        var markersArray = [];
+        var arr = [];
+        var img = [];
+        var lat = [];
+        var long = [];
+        var path = [];
+        var pathRuta = [];
+        if (response.length >= 1) {
+            var mapOptions = {
+                zoom: 5
+                , mapTypeId: window.google.maps.MapTypeId.MAP
+                , center: new google.maps.LatLng(23.945963820559726, -102.53775014999997)
+            };
+            var map = new google.maps.Map(document.getElementById("divMiniMap"), mapOptions);
+            infowindow = new google.maps.InfoWindow();
+            $.each(response, function (index, item) {
+                $.each(item.conductor, function (index, items) {
+                    var conductor;
+                    if ((items.nombre != undefined) && (items.paterno != undefined) && (items.materno != undefined)) {
+                        conductor = items.nombre + ' ' + items.paterno + ' ' + items.materno;
+                    } else {
+                        conductor = 'No especificado'
+                    }
+                    var data = '<strong>Conductor:</strong> ' + conductor
+                            + '<br/><strong>Veh&iacute;culo:</strong> ' + items.vehiculo[0].modelo
+                            + '<br/><strong>Marca:</strong> ' + items.vehiculo[0].marca
+                            + '<br/><strong>Placa:</strong> ' + items.vehiculo[0].placa
+                            + '<br/><strong>Uso:</strong> ' + items.vehiculo[0].uso.uso;
+                    var dateTime = items.vehiculo[0].localizar[0].dt.split(' ');
+                    var date = dateTime[0].replace(/-/g, '/').split('/');
+                    data += '<br/><strong>Fecha:</strong> ' + date[2] + '/' + date[1] + '/' + date[0]
+                            + '<br/><strong>Hora :</strong> '
+                            + dateTime[1]
+                            + '<br/><strong>Posici&oacute;n Actual:</strong> ' + items.vehiculo[0].localizar[0].addres
+                            + '<br/><strong>Gps:</strong><a href ="http://maps.google.es/?q='
+                            + items.vehiculo[0].localizar[0].lat
+                            + ',' + items.vehiculo[0].localizar[0].lon
+                            + '" target="_blank"> ' + items.vehiculo[0].localizar[0].lat
+                            + ' / ' + items.vehiculo[0].localizar[0].lon + '</a>';
+                    ;
+                    lat.push(parseFloat(items.vehiculo[0].localizar[0].lat));
+                    long.push(parseFloat(items.vehiculo[0].localizar[0].lon));
+                    arr.push(data);
+                    img.push(items.vehiculo[0].icons.path);
+                    if (items.vehiculo[0].zona[0] != undefined) {
+                        $(JSON.parse(items.vehiculo[0].zona[0].coordenadas)).each(function (index, itemss) {
+                            $(itemss.latLng).each(function (index1, val) {
+                                path.push({lat: parseFloat(val.lat), lng: parseFloat(val.long)});
+                            });
+                        });
+                        geofence(path, map, items.vehiculo[0].zona[0].zona, items.vehiculo[0].zona[0].id);
+                    }
+                    path.length = 0;
+                    if (items.vehiculo[0].ruta[0] != undefined) {
+                        $(JSON.parse(items.vehiculo[0].ruta[0].coordenadas)).each(function (index, itemss) {
+                            $(itemss.latLng).each(function (index1, val) {
+                                pathRuta.push({lat: parseFloat(val.lat), lng: parseFloat(val.long)});
+                            });
+                        });
+                        georute(pathRuta, map, items.vehiculo[0].ruta[0]);
+                    }
+                    pathRuta.length = 0;
+                });
+            });
+            for (var i = 0; i < arr.length; i++) {
+                var contenido = arr[i];
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(lat[i], long[i])
+                    , icon: img[i]
+                });
+                (function (marker, contenido) {
+                    google.maps.event.addListener(marker, "mouseover", function () {
+                        infowindow.setContent(contenido);
+                        infowindow.open(map, this);
+                    });
+                    google.maps.event.addListener(marker, "click", function () {
+                        infowindow.setContent(contenido);
+                        infowindow.open(map, this);
+                    });
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                })(marker, contenido);
+                markersArray.push(marker);
+            }
+            var mc = new MarkerClusterer(map, markersArray);
+        }
+    });
+    intervalsMini();
+    resizeMapGral();
+};
+
+function geoMap(){
+    var mapOptions = {
+        zoom: 6
+        , mapTypeId: window.google.maps.MapTypeId.MAP
+        , center: new google.maps.LatLng(23.945963820559726, -102.53775014999997)
+    };
+    map = new google.maps.Map(document.getElementById("divMapGeozona"), mapOptions);
+    google.maps.event.addListener(map, 'click', function (event) {
+        if ($('#txtPos1').val() == '') {
+            $('#txtPos1').val(event.latLng);
+            $('#txtPos5').val(event.latLng);
+        } else if ($('#txtPos2').val() == '') {
+            $('#txtPos2').val(event.latLng);
+        } else if ($('#txtPos3').val() == '') {
+            $('#txtPos3').val(event.latLng);
+        } else if ($('#txtPos4').val() == '') {
+            $('#txtPos4').val(event.latLng);
+            crearZona();
+        }
+        if (indexClick < 4) {
+            var marker = new google.maps.Marker({
+                position: event.latLng,
+                map: map
+            });
+        }else{
+            crearZona();
+        }
+        indexClick = indexClick + 1;
+    });
+    resizeMapGral();
+}
 
 function localizar(imei) {
     closeInfoWindow();
@@ -526,6 +660,31 @@ function getObject(item) {
     return dtoObject;
 }
 
-/*function clearRdb(){
- $('#rdbLocalizar').prop('checked',false);
- }*/
+function crearZona() {
+    path.lenght = 0;    
+    for (var i = 1; i < 6; i++) {
+        if ($('#txtPos' + i) != '') {
+            var value = $('#txtPos' + i).val();
+            value = value.replace('(', '');
+            value = value.replace(')', '');
+            var res = value.split(',');
+            $('#txtPos' + i).val(res[0] + ',' + res[1]);
+            path.push({lat: parseFloat(res[0]), lng: parseFloat(res[1])});
+            if ((indexClick == 4) && (color != undefined)) {
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(parseFloat(res[0]), parseFloat(res[1]))
+                    , map: map
+                });
+            }
+        }
+    }
+    polygon = new google.maps.Polygon({
+        paths: path
+        , strokeColor: '#FF0000'
+        , strokeOpacity: 0.8
+        , strokeWeight: 2
+        , fillColor: color != undefined ? color : '#ab2567'
+        , fillOpacity: 0.35
+    });
+    polygon.setMap(map);
+}

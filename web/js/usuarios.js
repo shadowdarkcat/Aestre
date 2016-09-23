@@ -199,12 +199,11 @@ function checkTree() {
     $('#tree').tree('check', $('#node3'));
     $('#tree').tree('check', $('#node15'));
     $('#tree').tree('collapse', $('#node4'));
-    $('#tree').tree('collapse', $('#node7'));
-    $('#tree').tree('collapse', $('#node10'));
-    $('#tree').tree('collapse', $('#node15'));
     $("input.checkbox4").prop("disabled", true);
+    $("input.checkbox5").prop("disabled", true);
+    $("input.checkbox6").prop("disabled", true);
     $("input.checkbox7").prop("disabled", true);
-    $("input.checkbox10").prop("disabled", true);
+    $("input.checkbox8").prop("disabled", true);
     if (!$('#chkAdmin').is(':checked')) {
         $('#cboCliente').prop('disabled', false);
         $('#lblIsAdmin').text('Usuario');
@@ -216,16 +215,16 @@ function checkTree() {
 function uncheckTree() {
     $('#tree').tree('uncheckAll');
     $("input.checkbox4").prop("disabled", false);
+    $("input.checkbox5").prop("disabled", false);
+    $("input.checkbox6").prop("disabled", false);
     $("input.checkbox7").prop("disabled", false);
-    $("input.checkbox10").prop("disabled", false);
+    $("input.checkbox8").prop("disabled", false);
     $('#tree').tree('check', $('#node4'));
+    $('#tree').tree('check', $('#node5'));
+    $('#tree').tree('check', $('#node6'));
     $('#tree').tree('check', $('#node7'));
-    $('#tree').tree('check', $('#node10'));
-    $('#tree').tree('check', $('#node15'));
-    $('#tree').tree('expand', $('#node4'));
-    $('#tree').tree('expand', $('#node7'));
-    $('#tree').tree('expand', $('#node10'));
-    $('#tree').tree('expand', $('#node15'));
+    $('#tree').tree('check', $('#node8'));
+    $('#tree').tree('expand', $('#node4'))
     $("input.checkbox0").prop("disabled", true);
     $("input.checkbox1").prop("disabled", true);
     $("input.checkbox2").prop("disabled", true);

@@ -222,5 +222,5 @@ function getFormCliente() {
             + '<img src = "../web/images/cancel.png" > Cerrar </button>'
             + '</div>'
             + '</div>'
-            + '</form>'
+            + '</form>';
 }
