@@ -84,7 +84,7 @@ function setData($item) {
     <script>
         zonas.push(
     <?php
-    echo('\'' . $item->id . ',' . $item->nombre. ',' . $item->zona. '\'');
+    echo('\'' . $item->id . ',' . $item->nombre . ',' . $item->zona . '\'');
     ?>
         );
     </script>
