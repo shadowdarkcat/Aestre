@@ -31,6 +31,10 @@ class GeozonaDaoImpl implements GeozonaDao {
         return $this->getResultSet(Utils::replaceQuery(PropertyKey::$jdbc_view_geozona_id, $args));
     }
 
+    public function verifyExists($obj){
+        $args = array($obj->getNombre());
+        return $this->getResultSetFunction(Utils::replaceQuery(PropertyKey::$jdbc_function_exist_zona, $args)) != 0;       
+    }
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Metodos P&uacute;blicos">
     public function insert($obj) {
@@ -92,3 +96,7 @@ class GeozonaDaoImpl implements GeozonaDao {
     //</editor-fold>
 
 }
+/*
+ * CALL sp_geozona(1,NULL,NULL,'PRUEBA',\''{"latLng":[{"lat":"20.269067846063408","long":" -98.800048828125"},{"lat":"19.44242094658899","long":" -100.184326171875"},{"lat":"18.23630772344136","long":" -99.173583984375"},{"lat":"19.938926531706414","long":" -97.855224609375"}],"colorZona":"#AB2567"}\'');
+ * 
+ */

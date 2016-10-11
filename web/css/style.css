@@ -162,7 +162,7 @@ html, body, #divMap  {
 }
 #divMap {
     width:100%;
-    height:700px;
+    height:850px;
 }
 
 html, body, #divMiniMap  {
@@ -183,4 +183,28 @@ html, body, #divMapGeozona  {
 #divMapGeozona {
     width:100%;
     height:300px;
+}
+div.parte{
+    border: 1px solid #000000;
+    float: left;
+    width: 48%;
+    height: 100%;
+}
+html, body, #divMapGeozonaAnterior  {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+#divMapGeozonaAnterior {
+    width:100%;
+    height:250px;
+}
+html, body, #divMapGeozonaNueva  {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+#divMapGeozonaNueva {
+    width:100%;
+    height:250px;
 }

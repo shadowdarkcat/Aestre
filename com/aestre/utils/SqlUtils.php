@@ -20,7 +20,7 @@ class SqlUtils {
             return self::getColonia($obj, $row);
         } else if ($obj instanceof BeanDispositivo) {
             return self::getDispositivo($obj, $row);
-        } else if ($obj instanceof BeanZona) {
+        } else if ($obj instanceof BeanGeozona) {
             return self::getZona($obj, $row);
         } else if ($obj instanceof DtoCliente) {
             return self::getCliente($obj, $row);

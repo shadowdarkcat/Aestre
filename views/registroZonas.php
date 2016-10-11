@@ -44,22 +44,22 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
             <tbody>                                
                 <?php
                 $index = 0;
-                ?><script> var size =0; <?php //echo(count($zona)); ?>;</script>
+                ?><script> var size = <?php echo(count($zona)); ?>;</script>
                 <?php
                 foreach ($zona as $item) {
                     setData($item);
-                    echo ('<tr id="trIndx' . $index . '">'
+                    echo ('<tr id="trMapIndx' . $index . '">'
                     . '<td  style="text-align: center">'
                     . '<label class="font-size">'
                     . $item->nombre
                     . '<td  style="text-align: center">'
                     . '<button type="button" class="btn"'
-                    . 'onclick="showData(' . $index . ',0);">'
+                    . 'onclick="showDataZona(' . $index . ',0);">'
                     . '<img src="../web/images/modificar.png" height="23px" width="29px;"></button>'
                     . '</td>'
                     . '<td  style="text-align: center">'
                     . '<button type="button" class="btn"'
-                    . 'onclick="showData(' . $index . ',1);">'
+                    . 'onclick="showDataZona(' . $index . ',1);">'
                     . '<img src="../web/images/habilitar.png" height="29px" width="23px;"></button>'
                     . '</td>'
                     . '<td  style="text-align: center; display:none;">'

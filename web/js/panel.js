@@ -69,11 +69,11 @@ $(document).ready(function () {
             color = '#' + $('#colorPicker').val();
             crearZona();
         });
-        
+
         $('#btnRegistrar').on('click', function () {
-            $('#frmGeoZona').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/geozonaController.php?&method=1');
+            //$('#frmGeoZona').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/geozonaController.php?&method=1');
             if ($('#frmGeoZona').validate().form()) {
-                $('#frmGeoZona').submit();
+                enviarGz();
             }
         });
         $('#btnActualizar').on('click', function () {
@@ -113,6 +113,8 @@ $(document).ready(function () {
             clear(size);
             $('#trIndxFoot0').empty();
         });
+
+        $('#cboVehiculos').multiselect();
     }
 });
 
@@ -183,4 +185,29 @@ function showNew() {
     $('#btnEliminar').prop('disabled', true);
     geoMap();
     other();
+}
+
+function showDataZona(index, action) {
+    clear(size);
+    $('#trIndxFoot0').empty();
+    $('#trMapIndx' + index).before('<tr id="trIntMapIndx' + index + '"><td colspan="5">' + getFormGeozonaUpdate() + '</td></tr>');
+}
+var listVehiculos = [];
+function listVehiculo() {
+    var data = {'method': 0};
+    $.getJSON(contextoGlobal + '/com/aestre/system/controller/vehiculoController.php'
+            , data, function (response) {
+                $.each(response, function (index, item) {
+                    if ((item.idZona == 0) || (item.idZona == undefined) || (item.idZona == null)) {
+                        listVehiculos.push('<option value = "' + item.id + '">' + item.modelo + ' ' + item.placa + '</option>');
+                    }
+                });
+            }
+    );
+}
+
+function clear(size) {
+    for (var indx = 0; indx < size; indx++) {
+        $('#trIntIndx' + indx).remove();
+    }
 }

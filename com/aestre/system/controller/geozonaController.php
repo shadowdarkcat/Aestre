@@ -37,15 +37,15 @@ class geozonaController {
                 $this->findAll(false);
                 break;
             case 1:
-              //  echo(json_encode($this->insert()));
+                echo(json_encode($this->insert()));
                 break;
             case 2:
-              //  $this->update();
+                //  $this->update();
                 break;
             case 5:
-              //  echo (json_encode($this->findById()));
+                //  echo (json_encode($this->findById()));
                 break;
-        }        
+        }
     }
 
     public function find() {
@@ -62,9 +62,9 @@ class geozonaController {
 
     private function insert() {
         $zona = $this->getParametersFromRequest();
-        $exist = $this->geozonaBo->verifyExists($zona, $this->session);
+        $exist = $this->geozonaBo->verifyExists($this->session, $zona);
         if (!$exist) {
-            return $this->geozonaBo->insert($zona, $this->session, $_REQUEST['idMonitoristas']);
+            return $this->geozonaBo->insert($this->session, $zona);
         }
     }
 
@@ -74,11 +74,11 @@ class geozonaController {
     }
 
     private function getParametersFromRequest() {
-        $zona = new DtoZona();
+        $zona = new BeanGeozona();
         $zona->setId(isset($_REQUEST['txtIdZona']) ? strtoupper($_REQUEST['txtIdZona']) : NULL );
         $zona->setNombre(strtoupper($_REQUEST['txtNombre']));
         $zona->setJson($_REQUEST['json']);
-        $zona->setColor($_REQUEST['txtColor']);
+        $zona->setIdVehiculo($_REQUEST['idVehiculos']);
         return $zona;
     }
 

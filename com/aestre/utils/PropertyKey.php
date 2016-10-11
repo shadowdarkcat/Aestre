@@ -25,6 +25,7 @@ class PropertyKey {
     public static $jdbc_function_last_conductor;
     public static $jdbc_function_last_login;
     public static $jdbc_function_last_zona;
+    public static $jdbc_function_exist_zona;
     public static $jdbc_function_last_ruta;
     public static $jdbc_procedure_privilegios;
     public static $jdbc_procedure_cliente;
@@ -179,6 +180,7 @@ class PropertyKey {
         self::$jdbc_function_last_conductor = $this->getPropertyBd('jdbc.function.last.conductor');
         self::$jdbc_function_last_login = $this->getPropertyBd('jdbc.function.last.login');
         self::$jdbc_function_last_zona = $this->getPropertyBd('jdbc.function.last.zona');
+        self::$jdbc_function_exist_zona = $this->getPropertyBd('jdbc.function.exist.zona');
         self::$jdbc_function_last_ruta = $this->getPropertyBd('jdbc.function.last.ruta');
 
         self::$jdbc_procedure_privilegios = $this->getPropertyBd('jdbc.procedure.menu.privilegio');

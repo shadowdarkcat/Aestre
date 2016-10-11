@@ -70,7 +70,7 @@ class vehiculoController {
         if (!empty($this->session->getIdCliente())) {
             $object = $this->vehiculoBo->findAll($this->session);
             foreach ($object->getClientes() as $item) {
-                if ($this->session->getIdCliente() == $item->getId()) {
+                if ($this->session->getIdCliente() == $item->getIdCliente()) {
                     echo(json_encode(JsonUtils::createJson($item->getVehiculos())));
                     break;
                 }

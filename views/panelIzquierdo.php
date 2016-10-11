@@ -9,6 +9,7 @@ $controller = new clienteVehiculoController();
 $controller->findByIdCliente($login->getIdCliente());
 $dto = unserialize($_SESSION[PropertyKey::$session_clientes]);
 ?>
+<script>listVehiculo();</script>
 <!DOCTYPE html>
 <div id="listVehiculos" >
     <div class="table">

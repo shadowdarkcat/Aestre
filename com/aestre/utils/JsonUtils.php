@@ -26,7 +26,7 @@ class JsonUtils {
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Funciones Privadas">
-    private static final function getJsonCliente(DtoCliente $dto) {
+    private static final function getJsonCliente($dto) {
         $json = array();
         foreach ($dto as $val) {
             $json[] = array(
@@ -48,7 +48,7 @@ class JsonUtils {
         return $json;
     }
 
-    private static final function getJsonVehiculo(DtoVehiculo $dto) {
+    private static final function getJsonVehiculo($dto) {
         $json = array();
         foreach ($dto as $val) {
             $json[] = array(
@@ -62,7 +62,7 @@ class JsonUtils {
                 , 'dispositivo' => array(
                     'id' => $val->getBeanDispositivo()->getIdDispositivo(), 'dispositivo' => $val->getBeanDispositivo()->getDispositivo()
                 )
-                // , 'idZona' => $val->getBeanZona()->getId(), 'idRuta' => $val->getBeanRuta()->getId()
+                , 'idZona' => $val->getBeanGeozona()->getId(), 'idRuta' => $val->getBeanGeoruta()->getId()
                 , 'icons' => array(
                     'id' => $val->getBeanIconos()->getIdIcono(), 'path' => $val->getBeanIconos()->getPathIcono()
                 )
@@ -71,9 +71,9 @@ class JsonUtils {
         return $json;
     }
 
-    private static final function getJsonConductor(DtoVehiculo $dto) {
+    private static final function getJsonConductor($dto) {
         $json = array();
-        foreach ($obj as $val) {
+        foreach ($dto as $val) {
             $json[] = array(
                 'id' => $val->getId(), 'nombre' => $val->getNombre()
                 , 'paterno' => $val->getPaterno(), 'materno' => $val->getMaterno()
@@ -130,7 +130,7 @@ class JsonUtils {
         );
     }
 
-    private static final function getJsonZona(BeanGeozona $obj) {
+    private static final function getJsonZona($obj) {
         foreach ($obj as $item) {
             $json[] = array(
                 'id' => $item->getId(), 'nombre' => $item->getNombre()

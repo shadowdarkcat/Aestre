@@ -13,12 +13,6 @@ if (isset($_SESSION[PropertyKey::$session_colonias])) {
     unset($_SESSION[PropertyKey::$session_colonias]);
 }
 
-$login = $_SESSION[PropertyKey::$session_usuario];
-if (!$login->getAdmin()) {
-    $controller = new clienteVehiculoController();
-    $dto = new DtoCliente();
-    $controller->findByIdCliente($login->getIdCliente(), $dto);
-}
 ?>
 <!DOCTYPE html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -41,6 +35,7 @@ if (!$login->getAdmin()) {
 <link type="text/css" href="/Aestre/web/css/bootstrap-submenu.css" rel="stylesheet" />
 <link type="text/css" href="/Aestre/web/css/bootstrap-submenu.min.css" rel="stylesheet" />
 <link type="text/css" href="/Aestre/web/css/responsive.bootstrap.min.css" rel="stylesheet" />
+<link type="text/css" href="/Aestre/web/css/bootstrap-multiselect.css" rel="stylesheet" />
 <link type="text/css" href="/Aestre/web/css/jquery-ui.css" rel="stylesheet" />
 <link type="text/css" href="/Aestre/web/css/jquery-ui.theme.css" rel="stylesheet" />
 <link type="text/css" href="/Aestre/web/css/dataTables.bootstrap.min.css" rel="stylesheet" />
@@ -79,6 +74,8 @@ if (!$login->getAdmin()) {
 <script type="text/javascript" src="/Aestre/web/jquery/bootstrap/bootstrap-submenu.min.js"></script>
 <script type="text/javascript" src="/Aestre/web/jquery/bootstrap/ie-emulation-modes-warning.js"></script>
 <script type="text/javascript" src="/Aestre/web/jquery/bootstrap/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="/Aestre/web/jquery/bootstrap/bootstrap-multiselect.js"></script>
+<script type="text/javascript" src="/Aestre/web/jquery/bootstrap/dropdown.js"></script>
 <script type="text/javascript" src="/Aestre/web/jquery/jquery/jquery.tree.min.js"></script>
 <script type="text/javascript" src="/Aestre/web/jquery/jquery/jquery.tree.js"></script>
 <script type="text/javascript" src="/Aestre/web/resources/es-MX.js"></script>

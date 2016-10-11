@@ -8,4 +8,6 @@ spl_autoload_register('aestre_autoload', FALSE);
  * @author ShadowDarkCat
  */
 interface GeozonaDao extends GenericDao{    
+    
+    function verifyExists($obj);
 }

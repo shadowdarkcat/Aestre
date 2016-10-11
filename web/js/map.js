@@ -31,6 +31,7 @@ $(document).ready(function () {
 
 onloadAll = function () {
     closeInfoWindow();
+    $('#divMiniMap').empty();
     $('#divMap').empty();
     var data = {'method': 0};
     $.getJSON(contextoGlobal + '/com/aestre/system/controller/localizarController.php', data, function (response) {
@@ -123,7 +124,7 @@ onloadAll = function () {
     intervals();
 };
 
-onloadAllMini = function () {
+onloadAllMini = function () {    
     closeInfoWindow();
     $('#divMiniMap').empty();
     var data = {'method': 0};
@@ -214,11 +215,12 @@ onloadAllMini = function () {
             var mc = new MarkerClusterer(map, markersArray);
         }
     });
-    intervalsMini();
+    window.clearInterval(inter);
+    intervalsMini();    
     resizeMapGral();
 };
 
-function geoMap(){
+function geoMap() {
     var mapOptions = {
         zoom: 6
         , mapTypeId: window.google.maps.MapTypeId.MAP
@@ -242,7 +244,7 @@ function geoMap(){
                 position: event.latLng,
                 map: map
             });
-        }else{
+        } else {
             crearZona();
         }
         indexClick = indexClick + 1;
@@ -252,6 +254,7 @@ function geoMap(){
 
 function localizar(imei) {
     closeInfoWindow();
+    $('#divMiniMap').empty();
     $('#divMap').empty();
     var data = {'method': 1, 'txtImei': imei};
     $.getJSON(contextoGlobal + '/com/aestre/system/controller/localizarController.php', data, function (response) {
@@ -456,6 +459,7 @@ function georute(pathRuta, map, rutaJson) {
 function getHistorial() {
     closeInfoWindow();
     $('#divMap').empty();
+    $('#divMiniMap').empty();
     if ($('#dtpDesde').val() == '') {
         $('#errorDesde').show();
     } else {
@@ -661,7 +665,7 @@ function getObject(item) {
 }
 
 function crearZona() {
-    path.lenght = 0;    
+    path.lenght = 0;
     for (var i = 1; i < 6; i++) {
         if ($('#txtPos' + i) != '') {
             var value = $('#txtPos' + i).val();
@@ -687,4 +691,38 @@ function crearZona() {
         , fillOpacity: 0.35
     });
     polygon.setMap(map);
+}
+
+function enviarGz() {
+    var idsVehiculo = [];
+    var ltlon = [];
+    $("input:checkbox:checked").each(function () {
+        idsVehiculo.push($(this).val());
+    });
+    if (idsVehiculo.length > 0) {
+        $('#lblErrorSelect').hide();
+        var geoFence = new Object();
+        for (var index = 1; index < 5; index++) {
+            var coordenadas = {};
+            var value = $('#txtPos' + index).val();
+            var latLng = value.split(',');
+            coordenadas.lat = latLng[0];
+            coordenadas.long = latLng[1];
+            ltlon.push(coordenadas);
+        }
+        var latLng = new Object();
+        geoFence.latLng = ltlon;
+        geoFence.colorZona = '#' + $('#colorPicker').val();
+        var zonaJson = JSON.stringify(geoFence);
+        var data = {'method': 1, 'idVehiculos': idsVehiculo
+            , 'txtNombre': $('#txtZona').val(), 'json': zonaJson};
+        $.getJSON(contextoGlobal + '/com/aestre/system/controller/geozonaController.php'
+                , data, function (response) {
+                    $('#lblTotal').append(response[0].contador);
+                    $("#divMessageSuccessZona").modal('show');
+                }
+        );
+    } else {
+        $('#lblErrorSelect').show();
+    }
 }

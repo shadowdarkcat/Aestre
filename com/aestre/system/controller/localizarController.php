@@ -19,6 +19,7 @@ class localizarController {
     public function __construct() {
         $this->localizarBo = new LocalizarBoImpl();
         $this->session = $_SESSION[PropertyKey::$session_usuario];
+        $this->getClienteVehiculo($this->session->getIdCliente());
         if (isset($_REQUEST[PropertyKey::$view_method])) {
             $this->method = $_REQUEST[PropertyKey::$view_method];
         }
@@ -52,7 +53,7 @@ class localizarController {
                 $dtoVehiculo = $item;
                 $dtoVehiculo->setImei($imei);
                 break;
-            } 
+            }
         }
         $dto->setVehiculos(array($dtoVehiculo));
         return $this->localizarBo->findAllById($this->session, $dto);
@@ -70,10 +71,15 @@ class localizarController {
                 $dtoVehiculo = $item;
                 $dtoVehiculo->setImei($imei);
                 break;
-            } 
+            }
         }
         $dto->setVehiculos(array($dtoVehiculo));
         return $this->localizarBo->findByDate($this->session, $dto, $fi, $ff, $hi, $hf);
+    }
+
+    private function getClienteVehiculo($id) {
+        $controller = new clienteVehiculoController();
+        $controller->findByIdCliente($id);
     }
 
 }
