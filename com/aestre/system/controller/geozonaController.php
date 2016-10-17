@@ -21,9 +21,12 @@ class geozonaController {
     private $session;
     private $method;
     private $geozonaBo;
+    private $vehiculoBo;
 
     public function __construct() {
+        unset($_SESSION[PropertyKey::$session_zona_json]);
         $this->geozonaBo = new GeozonaBoImpl();
+        $this->vehiculoBo = new VehiculoBoImpl();
         $this->session = $_SESSION[PropertyKey::$session_usuario];
         if (isset($_REQUEST[PropertyKey::$view_method])) {
             $this->method = $_REQUEST[PropertyKey::$view_method];
@@ -40,16 +43,22 @@ class geozonaController {
                 echo(json_encode($this->insert()));
                 break;
             case 2:
-                //  $this->update();
+                echo(json_encode($this->update()));
+                break;
+            case 3:
+                echo(json_encode($this->delete()));
+                break;
+            case 4:
+                //  echo (json_encode($this->findById()));
                 break;
             case 5:
-                //  echo (json_encode($this->findById()));
+                echo(json_encode($this->updateZona()));
                 break;
         }
     }
 
     public function find() {
-        $_SESSION['zonaJson'] = json_encode($this->geozonaBo->findAll($this->session));
+        $_SESSION[PropertyKey::$session_zona_json] = json_encode($this->geozonaBo->findAll($this->session));
     }
 
     public function findAll($exist) {
@@ -68,25 +77,48 @@ class geozonaController {
         }
     }
 
-    private function update(DtoZona $zona, BeanCp $colonia) {
-        $this->geozonaBo->update($this->getParametersFromRequest($zona, $colonia), $this->session);
-        $this->findAll(0);
+    private function update() {
+        return $this->geozonaBo->update($this->session, $this->getParametersFromRequest());
+    }
+
+    private function delete() {
+        return $this->geozonaBo->delete($this->session, $this->getParametersFromRequest());
+    }
+
+    private function updateZona() {
+        $bean = FactoryGeozona::newInstance(NULL);
+        foreach ($_REQUEST[PropertyKey::$view_ids_vehiculos] as $item) {
+            $dto = FactoryVehiculo::newInstance($item);
+            $bean->setId(isset($_REQUEST[PropertyKey::$view_id_zona]) ? strtoupper($_REQUEST[PropertyKey::$view_id_zona]) : NULL );
+            $dto->setBeanGeozona($bean);
+            $dto->setBeanGeoruta(FactoryGeoruta::newInstance(NULL));
+            $dto->setBeanGiro(FactoryGiro::newInstance(NULL));
+            $dto->setBeanDispositivo(FactoryDispositivo::newInstance(NULL));
+            $dto->setBeanIconos(FactoryIconos::newInstance(NULL));
+            $array[] = $dto;
+        }
+        $json[] = array('contador' => $this->vehiculoBo->updateZona($this->session, $array));
+        return $json;
     }
 
     private function getParametersFromRequest() {
         $zona = new BeanGeozona();
-        $zona->setId(isset($_REQUEST['txtIdZona']) ? strtoupper($_REQUEST['txtIdZona']) : NULL );
-        $zona->setNombre(strtoupper($_REQUEST['txtNombre']));
-        $zona->setJson($_REQUEST['json']);
-        $zona->setIdVehiculo($_REQUEST['idVehiculos']);
+        $zona->setId(isset($_REQUEST[PropertyKey::$view_id_zona]) ? strtoupper($_REQUEST[PropertyKey::$view_id_zona]) : NULL );
+        $zona->setNombre(strtoupper($_REQUEST[PropertyKey::$view_nombre]));
+        $zona->setJson($_REQUEST[PropertyKey::$view_json]);
+        if (empty($_REQUEST[PropertyKey::$view_ids_vehiculos])) {
+            $zona->setIdVehiculo(NULL);
+        } else {
+            $zona->setIdVehiculo($_REQUEST[PropertyKey::$view_ids_vehiculos]);
+        }
         return $zona;
     }
 
     private function redirect($zona, $exist) {
         if (!empty($zona)) {
-            $_SESSION['zonas'] = json_encode($zona);
+            $_SESSION[PropertyKey::$session_zona_json] = json_encode($zona);
         }
-        $_SESSION['exist'] = serialize($exist);
+        $_SESSION[PropertyKey::$session_exists] = serialize($exist);
     }
 
 }

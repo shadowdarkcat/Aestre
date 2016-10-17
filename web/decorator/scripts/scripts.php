@@ -78,6 +78,7 @@ if (isset($_SESSION[PropertyKey::$session_colonias])) {
 <script type="text/javascript" src="/Aestre/web/jquery/bootstrap/dropdown.js"></script>
 <script type="text/javascript" src="/Aestre/web/jquery/jquery/jquery.tree.min.js"></script>
 <script type="text/javascript" src="/Aestre/web/jquery/jquery/jquery.tree.js"></script>
+<script type="text/javascript" src="/Aestre/web/jquery/jquery/jscolor.min.js"></script>
 <script type="text/javascript" src="/Aestre/web/resources/es-MX.js"></script>
 <script type="text/javascript" src="/Aestre/web/js/generales.js"></script>
 

@@ -43,7 +43,7 @@ class VehiculoDaoImpl implements VehiculoDao {
     }
 
     //</editor-fold>
-    //<editor-fold defaultstate="collapsed" desc="Metodos P&uacute;blicos">
+//<editor-fold defaultstate="collapsed" desc="Metodos P&uacute;blicos">
     public function insert($obj) {
         SqlUtils::execute($this->jdbc, Utils::replaceQuery(PropertyKey::$jdbc_procedure_vehiculo, $this->getParameters(1, $obj)));
     }
@@ -54,6 +54,10 @@ class VehiculoDaoImpl implements VehiculoDao {
 
     public function delete($obj) {
         SqlUtils::execute($this->jdbc, Utils::replaceQuery(PropertyKey::$jdbc_procedure_vehiculo, $this->getParameters(3, $obj)));
+    }
+
+    public function updateZona($obj) {
+        SqlUtils::execute($this->jdbc, Utils::replaceQuery(PropertyKey::$jdbc_procedure_vehiculo, $this->getParameters(4, $obj)));
     }
 
     //</editor-fold>
@@ -93,7 +97,7 @@ class VehiculoDaoImpl implements VehiculoDao {
             , $obj->getActivo()
             , $obj->getApagado()
             , $obj->getBeanDispositivo()->getIdDispositivo()
-            , NULL//$obj->getBeanZona()
+            , $obj->getBeanGeozona()->getId()
             , NULL//$obj->getBeanRuta()
             , $obj->getBeanIconos()->getIdIcono()
             , $obj->getIdCliente()

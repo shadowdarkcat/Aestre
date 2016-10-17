@@ -83,6 +83,7 @@ class PropertyKey {
     public static $session_licencias;
     public static $session_conductores;
     public static $session_users;
+    public static $session_zona_json;
     public static $view_user;
     public static $view_password;
     public static $view_method;
@@ -118,6 +119,9 @@ class PropertyKey {
     public static $view_chkAdmin;
     public static $view_usuario_id;
     public static $view_chk_menu;
+    public static $view_ids_vehiculos;
+    public static $view_id_zona;
+    public static $view_json;
     public static $php_index;
     public static $php_main_admin;
     public static $php_main_user;
@@ -125,7 +129,7 @@ class PropertyKey {
     public static $php_main_vehiculo;
     public static $php_main_conductor;
     public static $php_main_usuario;
-    
+
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Constructores Privados">
     public function __construct() {
@@ -203,6 +207,7 @@ class PropertyKey {
         self::$session_licencias = $this->getPropertySystem('session.licencias');
         self::$session_conductores = $this->getPropertySystem('session.conductores');
         self::$session_users = $this->getPropertySystem('session.users');
+        self::$session_zona_json = $this->getPropertySystem('session.zona.json');
 
         self::$php_index = $this->getPropertySystem('php.index');
         self::$php_main_admin = $this->getPropertySystem('php.main.admin');
@@ -247,6 +252,9 @@ class PropertyKey {
         self::$view_chkAdmin = $this->getPropertySystem('view.chk.admin');
         self::$view_usuario_id = $this->getPropertySystem('view.usuario.id');
         self::$view_chk_menu = $this->getPropertySystem('view.chk.menu');
+        self::$view_ids_vehiculos = $this->getPropertySystem('view.ids.vehiculos');
+        self::$view_id_zona = $this->getPropertySystem('view.id.zona');
+        self::$view_json = $this->getPropertySystem('view.json');
     }
 
     //</editor-fold>

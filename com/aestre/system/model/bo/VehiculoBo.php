@@ -10,9 +10,11 @@ spl_autoload_register('aestre_autoload', FALSE);
 interface VehiculoBo extends GenericBo {
 
     function exist($user, $obj);
-    function findAllById($user, $obj);
-    function find($user, $obj);
-    /* function updateRuta($object, DtoLogin $user);
 
-      function updateZona($object, DtoLogin $user); */
+    function findAllById($user, $obj);
+
+    function find($user, $obj);
+    /* function updateRuta($user, $obj); */
+
+    function updateZona($user, $obj);
 }

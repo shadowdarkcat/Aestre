@@ -160,19 +160,18 @@ class VehiculoBoImpl implements VehiculoBo {
         }
     }
 
-    /*
-     * public function updateZona($object, DtoLogin $user) {
-      if (Utils::isSessionValid($user)) {
-      $index = 0;
-      foreach ($object as $item) {
-      $this->dao->updateZona($item);
-      $index++;
-      }
-      return $index;
-      }
-      }
+    public function updateZona($user, $obj) {
+        if (Utils::isSessionValid($user)) {
+            $index = 0;
+            foreach ($obj as $item) {
+                $this->dao->updateZona($item);
+                $index++;
+            }
+            return $index;
+        }
+    }
 
-      public function updateRuta($object, DtoLogin $user) {
+    /* public function updateRuta($object, DtoLogin $user) {
       if (Utils::isSessionValid($user)) {
       $index = 0;
       foreach ($object as $item) {
@@ -181,8 +180,7 @@ class VehiculoBoImpl implements VehiculoBo {
       }
       return $index;
       }
-      }
-     */
+      } */
 
     //<editor-fold defaultstate="collapsed" desc="Funciones Privadas">
     private final function getGiro($user, $obj) {

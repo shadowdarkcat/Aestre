@@ -94,8 +94,11 @@ class Utils {
                 $query.=$strQuery{$index};
             }
         }
+        if (strpos($query, '4') == true && strpos($query, 'CALL') ==true) {
+            $query = str_replace("'", "", $query);
+        }
         return $query;
     }
-    
+
     //</editor-fold>
 }

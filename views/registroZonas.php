@@ -11,8 +11,8 @@ if (!Utils::isSessionValid($_SESSION[PropertyKey::$session_usuario])) {
 $controller = new geozonaController();
 $controller->findAll(FALSE);
 $zona = [];
-if (isset($_SESSION['zonas'])) {
-    $zona = json_decode($_SESSION['zonas']);
+if (isset($_SESSION[PropertyKey::$session_zona_json])) {
+    $zona = json_decode($_SESSION[PropertyKey::$session_zona_json]);
 }
 
 /* $clientes = [];
@@ -36,7 +36,8 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                 <tr>                                        
                     <th style="text-align: center"><label class="font-size">Nombre</label></th>
                     <th style="text-align: center"><label class="font-size">Editar</label></th>
-                    <th style="text-align: center"><label class="font-size">Habilitar/Inhabilitar</label></th>
+                    <th style="text-align: center"><label class="font-size">Eliminar</label></th>
+                    <th style="text-align: center"><label class="font-size">Asociar Veh&iacute;culo-Geozona</label></th>
                     <th style="text-align: center; display: none;"><label class="font-size">Zona</label></th>
                     <th style="text-align: center; display: none;"><label class="font-size">Json Zona</label></th>
                 </tr>
@@ -62,6 +63,11 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
                     . 'onclick="showDataZona(' . $index . ',1);">'
                     . '<img src="../web/images/habilitar.png" height="29px" width="23px;"></button>'
                     . '</td>'
+                    . '<td  style="text-align: center">'
+                    . '<button type="button" class="btn"'
+                    . 'onclick="showDataZona(' . $index . ',2);">'
+                    . '<img src="../web/images/vehiculoMapa.png" height="32px" width="32px;"></button>'
+                    . '</td>'
                     . '<td  style="text-align: center; display:none;">'
                     . '<label class="font-size" id="lblId">' . $item->id
                     . '</label></td>'
@@ -77,14 +83,126 @@ if (isset($_SESSION[PropertyKey::$session_exists])) {
         </table>
     </div>
 </div>
+
+<div id="divMessageSuccessZona" class="modal fade" role="dialog" title="Confirmaci&oacute;n">
+    <div class="modal-dialog alert-success">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title label-success">Registro Exitoso</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr>
+                        <td><span class="text-muted text-info"><label id='lblText'></label>
+                                <label id="lblTotal"></label> veh&iacute;culos
+                            </span></td>
+                    </tr>
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="clearZona();">Aceptar</button>                            
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divMessageSuccessModificarZona" class="modal fade" role="dialog" title="Confirmaci&oacute;n">
+    <div class="modal-dialog alert-success">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title label-info"> Zona Modificada </h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr>
+                        <td> <span class="text-muted text-info"> La zona fue modificada </span></td>
+                    </tr>
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="clearZona();"> Aceptar </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divMessageEliminarZona" class="modal fade" role="dialog" title="Confirmaci&oacute;n">
+    <div class="modal-dialog alert-success">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title label-warning"> Eliminar GeoZona </h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr>
+                        <td> <span class="text-muted text-info"> La zona ser&aacute; eliminada, todos los veh&iacute;culos 
+                                asociados dejaran de pertenecer a la zona<br/>Desea continuar ?</span></td>
+                    </tr>
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnDeleteGeozona" name="btnDeleteGeozona"> Aceptar </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"> Cancelar </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divMessageSuccessEliminarZona" class="modal fade" role="dialog" title="Confirmaci&oacute;n">
+    <div class="modal-dialog alert-success">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title label-info"> Zona Eliminada </h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr>
+                        <td> <span class="text-muted text-info"> La zona fue eliminada </span></td>
+                    </tr>
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="clearZona();"> Aceptar </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divMessageAsociar" class="modal fade" role="dialog" title="Confirmaci&oacute;n">
+    <div class="modal-dialog alert-success">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title label-warning"> Asociar veh&iacute;culo - Geozona </h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr>
+                        <td> <span class="text-muted text-info"> Se asociaran los vehiculos seleccionados a la zona
+                                <br/>Desea continuar? </span></td>
+                    </tr>
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnAceptarAsociar" name="btnAceptarAsociar"> Asociar </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"> Cancelar </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <?php
 
 function setData($item) {
+    $json = json_encode(array('id' => $item->id, 'nombre' => $item->nombre, 'zona' => $item->zona));
     ?>
     <script>
         zonas.push(
     <?php
-    echo('\'' . $item->id . ',' . $item->nombre . ',' . $item->zona . '\'');
+    echo($json);
     ?>
         );
     </script>

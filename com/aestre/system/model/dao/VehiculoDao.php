@@ -12,6 +12,7 @@ interface VehiculoDao extends GenericDao {
     function exist($obj);
 
     function findAllById($obj);
-    /* function updateZona($obj);
-      function updateRuta($obj); */
+
+    function updateZona($obj);
+    /* function updateRuta($obj); */
 }

@@ -4,12 +4,15 @@ var geocoder = new google.maps.Geocoder;
 var globalName;
 var globalId;
 var globalMap;
+var globalColor = '';
 var path = [];
 var pathRuta = [];
 var inter;
 var polygon;
 var indexClick = 0;
+var globalIndexTr = 0;
 var map;
+
 function intervals() {
     inter = setInterval(function () {
         onloadAll();
@@ -23,8 +26,10 @@ function intervalsMini() {
 }
 
 $(document).ready(function () {
+
     $('#btnUpdateMap').on('click', function () {
         onloadAll();
+        other();
     });
 
 });
@@ -77,15 +82,19 @@ onloadAll = function () {
                     ;
                     lat.push(parseFloat(items.vehiculo[0].localizar[0].lat));
                     long.push(parseFloat(items.vehiculo[0].localizar[0].lon));
-                    arr.push(data);
                     img.push(items.vehiculo[0].icons.path);
                     if (items.vehiculo[0].zona[0] != undefined) {
                         $(JSON.parse(items.vehiculo[0].zona[0].coordenadas)).each(function (index, itemss) {
                             $(itemss.latLng).each(function (index1, val) {
+                                if (index1 == 0) {
+                                    globalColor = itemss.colorZona;
+                                }
                                 path.push({lat: parseFloat(val.lat), lng: parseFloat(val.long)});
                             });
                         });
                         geofence(path, map, items.vehiculo[0].zona[0].zona, items.vehiculo[0].zona[0].id);
+                        data += '<br/><strong>Zona:</strong> ' + items.vehiculo[0].zona[0].zona;
+
                     }
                     path.length = 0;
                     if (items.vehiculo[0].ruta[0] != undefined) {
@@ -95,8 +104,10 @@ onloadAll = function () {
                             });
                         });
                         georute(pathRuta, map, items.vehiculo[0].ruta[0]);
+                        //data += '<br/><strong>Ruta:</strong> ' + items.vehiculo[0].ruta[0].zona;
                     }
                     pathRuta.length = 0;
+                    arr.push(data);
                 });
             });
             for (var i = 0; i < arr.length; i++) {
@@ -124,7 +135,7 @@ onloadAll = function () {
     intervals();
 };
 
-onloadAllMini = function () {    
+onloadAllMini = function () {
     closeInfoWindow();
     $('#divMiniMap').empty();
     var data = {'method': 0};
@@ -168,18 +179,20 @@ onloadAllMini = function () {
                             + ',' + items.vehiculo[0].localizar[0].lon
                             + '" target="_blank"> ' + items.vehiculo[0].localizar[0].lat
                             + ' / ' + items.vehiculo[0].localizar[0].lon + '</a>';
-                    ;
                     lat.push(parseFloat(items.vehiculo[0].localizar[0].lat));
                     long.push(parseFloat(items.vehiculo[0].localizar[0].lon));
-                    arr.push(data);
                     img.push(items.vehiculo[0].icons.path);
                     if (items.vehiculo[0].zona[0] != undefined) {
                         $(JSON.parse(items.vehiculo[0].zona[0].coordenadas)).each(function (index, itemss) {
                             $(itemss.latLng).each(function (index1, val) {
+                                if (index1 == 0) {
+                                    globalColor = itemss.colorZona;
+                                }
                                 path.push({lat: parseFloat(val.lat), lng: parseFloat(val.long)});
                             });
                         });
                         geofence(path, map, items.vehiculo[0].zona[0].zona, items.vehiculo[0].zona[0].id);
+                        data += '<br/><strong>Zona:</strong> ' + items.vehiculo[0].zona[0].zona;
                     }
                     path.length = 0;
                     if (items.vehiculo[0].ruta[0] != undefined) {
@@ -191,6 +204,7 @@ onloadAllMini = function () {
                         georute(pathRuta, map, items.vehiculo[0].ruta[0]);
                     }
                     pathRuta.length = 0;
+                    arr.push(data);
                 });
             });
             for (var i = 0; i < arr.length; i++) {
@@ -216,8 +230,142 @@ onloadAllMini = function () {
         }
     });
     window.clearInterval(inter);
-    intervalsMini();    
+    intervalsMini();
     resizeMapGral();
+};
+
+lastMap = function (index) {
+    indexClick = 0;
+    $('#divMapGeozonaAnterior').empty();
+    $('#divMapGeozonaNueva').empty();
+    lastPath = [];
+    newMap();
+    var dataZona = zonas[index];
+    $(JSON.parse(dataZona.zona)).each(function (indx, item) {
+        $(item.latLng).each(function (indx, val) {
+            if (indx == 0) {
+                globalColor = item.colorZona;
+            }
+            lastPath.push({lat: parseFloat(val.lat), lng: parseFloat(val.long)});
+        });
+    });
+    var mapOptions = {
+        zoom: 7
+        , mapTypeId: window.google.maps.MapTypeId.MAP
+        , center: new google.maps.LatLng(lastPath[0].lat, lastPath[0].lng)
+    };
+    var map = new google.maps.Map(document.getElementById("divMapGeozonaAnterior"), mapOptions);
+    geofence(lastPath, map, dataZona.nombre, dataZona.id);
+    for (var i = 0; i < lastPath.length; i++) {
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(lastPath[i].lat, lastPath[i].lng),
+            map: map
+        });
+    }
+    $('#txtZona').val(dataZona.nombre);
+    $('#txtIdGeozona').val(dataZona.id);
+    $('#colorPicker').val(globalColor);
+    lastPath.length = 0;
+    globalIndexTr = index;
+    other();
+};
+
+newMap = function () {
+    var mapOptions = {
+        zoom: 6
+        , mapTypeId: window.google.maps.MapTypeId.MAP
+        , center: new google.maps.LatLng(23.945963820559726, -102.53775014999997)
+    };
+    map = new google.maps.Map(document.getElementById("divMapGeozonaNueva"), mapOptions);
+    google.maps.event.addListener(map, 'click', function (event) {
+        if ($('#txtPos1').val() == '') {
+            $('#txtPos1').val(event.latLng);
+            $('#txtPos5').val(event.latLng);
+        } else if ($('#txtPos2').val() == '') {
+            $('#txtPos2').val(event.latLng);
+        } else if ($('#txtPos3').val() == '') {
+            $('#txtPos3').val(event.latLng);
+        } else if ($('#txtPos4').val() == '') {
+            $('#txtPos4').val(event.latLng);
+            crearZona();
+        }
+        if (indexClick < 4) {
+            var marker = new google.maps.Marker({
+                position: event.latLng,
+                map: map
+            });
+        } else {
+            crearZona();
+        }
+        indexClick = indexClick + 1;
+    });
+    resizeMapGral();
+}
+
+deleteMap = function (index) {
+    $('#divMapGeozona').empty();
+    lastPath = [];
+    var dataZona = zonas[index];
+    $(JSON.parse(dataZona.zona)).each(function (indx, item) {
+        $(item.latLng).each(function (indx, val) {
+            if (indx == 0) {
+                globalColor = item.colorZona;
+            }
+            lastPath.push({lat: parseFloat(val.lat), lng: parseFloat(val.long)});
+        });
+    });
+    var mapOptions = {
+        zoom: 7
+        , mapTypeId: window.google.maps.MapTypeId.MAP
+        , center: new google.maps.LatLng(lastPath[0].lat, lastPath[0].lng)
+    };
+    var map = new google.maps.Map(document.getElementById("divMapGeozona"), mapOptions);
+    geofence(lastPath, map, dataZona.nombre, dataZona.id);
+    for (var i = 0; i < lastPath.length; i++) {
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(lastPath[i].lat, lastPath[i].lng),
+            map: map
+        });
+    }
+    $('#txtZona').val(dataZona.nombre);
+    $('#txtIdGeozona').val(dataZona.id);
+    $('#colorPicker').val(globalColor);
+    lastPath.length = 0;
+    globalIndexTr = index;
+    other();
+};
+
+asociarMap = function (index) {
+    $('#divMapGeozona').empty();
+    lastPath = [];
+    var dataZona = zonas[index];
+    $(JSON.parse(dataZona.zona)).each(function (indx, item) {
+        $(item.latLng).each(function (indx, val) {
+            if (indx == 0) {
+                globalColor = item.colorZona;
+            }
+            lastPath.push({lat: parseFloat(val.lat), lng: parseFloat(val.long)});
+        });
+    });
+    var mapOptions = {
+        zoom: 7
+        , mapTypeId: window.google.maps.MapTypeId.MAP
+        , center: new google.maps.LatLng(lastPath[0].lat, lastPath[0].lng)
+    };
+    var map = new google.maps.Map(document.getElementById("divMapGeozona"), mapOptions);
+    geofence(lastPath, map, dataZona.nombre, dataZona.id);
+    for (var i = 0; i < lastPath.length; i++) {
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(lastPath[i].lat, lastPath[i].lng),
+            map: map
+        });
+    }
+    $('#txtZona').val(dataZona.nombre);
+    $('#txtIdGeozona').val(dataZona.id);
+    $('#colorPicker').val(globalColor);
+    lastPath.length = 0;
+    globalIndexTr = index;
+    other();
 };
 
 function geoMap() {
@@ -350,7 +498,6 @@ function localizar(imei) {
             map = null;
         }
     });
-    //clearRdb();
 }
 
 function resizeMapGral() {
@@ -372,15 +519,16 @@ function closeInfoWindow() {
 }
 
 function geofence(path, map, name, id) {
+
     if (path.length > 0) {
         globalName = name;
         globalId = id;
         polygon = new google.maps.Polygon({
             paths: path,
-            strokeColor: '#FF0000',
+            strokeColor: '#000000',
             strokeOpacity: 0.8,
             strokeWeight: 2,
-            fillColor: '#FF0000',
+            fillColor: globalColor,
             fillOpacity: 0.35,
         });
         polygon.setMap(map);
@@ -665,7 +813,7 @@ function getObject(item) {
 }
 
 function crearZona() {
-    path.lenght = 0;
+    path = [];
     for (var i = 1; i < 6; i++) {
         if ($('#txtPos' + i) != '') {
             var value = $('#txtPos' + i).val();
@@ -682,47 +830,96 @@ function crearZona() {
             }
         }
     }
+
     polygon = new google.maps.Polygon({
         paths: path
         , strokeColor: '#FF0000'
         , strokeOpacity: 0.8
         , strokeWeight: 2
-        , fillColor: color != undefined ? color : '#ab2567'
+        , fillColor: color != undefined ? color : '#FF2802'
         , fillOpacity: 0.35
     });
     polygon.setMap(map);
 }
 
-function enviarGz() {
+function enviarGz(method) {
     var idsVehiculo = [];
     var ltlon = [];
     $("input:checkbox:checked").each(function () {
         idsVehiculo.push($(this).val());
     });
-    if (idsVehiculo.length > 0) {
-        $('#lblErrorSelect').hide();
-        var geoFence = new Object();
-        for (var index = 1; index < 5; index++) {
-            var coordenadas = {};
-            var value = $('#txtPos' + index).val();
-            var latLng = value.split(',');
-            coordenadas.lat = latLng[0];
-            coordenadas.long = latLng[1];
-            ltlon.push(coordenadas);
+    if (method == 1 || method == 5) {
+        if (idsVehiculo.length > 0) {
+            $('#lblErrorSelect').hide();
+            send(method, ltlon, idsVehiculo);
+        } else {
+            $('#lblErrorSelect').show();
         }
-        var latLng = new Object();
-        geoFence.latLng = ltlon;
-        geoFence.colorZona = '#' + $('#colorPicker').val();
-        var zonaJson = JSON.stringify(geoFence);
-        var data = {'method': 1, 'idVehiculos': idsVehiculo
-            , 'txtNombre': $('#txtZona').val(), 'json': zonaJson};
-        $.getJSON(contextoGlobal + '/com/aestre/system/controller/geozonaController.php'
-                , data, function (response) {
-                    $('#lblTotal').append(response[0].contador);
-                    $("#divMessageSuccessZona").modal('show');
-                }
-        );
-    } else {
-        $('#lblErrorSelect').show();
+    } else if (method == 2) {
+        send(method, ltlon, idsVehiculo);
+    } else if (method == 3) {
+        send(method, ltlon, idsVehiculo);
     }
+}
+
+function send(method, ltlon, idsVehiculo) {
+    var geoFence = new Object();
+    for (var index = 1; index < 5; index++) {
+        var coordenadas = {};
+        var value = $('#txtPos' + index).val();
+        var latLng = value.split(',');
+        coordenadas.lat = latLng[0];
+        coordenadas.long = latLng[1];
+        ltlon.push(coordenadas);
+    }
+    var latLng = new Object();
+    geoFence.latLng = ltlon;
+    geoFence.colorZona = '#' + $('#colorPicker').val();
+    var zonaJson = JSON.stringify(geoFence);
+    var data = {'method': method, 'idVehiculos': idsVehiculo, 'txtIdZona': $('#txtIdGeozona').val()
+        , 'txtNombre': $('#txtZona').val(), 'json': zonaJson};
+    $.getJSON(contextoGlobal + '/com/aestre/system/controller/geozonaController.php'
+            , data, function (response) {
+                if (method == 1 || method == 5) {
+                    $('#lblText').text(method == 1 ? 'La zona fue registrada, se a&ntilde;adieron' : 'Se asociaron ');
+                    $('#lblTotal').append(response[0].contador);
+                    $('#divMessageSuccessZona').modal('show');
+                    location.reload(); 
+                } else if (method == 2) {
+                    $('#divMessageUpdate').modal('hide');
+                    $('#divMessageSuccessModificarZona').modal('show');
+                } else if (method == 3) {
+                    $('#divMessageEliminarZona').modal('hide');
+                    $('#divMessageSuccessEliminarZona').modal('show');
+                    location.reload(); 
+                }
+            }
+    ).error(function(jqXHR, textStatus, errorThrown) {
+        console.log("error " + textStatus);
+        console.log("incoming Text " + jqXHR.responseText);
+    });
+    onloadAllMini();
+}
+
+function clearZona() {
+    $('#container').empty();
+    $('#trIntMapIndx' + globalIndexTr).remove();
+}
+
+function clear(size) {
+    $('#container').empty();
+    for (var indx = 0; indx < size; indx++) {
+        $('#trIntMapIndx' + indx).remove();
+    }
+}
+
+function addColor() {
+    var input = document.createElement('INPUT');
+    input.setAttribute('class', 'jscolor form-control col-xs-1 input-sm');
+    input.setAttribute('value', 'FF2802');
+    input.setAttribute('id', 'colorPicker');
+    input.setAttribute('name', 'colorPicker');
+    var picker = new jscolor(input);
+    picker.fromHSV(360 / 100 * 0, 100, 100);
+    document.getElementById('container').appendChild(input);
 }

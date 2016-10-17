@@ -1,7 +1,7 @@
 var clicks = 0;
 var color;
 var path = [];
-
+var globalIndexDelete = '';
 $(document).ready(function () {
     $('#listVehiculos').animate({height: 'toggle'});
     $('#lblTittleListV').text("Mostrar Lista Vehiculos");
@@ -11,6 +11,11 @@ $(document).ready(function () {
                 + '<button type="button" class="btn" '
                 + 'onclick="showNew();">'
                 + '<img src="../web/images/nuevo.png" >Nuevo</button>'
+                + '</td>'
+                + '<td  style="text-align: center">'
+                + '<button type="button" class="btn" '
+                + 'onclick="onloadAll();">'
+                + '<img src="../web/images/cancel.png" >Cerrar</button>'
                 + '</td>'
                 + '</tr>'
                 + '<tr id="trIndxFoot0"></tr>');
@@ -24,6 +29,7 @@ $(document).ready(function () {
             url: contextoGlobal + '/web/resources/es_ES.json'
         }
     });
+
     $('#tblGeozonas').DataTable({
         "pagingType": "simple",
         language: {
@@ -71,39 +77,45 @@ $(document).ready(function () {
         });
 
         $('#btnRegistrar').on('click', function () {
-            //$('#frmGeoZona').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/geozonaController.php?&method=1');
             if ($('#frmGeoZona').validate().form()) {
-                enviarGz();
+                enviarGz(1);
             }
         });
+
         $('#btnActualizar').on('click', function () {
+            $('#lblTittleUpdate').text('Modificar Geozona');
             if ($('#frmGeoZona').validate().form()) {
-                $('#frmGeoZona').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/geozonaController.php?method=2');
                 $('#divMessageUpdate').modal('show');
             }
         });
         $('#btnUpdate').on('click', function () {
-            $('#frmGeoZona').submit();
+            enviarGz(2);
         });
+
+        $('#btnCancel').on('click', function () {
+            $('#divMessageCancel').modal('show');
+        });
+        $('#btnAceptarCerrar').on('click', function () {
+            clear(size);
+            $('#trIndxFoot0').empty();
+        });
+
         $('#btnEliminar').on('click', function () {
-            $('#chkActivo').prop('checked', false);
+            $('#divMessageEliminarZona').modal('show');
+        });
+        $('#btnDeleteGeozona').on('click', function () {
+            enviarGz(3);
+            $('#trMapIndx' + globalIndexDelete);
+        });
+        $('#btnAsociar').on('click', function () {
+            $('#lblTittleUpdate').text('Modificar Geozona');
             if ($('#frmGeoZona').validate().form()) {
-                $('#frmGeoZona').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/geozonaController.php?method=3');
-                $('#divMessageDelete').modal('show');
+                $('#divMessageAsociar').modal('show');
             }
         });
-        $('#btnDelete').on('click', function () {
-            $('#frmGeoZona').submit();
-        });
-        $('#btnActivate').on('click', function () {
-            $('#chkActivo').prop('checked', true);
-            if ($('#frmGeoZona').validate().form()) {
-                $('#frmGeoZona').get(0).setAttribute('action', contextoGlobal + '/com/aestre/system/controller/geozonaController.php?method=3');
-                $('#divActivar').modal('show');
-            }
-        });
-        $('#btnAceptarActivar').on('click', function () {
-            $('#frmGeoZona').submit();
+        $('#btnAceptarAsociar').on('click', function () {
+            $('#divMessageAsociar').modal('hide');
+            enviarGz(5);
         });
 
         $('#btnCancel').on('click', function () {
@@ -115,7 +127,7 @@ $(document).ready(function () {
         });
 
         $('#cboVehiculos').multiselect();
-    }
+    };
 });
 
 function showRuta(index, imei) {
@@ -180,34 +192,59 @@ function cboTime() {
 function showNew() {
     clear(size);
     $('#trIndxFoot0').append('<td colspan="5">' + getFormGeozona() + '</td></tr>');
+    addColor();
+    $('#btnAsociar').prop('disabled', 'disabled');
     $('#txtNombre').focus();
     $('#btnActualizar').prop('disabled', true);
     $('#btnEliminar').prop('disabled', true);
+    $('#cboVehiculos').multiselect();
     geoMap();
     other();
 }
 
 function showDataZona(index, action) {
+    globalIndexDelete = index;
     clear(size);
+    $('#lblT').empty();
     $('#trIndxFoot0').empty();
-    $('#trMapIndx' + index).before('<tr id="trIntMapIndx' + index + '"><td colspan="5">' + getFormGeozonaUpdate() + '</td></tr>');
+    if (action == 0) {
+        $('#trMapIndx' + index).before('<tr id="trIntMapIndx' + index + '"><td colspan="5">' + getFormGeozonaUpdate() + '</td></tr>');
+        $('#lblT').text('Mapa Creaci&oacute;n Geozona');
+        addColor();
+        lastMap(index);
+    } else if (action == 1) {
+        $('#trMapIndx' + index).before('<tr id="trIntMapIndx' + index + '"><td colspan="5">' + getFormGeozona() + '</td></tr>');
+        $('#lblT').text('Mapa Eliminar Geozona');
+        deleteMap(index);
+        addColor();
+        $('#txtZona').prop('disabled', 'disabled');
+        $('#colorPicker').prop('disabled', 'disabled');
+        $('#btnRegistrar').prop('disabled', 'disabled');
+        $('#btnActualizar').prop('disabled', 'disabled');
+        $('#btnAsociar').prop('disabled', 'disabled');
+        $('#cboVehiculos').multiselect('disable');
+    } else {
+        $('#trMapIndx' + index).before('<tr id="trIntMapIndx' + index + '"><td colspan="5">' + getFormGeozona() + '</td></tr>');
+        $('#lblT').text('Asociar veh&iacute;culos - Geozona');
+        asociarMap(index);
+        addColor();
+        $('#txtZona').prop('disabled', 'disabled');
+        $('#colorPicker').prop('disabled', 'disabled');
+        $('#btnRegistrar').prop('disabled', 'disabled');
+        $('#btnActualizar').prop('disabled', 'disabled');
+        $('#btnEliminar').prop('disabled', 'disabled');
+    }
 }
+
+
 var listVehiculos = [];
 function listVehiculo() {
     var data = {'method': 0};
     $.getJSON(contextoGlobal + '/com/aestre/system/controller/vehiculoController.php'
             , data, function (response) {
                 $.each(response, function (index, item) {
-                    if ((item.idZona == 0) || (item.idZona == undefined) || (item.idZona == null)) {
-                        listVehiculos.push('<option value = "' + item.id + '">' + item.modelo + ' ' + item.placa + '</option>');
-                    }
+                    listVehiculos.push('<option value = "' + item.id + '">' + item.modelo + ' ' + item.placa + '</option>');
                 });
             }
     );
-}
-
-function clear(size) {
-    for (var indx = 0; indx < size; indx++) {
-        $('#trIntIndx' + indx).remove();
-    }
 }
