@@ -43,7 +43,7 @@ class VehiculoDaoImpl implements VehiculoDao {
     }
 
     //</editor-fold>
-//<editor-fold defaultstate="collapsed" desc="Metodos P&uacute;blicos">
+    //<editor-fold defaultstate="collapsed" desc="Metodos P&uacute;blicos">
     public function insert($obj) {
         SqlUtils::execute($this->jdbc, Utils::replaceQuery(PropertyKey::$jdbc_procedure_vehiculo, $this->getParameters(1, $obj)));
     }
@@ -57,7 +57,11 @@ class VehiculoDaoImpl implements VehiculoDao {
     }
 
     public function updateZona($obj) {
-        SqlUtils::execute($this->jdbc, Utils::replaceQuery(PropertyKey::$jdbc_procedure_vehiculo, $this->getParameters(4, $obj)));
+        SqlUtils::execute($this->jdbc, str_replace("'", "", Utils::replaceQuery(PropertyKey::$jdbc_procedure_vehiculo, $this->getParameters(4, $obj))));
+    }
+
+    public function updateRuta($obj) {
+        SqlUtils::execute($this->jdbc, str_replace("'", "", Utils::replaceQuery(PropertyKey::$jdbc_procedure_vehiculo, $this->getParameters(5, $obj))));
     }
 
     //</editor-fold>
@@ -98,7 +102,7 @@ class VehiculoDaoImpl implements VehiculoDao {
             , $obj->getApagado()
             , $obj->getBeanDispositivo()->getIdDispositivo()
             , $obj->getBeanGeozona()->getId()
-            , NULL//$obj->getBeanRuta()
+            , $obj->getBeanGeoruta()->getId()
             , $obj->getBeanIconos()->getIdIcono()
             , $obj->getIdCliente()
             , $obj->getVerificacion()

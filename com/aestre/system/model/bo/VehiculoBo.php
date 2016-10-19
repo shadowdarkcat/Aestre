@@ -14,7 +14,8 @@ interface VehiculoBo extends GenericBo {
     function findAllById($user, $obj);
 
     function find($user, $obj);
-    /* function updateRuta($user, $obj); */
+
+    function updateRuta($user, $obj);
 
     function updateZona($user, $obj);
 }

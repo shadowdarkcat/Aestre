@@ -208,3 +208,24 @@ html, body, #divMapGeozonaNueva  {
     width:100%;
     height:250px;
 }
+
+html, body, #divMapGeoruta  {
+    margin: 0;
+    padding: 0;
+    height: 50%;
+}
+
+#divMapGeoruta {
+    width:100%;
+    height:300px;
+}
+
+html, body, #divMapGeorutaAnterior  {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+#divMapGeorutaAnterior {
+    width:100%;
+    height:250px;
+}

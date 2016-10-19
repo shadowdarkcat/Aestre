@@ -78,7 +78,6 @@ class Utils {
     }
 
     public static final function replaceQuery($strQuery, $obj) {
-        //$indexObj = count($obj);
         $indx = 0;
         $query = '';
         for ($index = 0; $index < strlen($strQuery); $index++) {
@@ -93,9 +92,6 @@ class Utils {
             } else {
                 $query.=$strQuery{$index};
             }
-        }
-        if (strpos($query, '4') == true && strpos($query, 'CALL') ==true) {
-            $query = str_replace("'", "", $query);
         }
         return $query;
     }

@@ -10,4 +10,6 @@ spl_autoload_register('aestre_autoload', FALSE);
 interface GeorutaBo extends GenericBo {
 
     function find($user, $obj);
+
+    function verifyExists($user, $obj);
 }

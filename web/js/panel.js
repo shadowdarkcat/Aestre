@@ -6,10 +6,47 @@ $(document).ready(function () {
     $('#listVehiculos').animate({height: 'toggle'});
     $('#lblTittleListV').text("Mostrar Lista Vehiculos");
 
+    colonia = function () {
+        $('#txtColonia').autocomplete({
+            source: availableTags
+            , select: function (event, data) {
+                var split = [];
+                if (data.item) {
+                    split = data.item.value.split(",");
+                }
+                search(split[1]);
+                $('#errorGeocoder').hide();
+                return false;
+            }
+        }).keypress(function (e, data) {
+            if (e.which == 13) {
+                var split = [];
+                if (data.item) {
+                    split = data.item.value.split(",");
+                }
+                search(split[1]);
+                $('#errorGeocoder').hide();
+                return false;
+            }
+        });
+    };
+
     $(function () {
-        $('#foot').append('<tr><td  style="text-align: center">'
+        $('#divZonas').find('#foot').append('<tr><td  style="text-align: center">'
                 + '<button type="button" class="btn" '
                 + 'onclick="showNew();">'
+                + '<img src="../web/images/nuevo.png" >Nuevo</button>'
+                + '</td>'
+                + '<td  style="text-align: center">'
+                + '<button type="button" class="btn" '
+                + 'onclick="onloadAll();">'
+                + '<img src="../web/images/cancel.png" >Cerrar</button>'
+                + '</td>'
+                + '</tr>'
+                + '<tr id="trIndxFoot0"></tr>');
+        $('#divRutas').find('#foot').append('<tr><td  style="text-align: center">'
+                + '<button type="button" class="btn" '
+                + 'onclick="showNewRuta();">'
                 + '<img src="../web/images/nuevo.png" >Nuevo</button>'
                 + '</td>'
                 + '<td  style="text-align: center">'
@@ -31,6 +68,13 @@ $(document).ready(function () {
     });
 
     $('#tblGeozonas').DataTable({
+        "pagingType": "simple",
+        language: {
+            url: contextoGlobal + '/web/resources/es_ES.json'
+        }
+    });
+
+    $('#tblGeorutas').DataTable({
         "pagingType": "simple",
         language: {
             url: contextoGlobal + '/web/resources/es_ES.json'
@@ -60,7 +104,7 @@ $(document).ready(function () {
             }
             , maxDate: '+0d'
         });
-    }
+    };
 
     $('#btnGeoZona').on('click', function () {
         window.clearInterval(inter);
@@ -69,7 +113,14 @@ $(document).ready(function () {
         onloadAllMini();
     });
 
-    other = function () {
+    $('#btnGeoRuta').on('click', function () {
+        window.clearInterval(inter);
+        $('#divMap').empty();
+        $('#divMap').append($('#divRutas').html());
+        onloadAllMini();
+    });
+
+    otherZone = function () {
         changeErrorMessage('frmGeoZona');
         $('#colorPicker').on('change', function () {
             color = '#' + $('#colorPicker').val();
@@ -103,10 +154,12 @@ $(document).ready(function () {
         $('#btnEliminar').on('click', function () {
             $('#divMessageEliminarZona').modal('show');
         });
+
         $('#btnDeleteGeozona').on('click', function () {
             enviarGz(3);
             $('#trMapIndx' + globalIndexDelete);
         });
+
         $('#btnAsociar').on('click', function () {
             $('#lblTittleUpdate').text('Modificar Geozona');
             if ($('#frmGeoZona').validate().form()) {
@@ -126,6 +179,59 @@ $(document).ready(function () {
             $('#trIndxFoot0').empty();
         });
 
+        $('#cboVehiculos').multiselect();
+    };
+
+    otherRute = function () {
+        changeErrorMessage('frmGeoRuta');
+        $('#colorPicker').on('change', function () {
+            color = '#' + $('#colorPicker').val();
+            setColor(color);
+        });
+
+        $('#btnRegistrarRuta').on('click', function () {
+            if ($('#frmGeoRuta').validate().form()) {
+                enviarRuta(1);
+            }
+        });
+
+        $('#btnActualizarRuta').on('click', function () {
+            $('#lblTittleUpdate').text('Modificar Georuta');
+            if ($('#frmGeoRuta').validate().form()) {
+                $('#divMessageUpdate').modal('show');
+            }
+        });
+        $('#btnUpdate').on('click', function () {
+            enviarRuta(2);
+        });
+
+        $('#btnEliminarRuta').on('click', function () {
+            $('#divMessageEliminarRuta').modal('show');
+        });
+
+        $('#btnDeleteGeoruta').on('click', function () {
+            enviarRuta(3);
+            $('#trMapIndx' + globalIndexDelete);
+        });
+
+        $('#btnAsociarRuta').on('click', function () {
+            $('#lblTittleUpdate').text('Modificar Georuta');
+            if ($('#frmGeoRuta').validate().form()) {
+                $('#divMessageAsociarRuta').modal('show');
+            }
+        });
+        $('#btnAceptarAsociarRuta').on('click', function () {
+            $('#divMessageAsociarRuta').modal('hide');
+            enviarRuta(5);
+        });
+
+        $('#btnCancelRuta').on('click', function () {
+            $('#divMessageCancel').modal('show');
+        });
+        $('#btnAceptarCerrar').on('click', function () {
+            clear(size);
+            $('#trIndxFoot0').empty();
+        });
         $('#cboVehiculos').multiselect();
     };
 });
@@ -199,8 +305,23 @@ function showNew() {
     $('#btnEliminar').prop('disabled', true);
     $('#cboVehiculos').multiselect();
     geoMap();
-    other();
+    otherZone();
 }
+
+function showNewRuta() {
+    clear(size);
+    $('#trIndxFoot0').append('<td colspan="5">' + getFormGeoruta() + '</td></tr>');
+    addColor();
+    colonia();
+    $('#btnAsociarRuta').prop('disabled', 'disabled');
+    $('#txtNombre').focus();
+    $('#btnActualizarRuta').prop('disabled', true);
+    $('#btnEliminarRuta').prop('disabled', true);
+    $('#cboVehiculos').multiselect();
+    ruteMap();
+    otherRute();
+}
+
 
 function showDataZona(index, action) {
     globalIndexDelete = index;
@@ -210,6 +331,10 @@ function showDataZona(index, action) {
     if (action == 0) {
         $('#trMapIndx' + index).before('<tr id="trIntMapIndx' + index + '"><td colspan="5">' + getFormGeozonaUpdate() + '</td></tr>');
         $('#lblT').text('Mapa Creaci&oacute;n Geozona');
+        $('#btnRegistrar').prop('disabled', 'disabled');
+        $('#btnEliminar').prop('disabled', 'disabled');
+        $('#btnAsociar').prop('disabled', 'disabled');
+        $('#cboVehiculos').multiselect('disable');
         addColor();
         lastMap(index);
     } else if (action == 1) {
@@ -225,7 +350,7 @@ function showDataZona(index, action) {
         $('#cboVehiculos').multiselect('disable');
     } else {
         $('#trMapIndx' + index).before('<tr id="trIntMapIndx' + index + '"><td colspan="5">' + getFormGeozona() + '</td></tr>');
-        $('#lblT').text('Asociar veh&iacute;culos - Geozona');
+        $('#lblT').text('Asociar vehículos - Geozona');
         asociarMap(index);
         addColor();
         $('#txtZona').prop('disabled', 'disabled');
@@ -234,6 +359,47 @@ function showDataZona(index, action) {
         $('#btnActualizar').prop('disabled', 'disabled');
         $('#btnEliminar').prop('disabled', 'disabled');
     }
+}
+
+function showDataRuta(index, action) {
+    globalIndexDelete = index;
+    clear(size);
+    $('#lblT').empty();
+    $('#trIndxFoot0').empty();
+    if (action == 0) {
+        $('#trMapIndx' + index).before('<tr id="trIntMapIndx' + index + '"><td colspan="5">' + getFormGeorutaUpdate() + '</td></tr>');
+        $('#lblT').text('Mapa Creaci&oacute;n Georuta');
+        addColor();
+        colonia();
+        lastMapRuta(index);
+        $('#btnRegistrarRuta').prop('disabled', 'disabled');
+        $('#btnEliminarRuta').prop('disabled', 'disabled');
+        $('#btnAsociarRuta').prop('disabled', 'disabled');
+    } else if (action == 1) {
+        $('#trMapIndx' + index).before('<tr id="trIntMapIndx' + index + '"><td colspan="5">' + getFormGeoruta() + '</td></tr>');
+        $('#lblT').text('Mapa Eliminar Georuta');
+        deleteMapRuta(index);
+        addColor();
+        $('#txtColonia').prop('disabled', 'disabled');
+        $('#txtRuta').prop('disabled', 'disabled');
+        $('#colorPicker').prop('disabled', 'disabled');
+        $('#btnRegistrarRuta').prop('disabled', 'disabled');
+        $('#btnActualizarRuta').prop('disabled', 'disabled');
+        $('#btnAsociarRuta').prop('disabled', 'disabled');
+        $('#cboVehiculos').multiselect('disable');
+    } else {
+        $('#trMapIndx' + index).before('<tr id="trIntMapIndx' + index + '"><td colspan="5">' + getFormGeoruta() + '</td></tr>');
+        $('#lblT').text('Asociar vehículos - Georuta');
+        asociarMapRuta(index);
+        addColor();
+        $('#txtColonia').prop('disabled', 'disabled');
+        $('#txtRuta').prop('disabled', 'disabled');
+        $('#colorPicker').prop('disabled', 'disabled');
+        $('#btnRegistrarRuta').prop('disabled', 'disabled');
+        $('#btnActualizarRuta').prop('disabled', 'disabled');
+        $('#btnEliminarRuta').prop('disabled', 'disabled');
+    }
+    otherRute();
 }
 
 

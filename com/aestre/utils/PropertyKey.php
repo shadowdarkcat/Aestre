@@ -26,6 +26,7 @@ class PropertyKey {
     public static $jdbc_function_last_login;
     public static $jdbc_function_last_zona;
     public static $jdbc_function_exist_zona;
+    public static $jdbc_function_exist_ruta;
     public static $jdbc_function_last_ruta;
     public static $jdbc_procedure_privilegios;
     public static $jdbc_procedure_cliente;
@@ -84,6 +85,7 @@ class PropertyKey {
     public static $session_conductores;
     public static $session_users;
     public static $session_zona_json;
+    public static $session_ruta_json;
     public static $view_user;
     public static $view_password;
     public static $view_method;
@@ -122,6 +124,8 @@ class PropertyKey {
     public static $view_ids_vehiculos;
     public static $view_id_zona;
     public static $view_json;
+    public static $view_id_ruta;
+    public static $view_lenght;
     public static $php_index;
     public static $php_main_admin;
     public static $php_main_user;
@@ -185,6 +189,7 @@ class PropertyKey {
         self::$jdbc_function_last_login = $this->getPropertyBd('jdbc.function.last.login');
         self::$jdbc_function_last_zona = $this->getPropertyBd('jdbc.function.last.zona');
         self::$jdbc_function_exist_zona = $this->getPropertyBd('jdbc.function.exist.zona');
+        self::$jdbc_function_exist_ruta = $this->getPropertyBd('jdbc.function.exist.ruta');
         self::$jdbc_function_last_ruta = $this->getPropertyBd('jdbc.function.last.ruta');
 
         self::$jdbc_procedure_privilegios = $this->getPropertyBd('jdbc.procedure.menu.privilegio');
@@ -208,6 +213,7 @@ class PropertyKey {
         self::$session_conductores = $this->getPropertySystem('session.conductores');
         self::$session_users = $this->getPropertySystem('session.users');
         self::$session_zona_json = $this->getPropertySystem('session.zona.json');
+        self::$session_ruta_json = $this->getPropertySystem('session.ruta.json');        
 
         self::$php_index = $this->getPropertySystem('php.index');
         self::$php_main_admin = $this->getPropertySystem('php.main.admin');
@@ -255,6 +261,8 @@ class PropertyKey {
         self::$view_ids_vehiculos = $this->getPropertySystem('view.ids.vehiculos');
         self::$view_id_zona = $this->getPropertySystem('view.id.zona');
         self::$view_json = $this->getPropertySystem('view.json');
+        self::$view_id_ruta = $this->getPropertySystem('view.id.ruta');
+        self::$view_lenght = $this->getPropertySystem('view.lenght');
     }
 
     //</editor-fold>

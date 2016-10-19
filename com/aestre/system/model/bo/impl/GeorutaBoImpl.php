@@ -39,6 +39,12 @@ class GeorutaBoImpl implements GeorutaBo {
             return $this->dao->findById($obj);
         }
     }
+    
+    public function verifyExists($user, $obj){
+        if (Utils::isSessionValid($user)) {
+            return $this->dao->verifyExists($obj);
+        }
+    }
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Metodos P&uacute;blicos">

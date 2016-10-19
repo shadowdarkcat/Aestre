@@ -22,6 +22,8 @@ class SqlUtils {
             return self::getDispositivo($obj, $row);
         } else if ($obj instanceof BeanGeozona) {
             return self::getZona($obj, $row);
+        } else if ($obj instanceof BeanGeoruta) {
+            return self::getRuta($obj, $row);
         } else if ($obj instanceof DtoCliente) {
             return self::getCliente($obj, $row);
         } else if ($obj instanceof BeanGiro) {
@@ -87,6 +89,14 @@ class SqlUtils {
         $bean->setId($row[0]);
         $bean->setNombre($row[1]);
         $bean->setJson($row[2]);
+        return $bean;
+    }
+    
+    private static final function getRuta(BeanGeoruta $bean, $row) {
+        $bean->setId($row[0]);
+        $bean->setNombre($row[1]);
+        $bean->setJson($row[2]);
+        $bean->setLenght($row[3]);
         return $bean;
     }
 

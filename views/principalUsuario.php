@@ -22,6 +22,7 @@ if (!Utils::isSessionValid($login)) {
         <script type="text/javascript" src="/Aestre/web/js/panel.js"></script>
         <script type="text/javascript" src="/Aestre/web/js/map.js"></script>        
         <script type="text/javascript" src="../web/forms/formGeozona.js"></script>
+        <script type="text/javascript" src="../web/forms/formGeoruta.js"></script>
         <script>
             google.maps.event.addDomListener(window, 'load', init());
             google.maps.event.addDomListener(window, "resize", resizingMapGral());
@@ -201,3 +202,4 @@ if (!Utils::isSessionValid($login)) {
 </html>
 <?php
 require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/views/registroZonas.php');
+require_once (realpath($_SERVER["DOCUMENT_ROOT"]) . '/Aestre/views/registroRutas.php');

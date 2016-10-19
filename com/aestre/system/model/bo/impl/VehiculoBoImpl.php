@@ -95,17 +95,6 @@ class VehiculoBoImpl implements VehiculoBo {
         }
     }
 
-    /*
-     * $collection = $this->dao->findAll();
-      foreach ($collection as $item) {
-      $item->setBeanGiro($this->getGiro($user, $item->getBeanGiro()));
-      $item->setBeanDispositivo($this->getDispositivo($user, $item->getBeanDispositivo()));
-      //$item->setBeanZona($beanZona);
-      //$item->setBeanRuta($beanRuta);
-      $item->setBeanIconos($this->getIconos($user, $item->getBeanIconos()));
-      }
-     */
-
     public function findById($user, $obj) {
         if (Utils::isSessionValid($user)) {
             $obj = $this->dao->findById($obj);
@@ -171,16 +160,16 @@ class VehiculoBoImpl implements VehiculoBo {
         }
     }
 
-    /* public function updateRuta($object, DtoLogin $user) {
-      if (Utils::isSessionValid($user)) {
-      $index = 0;
-      foreach ($object as $item) {
-      $this->dao->updateRuta($item);
-      $index++;
-      }
-      return $index;
-      }
-      } */
+    public function updateRuta($user, $obj) {
+        if (Utils::isSessionValid($user)) {
+            $index = 0;
+            foreach ($obj as $item) {
+                $this->dao->updateRuta($item);
+                $index++;
+            }
+            return $index;
+        }
+    }
 
     //<editor-fold defaultstate="collapsed" desc="Funciones Privadas">
     private final function getGiro($user, $obj) {

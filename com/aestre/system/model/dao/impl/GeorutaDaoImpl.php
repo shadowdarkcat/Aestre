@@ -31,6 +31,11 @@ class GeorutaDaoImpl implements GeorutaDao {
         return $this->getResultSet(Utils::replaceQuery(PropertyKey::$jdbc_view_georuta_id, $args));
     }
 
+    public function verifyExists($obj) {
+        $args = array($obj->getNombre());
+        return $this->getResultSetFunction(Utils::replaceQuery(PropertyKey::$jdbc_function_exist_ruta, $args)) != 0;
+    }
+
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Metodos P&uacute;blicos">
     public function insert($obj) {
@@ -62,7 +67,7 @@ class GeorutaDaoImpl implements GeorutaDao {
         $obj = [];
         $rs = $this->jdbc->query($query);
         while (@$row = mysqli_fetch_array($rs)) {
-            $obj[$index] = SqlUtils::getFields(FactoryGeozona::newInstance(NULL), $row);
+            $obj[$index] = SqlUtils::getFields(FactoryGeoruta::newInstance(NULL), $row);
             $index++;
         }
         SqlUtils::close($this->jdbc, $rs);
@@ -85,7 +90,7 @@ class GeorutaDaoImpl implements GeorutaDao {
             , $obj->getId()
             , $obj->getIdVehiculo()
             , $obj->getNombre()
-            . $obj->getJson()
+            , $obj->getJson()
             , $obj->getLenght()
         );
     }

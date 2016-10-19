@@ -1,3 +1,5 @@
+var polylineR;
+var geoRutaMap;
 var infowindow = new google.maps.InfoWindow();
 var infoZoneWindow = new google.maps.InfoWindow();
 var geocoder = new google.maps.Geocoder;
@@ -29,7 +31,7 @@ $(document).ready(function () {
 
     $('#btnUpdateMap').on('click', function () {
         onloadAll();
-        other();
+        otherZone();
     });
 
 });
@@ -104,7 +106,7 @@ onloadAll = function () {
                             });
                         });
                         georute(pathRuta, map, items.vehiculo[0].ruta[0]);
-                        //data += '<br/><strong>Ruta:</strong> ' + items.vehiculo[0].ruta[0].zona;
+                        data += '<br/><strong>Ruta:</strong> ' + items.vehiculo[0].ruta[0].ruta;
                     }
                     pathRuta.length = 0;
                     arr.push(data);
@@ -267,7 +269,42 @@ lastMap = function (index) {
     $('#colorPicker').val(globalColor);
     lastPath.length = 0;
     globalIndexTr = index;
-    other();
+    otherZone();
+};
+
+lastMapRuta = function (index) {
+    indexClick = 0;
+    $('#divMapGeorutaAnterior').empty();
+    $('#divMapGeorutaNueva').empty();
+    lastPath = [];
+    newMapRuta();
+    var dataRuta = rutas[index];
+    $(JSON.parse(dataRuta.coordenadas)).each(function (indx, item) {
+        $(item.latLng).each(function (indx, val) {
+            if (indx == 0) {
+                globalColor = item.colorRuta;
+            }
+            lastPath.push({lat: parseFloat(val.lat), lng: parseFloat(val.long)});
+        });
+    });
+    var mapOptions = {
+        zoom: 16
+        , mapTypeId: window.google.maps.MapTypeId.MAP
+        , center: new google.maps.LatLng(lastPath[0].lat, lastPath[0].lng)
+    };
+    var map = new google.maps.Map(document.getElementById("divMapGeorutaAnterior"), mapOptions);
+    georute(lastPath, map, dataRuta);
+    for (var i = 0; i < lastPath.length; i++) {
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(lastPath[i].lat, lastPath[i].lng),
+            map: map
+        });
+    }
+    $('#txtRuta').val(dataRuta.nombre);
+    $('#txtIdRuta').val(dataRuta.id);
+    $('#colorPicker').val(globalColor);
+    lastPath.length = 0;
+    globalIndexTr = index;
 };
 
 newMap = function () {
@@ -302,6 +339,16 @@ newMap = function () {
     resizeMapGral();
 }
 
+newMapRuta = function () {
+    var mapOptions = {
+        zoom: 6
+        , mapTypeId: window.google.maps.MapTypeId.MAP
+        , center: new google.maps.LatLng(23.945963820559726, -102.53775014999997)
+    };
+    geoRutaMap = new google.maps.Map(document.getElementById("divMapGeoruta"), mapOptions);
+    geoRutaMap.addListener('click', showError());
+};
+
 deleteMap = function (index) {
     $('#divMapGeozona').empty();
     lastPath = [];
@@ -332,7 +379,40 @@ deleteMap = function (index) {
     $('#colorPicker').val(globalColor);
     lastPath.length = 0;
     globalIndexTr = index;
-    other();
+    otherZone();
+};
+
+deleteMapRuta = function (index) {
+    $('#divMapGeoruta').empty();
+    lastPath = [];
+    var dataRuta = rutas[index];
+    $(JSON.parse(dataRuta.coordenadas)).each(function (indx, item) {
+        $(item.latLng).each(function (indx, val) {
+            if (indx == 0) {
+                globalColor = item.colorRuta;
+            }
+            lastPath.push({lat: parseFloat(val.lat), lng: parseFloat(val.long)});
+        });
+    });
+    var mapOptions = {
+        zoom: 17
+        , mapTypeId: window.google.maps.MapTypeId.MAP
+        , center: new google.maps.LatLng(lastPath[0].lat, lastPath[0].lng)
+    };
+    var map = new google.maps.Map(document.getElementById("divMapGeoruta"), mapOptions);
+    georute(lastPath, map, dataRuta);
+    for (var i = 0; i < lastPath.length; i++) {
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(lastPath[i].lat, lastPath[i].lng),
+            map: map
+        });
+    }
+    $('#txtRuta').val(dataRuta.nombre);
+    $('#txtIdRuta').val(dataRuta.id);
+    $('#colorPicker').val(globalColor);
+    lastPath.length = 0;
+    globalIndexTr = index;
+    otherRute();
 };
 
 asociarMap = function (index) {
@@ -365,7 +445,40 @@ asociarMap = function (index) {
     $('#colorPicker').val(globalColor);
     lastPath.length = 0;
     globalIndexTr = index;
-    other();
+    otherZone();
+};
+
+asociarMapRuta = function (index) {
+    $('#divMapGeoruta').empty();
+    lastPath = [];
+    var dataRuta = rutas[index];
+    $(JSON.parse(dataRuta.coordenadas)).each(function (indx, item) {
+        $(item.latLng).each(function (indx, val) {
+            if (indx == 0) {
+                globalColor = item.colorRuta;
+            }
+            lastPath.push({lat: parseFloat(val.lat), lng: parseFloat(val.long)});
+        });
+    });
+    var mapOptions = {
+        zoom: 17
+        , mapTypeId: window.google.maps.MapTypeId.MAP
+        , center: new google.maps.LatLng(lastPath[0].lat, lastPath[0].lng)
+    };
+    var map = new google.maps.Map(document.getElementById("divMapGeoruta"), mapOptions);
+    georute(lastPath, map, dataRuta);
+    for (var i = 0; i < lastPath.length; i++) {
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(lastPath[i].lat, lastPath[i].lng),
+            map: map
+        });
+    }
+    $('#txtRuta').val(dataRuta.nombre);
+    $('#txtIdRuta').val(dataRuta.id);
+    $('#colorPicker').val(globalColor);
+    lastPath.length = 0;
+    globalIndexTr = index;
+    otherRute();
 };
 
 function geoMap() {
@@ -398,6 +511,17 @@ function geoMap() {
         indexClick = indexClick + 1;
     });
     resizeMapGral();
+}
+
+function ruteMap() {
+    var mapOptions = {
+        zoom: 6
+        , mapTypeId: window.google.maps.MapTypeId.MAP
+        , center: new google.maps.LatLng(23.945963820559726, -102.53775014999997)
+    };
+    geoRutaMap = new google.maps.Map(document.getElementById("divMapGeoruta"), mapOptions);
+    geoRutaMap.addListener('click', showError());
+    resizeMapGralRute();
 }
 
 function localizar(imei) {
@@ -443,7 +567,6 @@ function localizar(imei) {
                         + ' / ' + item.conductor[0].vehiculo[0].localizar[0].lon + '</a>';
                 lat.push(parseFloat(item.conductor[0].vehiculo[0].localizar[0].lat));
                 long.push(parseFloat(item.conductor[0].vehiculo[0].localizar[0].lon));
-                arr.push(data);
                 img.push(item.conductor[0].vehiculo[0].icons.path);
                 if (item.conductor[0].vehiculo[0].zona[0] != undefined) {
                     $(JSON.parse(item.conductor[0].vehiculo[0].zona[0].coordenadas)).each(function (index, items) {
@@ -452,6 +575,7 @@ function localizar(imei) {
                         });
                     });
                     geofence(path, map, item.conductor[0].vehiculo[0].zona[0].zona, item.conductor[0].vehiculo[0].zona[0].id);
+                    data += '<br/><strong>Zona:</strong> ' + item.conductor[0].vehiculo[0].zona[0].zona;
                 }
                 path.length = 0;
                 if (item.conductor[0].vehiculo[0].ruta[0] != undefined) {
@@ -461,8 +585,10 @@ function localizar(imei) {
                         });
                     });
                     georute(pathRuta, map, item.conductor[0].vehiculo[0].ruta[0]);
+                    data += '<br/><strong>Ruta:</strong> ' + item.conductor[0].vehiculo[0].ruta[0].ruta;
                 }
                 pathRuta.length = 0;
+                arr.push(data);
             });
             if (lat.length > 0) {
                 var lt = parseFloat(lat[0]);
@@ -500,6 +626,68 @@ function localizar(imei) {
     });
 }
 
+function showError() {
+    $('#errorGeocoder').text('Busque la colonia para activar la función de crear zona / ruta');
+    $('#errorGeocoder').show();
+}
+
+function search(address) {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({'address': address}, geocodeResult);
+}
+
+function geocodeResult(results, status) {
+    if (status == 'OK') {
+        $('#errorGeocoder').hide();
+        var mapOptions = {
+            zoom: 17
+            , center: results[0].geometry.location,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        geoRutaMap = new google.maps.Map(document.getElementById("divMapGeoruta"), mapOptions);
+        geoRutaMap.addListener('click', addLatLng);
+        polylineR = new google.maps.Polyline({
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 3
+        });
+        polylineR.setMap(geoRutaMap);
+
+    } else {
+        $('#errorGeocoder').empty();
+        $('#errorGeocoder').append('Geocoding no tuvo éxito debido a: ' + getStatus(status));
+        $('#errorGeocoder').show();
+    }
+}
+
+function setColor(colors) {
+    polylineR.setOptions({strokeColor: colors});
+}
+
+function addLatLng(event) {
+    path = polylineR.getPath();
+    path.push(event.latLng);
+    var marker = new google.maps.Marker({
+        position: event.latLng
+        , map: geoRutaMap
+    });
+    $('#txtLength').val('');
+    var td = '<td>Posici&oacute;n ' + indexClick
+            + ':<input type="text" id="txtPos' + indexClick + '" name="txtPos' + indexClick
+            + '" readonly="readOnly" required="required" size="40" value="' + event.latLng + '"/></td>';
+    $('#tblCoordenadasGr tr:last').after('<tr>' + td + '</tr>');
+    var marker = new google.maps.Marker({
+        position: event.latLng
+        , title: '#' + path.getLength()
+        , map: geoRutaMap
+    });
+    if (path.length > 1) {
+        $('#btnGuardarRuta').prop('disabled', false);
+    }
+    $('#txtLength').val(indexClick);
+    indexClick = indexClick + 1;
+}
+
 function resizeMapGral() {
     if (typeof map == "undefined")
         return;
@@ -512,6 +700,20 @@ function resizingMapGral() {
     if (typeof map == "undefined")
         return;
     google.maps.event.trigger(map, "resize");
+}
+
+function resizeMapGralRute() {
+    if (typeof geoRutaMap == "undefined")
+        return;
+    setTimeout(function () {
+        resizingMapGralRute();
+    }, 300);
+}
+
+function resizingMapGralRute() {
+    if (typeof geoRutaMap == "undefined")
+        return;
+    google.maps.event.trigger(geoRutaMap, "resize");
 }
 
 function closeInfoWindow() {
@@ -566,6 +768,9 @@ function georute(pathRuta, map, rutaJson) {
     if (pathRuta.length > 0) {
         $(JSON.parse(rutaJson.coordenadas)).each(function (index, items) {
             $(items.latLng).each(function (index1, val) {
+                if (index1 == 0) {
+                    globalColor = items.colorRuta;
+                }
                 contenido = '<strong>Ruta N<sup>o</sup>:</strong>' + rutaJson.id
                         + '<br/><strong>Ruta:</strong>' + rutaJson.ruta;
                 var marker = new google.maps.Marker({
@@ -595,7 +800,7 @@ function georute(pathRuta, map, rutaJson) {
         polyline = new google.maps.Polyline({
             path: pathRuta,
             map: map,
-            strokeColor: '#000000',
+            strokeColor: globalColor,
             strokeOpacity: 0.8,
             strokeWeight: 2,
             fillColor: '#0000FF',
@@ -862,6 +1067,27 @@ function enviarGz(method) {
     }
 }
 
+function enviarRuta(method) {
+    var idsVehiculo = [];
+    var ltlon = [];
+    $('input:checkbox:checked').each(function () {
+        idsVehiculo.push($(this).val());
+    });
+
+    if (method == 1 || method == 5) {
+        if (idsVehiculo.length > 0) {
+            $('#lblErrorSelect').hide();
+            sendRuta(method, ltlon, idsVehiculo);
+        } else {
+            $('#lblErrorSelect').show();
+        }
+    } else if (method == 2) {
+        sendRuta(method, ltlon, idsVehiculo);
+    } else if (method == 3) {
+        sendRuta(method, ltlon, idsVehiculo);
+    }
+}
+
 function send(method, ltlon, idsVehiculo) {
     var geoFence = new Object();
     for (var index = 1; index < 5; index++) {
@@ -881,24 +1107,71 @@ function send(method, ltlon, idsVehiculo) {
     $.getJSON(contextoGlobal + '/com/aestre/system/controller/geozonaController.php'
             , data, function (response) {
                 if (method == 1 || method == 5) {
-                    $('#lblText').text(method == 1 ? 'La zona fue registrada, se a&ntilde;adieron' : 'Se asociaron ');
+                    $('#lblText').text((method == 1) ? 'La zona fue registrada, se a&ntilde;adieron' : 'Se asociaron ');
                     $('#lblTotal').append(response[0].contador);
                     $('#divMessageSuccessZona').modal('show');
-                    location.reload(); 
+                    location.reload();
                 } else if (method == 2) {
                     $('#divMessageUpdate').modal('hide');
                     $('#divMessageSuccessModificarZona').modal('show');
+                    location.reload();
                 } else if (method == 3) {
                     $('#divMessageEliminarZona').modal('hide');
                     $('#divMessageSuccessEliminarZona').modal('show');
-                    location.reload(); 
+                    location.reload();
                 }
             }
-    ).error(function(jqXHR, textStatus, errorThrown) {
+    ).error(function (jqXHR, textStatus, errorThrown) {
         console.log("error " + textStatus);
         console.log("incoming Text " + jqXHR.responseText);
     });
     onloadAllMini();
+}
+
+function sendRuta(method, ltlon, idsVehiculo) {
+    for (var i = 1; i < indexClick; i++) {
+        var value = $('#txtPos' + i).val();
+        value = value.replace('(', '');
+        value = value.replace(')', '');
+        var res = value.split(',');
+        $('#txtPos' + i).val(res[0] + ',' + res[1]);
+    }
+    var geoRuta = new Object();
+    for (var index = 1; index < indexClick; index++) {
+        var coordenadas = {};
+        var value = $('#txtPos' + index).val();
+        var latLng = value.split(',');
+        coordenadas.lat = latLng[0];
+        coordenadas.long = latLng[1];
+        ltlon.push(coordenadas);
+    }
+    var latLng = new Object();
+    geoRuta.latLng = ltlon;
+    geoRuta.colorRuta = '#' + $('#colorPicker').val();
+    var rutaJson = JSON.stringify(geoRuta);
+    var data = {'method': method, 'txtIdRuta': $('#txtIdRuta').val(), 'txtNombre': $('#txtRuta').val()
+        , 'txtLenght': $('#txtLength').val(), 'json': rutaJson, 'idVehiculos': idsVehiculo};
+    $.getJSON(contextoGlobal + '/com/aestre/system/controller/georutaController.php'
+            , data, function (response) {
+                if (method == 1 || method == 5) {
+                    $('#lblText').text((method == 1) ? 'La ruta fue registrada, se a&ntilde;adieron' : 'Se asociaron ');
+                    $('#lblTotal').append(response[0].contador);
+                    $("#divMessageSuccessRuta").modal('show');
+                    location.reload();
+                } else if (method == 2) {
+                    $('#divMessageUpdate').modal('hide');
+                    $('#divMessageSuccessModificarRuta').modal('show');
+                    location.reload();
+                } else if (method == 3) {
+                    $('#divMessageEliminarZona').modal('hide');
+                    $('#divMessageSuccessEliminarRuta').modal('show');
+                    location.reload();
+                }
+                $('#divRutas').load('#divRutas');
+
+
+            }
+    );
 }
 
 function clearZona() {

@@ -102,8 +102,7 @@ class geozonaController {
     }
 
     private function getParametersFromRequest() {
-        $zona = new BeanGeozona();
-        $zona->setId(isset($_REQUEST[PropertyKey::$view_id_zona]) ? strtoupper($_REQUEST[PropertyKey::$view_id_zona]) : NULL );
+        $zona = FactoryGeozona::newInstance(isset($_REQUEST[PropertyKey::$view_id_zona]) ? strtoupper($_REQUEST[PropertyKey::$view_id_zona]) : NULL );
         $zona->setNombre(strtoupper($_REQUEST[PropertyKey::$view_nombre]));
         $zona->setJson($_REQUEST[PropertyKey::$view_json]);
         if (empty($_REQUEST[PropertyKey::$view_ids_vehiculos])) {
