@@ -133,8 +133,8 @@ class vehiculoController {
         $vehiculo->setSim($_REQUEST[PropertyKey::$view_telefono]);
         $vehiculo->setApagado(NULL);
         $vehiculo->setBeanDispositivo(FactoryDispositivo::newInstance($_REQUEST[PropertyKey::$view_cbo_gps]));
-        $vehiculo->setBeanZona(NULL); //$beanZona->setId(isset($_REQUEST['txtIdZona']) ? $_REQUEST['txtIdZona'] : NULL );
-        $vehiculo->setBeanRuta(NULL); //$beanRuta->setId(isset($_REQUEST['txtIdRuta']) ? $_REQUEST['txtIdRuta'] : NULL );
+        $vehiculo->setBeanGeozona(isset($_REQUEST[PropertyKey::$view_id_zona]) ? $_REQUEST[PropertyKey::$view_id_zona] : FactoryGeozona::newInstance(NULL) );
+        $vehiculo->setBeanGeoruta(isset($_REQUEST[PropertyKey::$view_id_ruta]) ? $_REQUEST[PropertyKey::$view_id_ruta] : FactoryGeoruta::newInstance(NULL) );
         $vehiculo->setBeanIconos(FactoryIconos::newInstance($_REQUEST[PropertyKey::$view_icono_id]));
         $vehiculo->setActivo(isset($_REQUEST[PropertyKey::$view_chkActivo]) ? Utils::isIsset($_REQUEST[PropertyKey::$view_chkActivo]) : Utils::isIsset(NULL));
         $vehiculo->setIdCliente($_REQUEST[PropertyKey::$view_cbo_clientes]);

@@ -10,6 +10,9 @@ $controller->findByIdCliente($login->getIdCliente());
 $dto = unserialize($_SESSION[PropertyKey::$session_clientes]);
 ?>
 <script>listVehiculo();</script>
+<script>var lstVehiculo = [];
+    var totalSize = 0;
+</script>
 <!DOCTYPE html>
 <div id="listVehiculos" >
     <div class="table">
@@ -25,9 +28,10 @@ $dto = unserialize($_SESSION[PropertyKey::$session_clientes]);
             <tbody>
                 <?php
                 $index = 0;
-                ?><script> var size =<?php echo(count($dto->getVehiculos())); ?>;</script>
+                ?><script>var size = parseInt(<?php echo(count($dto->getVehiculos())); ?>);</script>
                 <?php
                 foreach ($dto->getVehiculos() as $items) {
+                    setDataLstVehiculo($items);
                     echo ('<tr id="trIndx' . $index . '">'
                     . '<td style="text-align: center;width: 50%;">'
                     . $items->getModelo()
@@ -35,18 +39,19 @@ $dto = unserialize($_SESSION[PropertyKey::$session_clientes]);
                     . $items->getPlaca()
                     . '</td>'
                     . '<td style="text-align: center;">'
-                    . '<input type="radio" id="rdbLocalizar" name="rdbLocalizar" onClick="localizar(' . $items->getImei() . ');">'
+                    . '<input type="radio" id="rdb" name="rdb" onClick="localizar(' . $items->getImei() . ');">'
                     . '</td>'
                     . '<td style="text-align: center;">'
-                    . '<input type="radio" id="rdbHistorial" name="rdbHistorial" onClick="showRuta(' . $index . ',' . $items->getImei() . ')">'
+                    . '<input type="radio" id="rdb" name="rdb" onClick="showRuta(' . $index . ',' . $items->getImei() . ');">'
                     . '</td>'
                     . '<td style="text-align: center;">'
-                    . '<input type="radio" id="rdbReporte" name="rdbReporte" onClick="">'
+                    . '<input type="radio" id="rdb" name="rdb" onClick="showReporte(' . $index . ');">'
                     . '</td>'
                     . '</tr>');
                     $index++;
                 }
                 ?>
+            <script>totalSize = lstVehiculo.length;</script>
             </tbody>
         </table>
     </div>
@@ -73,3 +78,34 @@ $dto = unserialize($_SESSION[PropertyKey::$session_clientes]);
         </div>
     </div>
 </div>
+<?php
+
+function setDataLstVehiculo(DtoVehiculo $item) {
+    $json = json_encode(
+            array(
+                'id' => $item->getBeanDispositivo()->getIdDispositivo()
+                , 'imei' => $item->getImei()
+                , 'marca' => $item->getMarca()
+                , 'telefono' => empty($item->getDtoConductor()) ? 'SN' : $item->getDtoConductor()->getTelefono() . '/' . $item->getDtoConductor()->getOtroTelefono()
+                , 'conductor' => empty($item->getDtoConductor()) ? 'NA' : $item->getDtoConductor()->getNombre() . ' ' . $item->getDtoConductor()->getPaterno() . '' . $item->getDtoConductor()->getMaterno()
+                , 'tipoLicencia' => empty($item->getDtoConductor()) ? 'NA' : $item->getDtoConductor()->getBeanLicencia()->getLicencia()
+                , 'noLicencia' => empty($item->getDtoConductor()) ? 'NA' : $item->getDtoConductor()->getNoLicencia()
+                , 'modelo' => $item->getModelo()
+                , 'dispositivo' => $item->getBeanDispositivo()->getDispositivo()
+                , 'imei' => $item->getImei()
+                , 'sim' => $item->getSim()
+                , 'placa' => $item->getPlaca()
+                , 'uso' => $item->getBeanGiro()->getGiro()
+                , 'color' => ($item->getColor()=='NULL') ? 'NO ESPECIFICADO' : $item->getColor()
+                , 'isActivo' => $item->getActivo()
+            )
+    );
+    ?>
+    <script>
+        lstVehiculo.push(
+    <?php
+    echo($json);
+    ?>);
+    </script>
+    <?php
+}

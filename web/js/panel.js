@@ -2,6 +2,8 @@ var clicks = 0;
 var color;
 var path = [];
 var globalIndexDelete = '';
+var listVehiculos = [];
+
 $(document).ready(function () {
     $('#listVehiculos').animate({height: 'toggle'});
     $('#lblTittleListV').text("Mostrar Lista Vehiculos");
@@ -147,7 +149,8 @@ $(document).ready(function () {
             $('#divMessageCancel').modal('show');
         });
         $('#btnAceptarCerrar').on('click', function () {
-            clear(size);
+            clearPanel();
+            ;
             $('#trIndxFoot0').empty();
         });
 
@@ -175,7 +178,8 @@ $(document).ready(function () {
             $('#divMessageCancel').modal('show');
         });
         $('#btnAceptarCerrar').on('click', function () {
-            clear(size);
+            clearPanel();
+            ;
             $('#trIndxFoot0').empty();
         });
 
@@ -229,7 +233,8 @@ $(document).ready(function () {
             $('#divMessageCancel').modal('show');
         });
         $('#btnAceptarCerrar').on('click', function () {
-            clear(size);
+            clearPanel();
+            ;
             $('#trIndxFoot0').empty();
         });
         $('#cboVehiculos').multiselect();
@@ -237,7 +242,7 @@ $(document).ready(function () {
 });
 
 function showRuta(index, imei) {
-    clear(size);
+    clearPanel();
     var tbl = '<fieldset><legend class="text-muted alert-info">Ruta Recorrida</legend>'
             + '<input type="hidden" id="txtImei" name="txtImei" value="' + imei + '" />'
             + '<table>'
@@ -270,14 +275,61 @@ function showRuta(index, imei) {
     dtp();
 }
 
+function showReporte(index) {
+    clearPanel();
+    var str = JSON.stringify(lstVehiculo[index]);
+    var res = str.split('"').join("'");
+    var tbl = '<fieldset><legend class="text-muted alert-info">Reporte</legend>'
+            //+ '<form id="frmJson" name="frmJson" method="post" action="http://199.89.55.7:8084/Reporteador/controller/reporteadorController" target="_blank">'
+            + '<form id="frmJson" name="frmJson" method="post" action="http://localhost:8084/Reporteador/controller/reporteadorController" target="_blank">'
+            + '<table>'
+            + '<tr> '
+            + '<th style="vertical-align: middle; font-size: 12px;"><span class="req"> * </span>Desde:</th>'
+            + '<td><input type="text" id="dtpDesde" name="dtpDesde" style="font-size: 12px;" size="10" class="required form-control col-xs-1 input-sm"'
+            + 'placeholder ="Fecha Inicial" readonly="readOnly">'
+            + '<label id="errorDesde" class="form-control alert-danger font-size" style="display: none;">Campo Requerido</label>'
+            + '<select id="cboHrInicial" name="cboHrInicial" class="form-control col-xs-1 input-sm"></select>'
+            + '</td>'
+            + '</tr>'
+            + '<tr>'
+            + '<th style="vertical-align: middle; font-size: 12px;">Hasta:</th>                                            '
+            + '<td><input type="text" id="dtpHasta" name="dtpHasta" style="font-size: 12px;" size="10" class="form-control col-xs-1 input-sm"'
+            + 'placeholder ="Fecha Final" readonly="readOnly">'
+            + '<select id="cboHrFinal" name="cboHrFinal" class="form-control col-xs-1 input-sm"></select>'
+            + '</td>'
+            + '</tr>'
+            + '<tr>'
+            + '<td><input type="radio" id="rdbReporte" name="rdbReporte" value="pdf"><label class="font-size" style="vertical-align: middle;">PDF</label>'
+            + '<input type="radio" id="rdbReporte" name="rdbReporte" value="xls"><label class="font-size" style="vertical-align: middle;">Excel</label>'
+            + '<input type="radio" id="rdbReporte" name="rdbReporte" value="html"><label class="font-size" style="vertical-align: middle;">Html</label>'
+            + '<br/><label id="lblErrorRadio" class="font-size alert-danger" style="display:none;">Campo obligatorio.</label>'
+            + '</td></tr>'
+            + '<tr><td colspan="2">'
+            + '<button type="button" class="btn" id="btnRuta" name="btnRuta" onClick="getReporte();">'
+            + '<img src="../web/images/reporte.png">Generar Reporte</button>'
+            + '<button type = "button" class="btn" id = "btnCancel" name = "btnCancel" onClick="cerrar();">'
+            + '<img src = "../web/images/cancel.png" > Cerrar </button>'
+            + '<input type="hidden" id="txtJson" name="txtJson" value="' + res + '"/>'
+            + '<input type="hidden" id="txtNombreReporte" name="txtNombreReporte" value="' + lstVehiculo[index].modelo + ' ' + lstVehiculo[index].placa + '"/>'
+            + '</td></tr>'
+            + '</table></fieldset>'
+            ;
+    $('#trIndx' + index).before(
+            '<tr id="trIntIndx' + index + '"><td colspan="6">' + tbl + '</td></tr>');
+    cboTime();
+    dtp();
+}
+
 function cerrar() {
-    clear(size);
+    clearPanel();
     $('#rdbHistorial').prop('checked', false);
     intervals();
 }
 
-function clear(size) {
-    for (var indx = 0; indx < size; indx++) {
+function clearPanel() {
+
+    for (var indx = 0; indx < totalSize; indx++) {
+
         $('#trIntIndx' + indx).remove();
     }
 }
@@ -296,7 +348,8 @@ function cboTime() {
 }
 
 function showNew() {
-    clear(size);
+    clearPanel();
+    ;
     $('#trIndxFoot0').append('<td colspan="5">' + getFormGeozona() + '</td></tr>');
     addColor();
     $('#btnAsociar').prop('disabled', 'disabled');
@@ -309,7 +362,8 @@ function showNew() {
 }
 
 function showNewRuta() {
-    clear(size);
+    clearPanel();
+    ;
     $('#trIndxFoot0').append('<td colspan="5">' + getFormGeoruta() + '</td></tr>');
     addColor();
     colonia();
@@ -322,10 +376,10 @@ function showNewRuta() {
     otherRute();
 }
 
-
 function showDataZona(index, action) {
     globalIndexDelete = index;
-    clear(size);
+    clearPanel();
+    ;
     $('#lblT').empty();
     $('#trIndxFoot0').empty();
     if (action == 0) {
@@ -363,7 +417,8 @@ function showDataZona(index, action) {
 
 function showDataRuta(index, action) {
     globalIndexDelete = index;
-    clear(size);
+    clearPanel();
+    ;
     $('#lblT').empty();
     $('#trIndxFoot0').empty();
     if (action == 0) {
@@ -402,8 +457,6 @@ function showDataRuta(index, action) {
     otherRute();
 }
 
-
-var listVehiculos = [];
 function listVehiculo() {
     var data = {'method': 0};
     $.getJSON(contextoGlobal + '/com/aestre/system/controller/vehiculoController.php'
@@ -413,4 +466,18 @@ function listVehiculo() {
                 });
             }
     );
+}
+
+function getReporte() {
+    changeErrorMessage('frmJson');
+    if ($('#frmJson').validate().form() && $("input[name='rdbReporte']").is(':checked')) {
+        $('#lblErrorRadio').hide();
+        $('#frmJson').submit();
+    } else {
+        if ($("input[name='rdbReporte']").is(':checked')) {
+            $('#lblErrorRadio').hide();
+        } else {
+            $('#lblErrorRadio').show();
+        }
+    }
 }

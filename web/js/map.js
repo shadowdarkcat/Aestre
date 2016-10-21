@@ -525,6 +525,7 @@ function ruteMap() {
 }
 
 function localizar(imei) {
+    clearPanel();
     closeInfoWindow();
     $('#divMiniMap').empty();
     $('#divMap').empty();

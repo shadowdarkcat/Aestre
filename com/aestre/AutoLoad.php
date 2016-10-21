@@ -1,6 +1,6 @@
 <?php
 
-define('PATH', realpath($_SERVER["DOCUMENT_ROOT"] . '\\Aestre\\com\\aestre'));
+/*define('PATH', realpath($_SERVER["DOCUMENT_ROOT"] . '\\Aestre\\com\\aestre'));
 define('CONTROLLER_PATH', PATH . '\\system\\controller');
 define('MODEL_BEAN_PATH', PATH . '\\system\\model\\bean');
 define('MODEL_DTO_PATH', PATH . '\\system\\model\\dto');
@@ -33,9 +33,7 @@ function aestre_autoload($className) {
         }
     }
 }
-/*
-<?php
-
+*/
 define('PATH', realpath($_SERVER["DOCUMENT_ROOT"] . '/Aestre/com/aestre'));
 define('CONTROLLER_PATH', PATH . '/system/controller');
 define('MODEL_BEAN_PATH', PATH . '/system/model/bean');
@@ -69,4 +67,3 @@ function aestre_autoload($className) {
         }
     }
 }
- */

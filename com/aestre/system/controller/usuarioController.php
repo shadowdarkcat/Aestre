@@ -109,7 +109,7 @@ class usuarioController {
     private function getParametersFromRequest(DtoLogin $usuario) {
         $usuario->setIdUsuario(isset($_REQUEST[PropertyKey::$view_usuario_id]) ? strtoupper($_REQUEST[PropertyKey::$view_usuario_id]) : NULL );
         $usuario->setNombreUsuario(strtoupper($_REQUEST[PropertyKey::$view_user]));
-        $usuario->setPwd(isset($_REQUEST[PropertyKey::$view_password])?strtoupper($_REQUEST[PropertyKey::$view_password]):NULL);
+        $usuario->setPwd(isset($_REQUEST[PropertyKey::$view_password]) ? strtoupper($_REQUEST[PropertyKey::$view_password]) : NULL);
         $usuario->setNombre(strtoupper($_REQUEST[PropertyKey::$view_nombre]));
         $usuario->setTelefono(strtoupper($_REQUEST[PropertyKey::$view_telefono]));
         $usuario->setMail(strtolower($_REQUEST[PropertyKey::$view_mail]));
@@ -120,7 +120,7 @@ class usuarioController {
     }
 
     private function getPropiedadesDelMenu() {
-        $valores = $_REQUEST[PropertyKey::$view_chk_menu];
+        $valores = isset($_REQUEST[PropertyKey::$view_chk_menu]) ? $_REQUEST[PropertyKey::$view_chk_menu] : NULL;
         $menu = array();
         if (!empty($valores)) {
             foreach ($valores as $item) {
